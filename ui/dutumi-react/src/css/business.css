@@ -1,0 +1,21 @@
+.info-holder {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 0;
+}
+
+.label-value-container {
+    display: flex;
+    justify-content: space-between; /* This will create space between the label and value */
+    align-items: center;
+    width: 100%; /* Ensure that it takes up the full width */
+}
+
+.label {
+    font-weight: bold;
+    margin-right: 20px; /* Space between label and value */
+}
+
+.value {
+    font-style: italic; /* Optional: Just a small creative style */
+}
