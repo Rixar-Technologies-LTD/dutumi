@@ -28,7 +28,7 @@ const LeftSideMenu = () => {
 
             {/*Text Logo*/}
             <div style={{
-                backgroundColor: "#004e89",
+                backgroundColor: "#5e548e",
                 paddingTop: '12px',
                 paddingBottom: '12px'
             }}>
@@ -43,7 +43,7 @@ const LeftSideMenu = () => {
                                 paddingLeft: '12px',
                                 color: 'white',
                                 margin: "0px"}}>
-                                Hesabu
+                                Dutumi
                             </h3>}
                     </Col>
 

@@ -26,9 +26,9 @@ const LoginPage = () => {
             .then((response) => {
                 console.log(JSON.stringify(response.data))
                 onLoginSuccessful(
-                    response.data.respBody.token,
-                    response.data.respBody.permissions,
-                    response.data.respBody.name);
+                    response.data.respBody.accessToken,
+                    response.data.respBody.permissions??[],
+                    response.data.respBody.user?.email);
             })
             .catch((errorObj) => {
                 console.error(JSON.stringify(errorObj));
@@ -74,7 +74,7 @@ const LoginPage = () => {
                         <div style={{ width:'100%', textAlign:'center'}}>
                             <h1 style={{
                                 textAlign: 'center',
-                                color: '#004e89',
+                                color: '#5e548e',
                                 backgroundColor: '#ffd465',
                                 border: '2px solid #ffd465',
                                 marginLeft:'auto',
@@ -127,7 +127,7 @@ const LoginPage = () => {
 
                             {/*Login Button */}
                             <Form.Item>
-                                <Button style={{ backgroundColor:'#004e89' }}
+                                <Button style={{ backgroundColor:'#5e548e' }}
                                         loading={isLoading} type="primary" htmlType="submit" block>
                                     Login
                                 </Button>

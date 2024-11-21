@@ -10,7 +10,6 @@ const  removeLoggedUser = () => {
     window.location.replace(`${window.location.host}`)
 }
 
-
 const toErrorObject = (error) => {
 
     let errorObject = {
@@ -56,7 +55,6 @@ const toErrorMessage = (msg, httpCode, respCode, extraInfo) => {
     };
 
 }
-
 
 const toError = (message,code) => {
 

@@ -7,7 +7,7 @@ const axiosClient = axios.create();
 axiosClient.defaults.baseURL = (!process.env.NODE_ENV
     || process.env.NODE_ENV === 'development'
     || process.env.NODE_ENV === 'dev'
-    || process.env.NODE_ENV === 'local') ? 'http://localhost:1960' : 'https://api.hesabu.co';
+    || process.env.NODE_ENV === 'local') ? 'http://dutumi.io' : 'https://dutumi.rixar.co.tz';
 
 const userToken = getStoredUserToken();
 
