@@ -11,15 +11,11 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import {FileDoneOutlined, PlusCircleOutlined} from "@ant-design/icons";
+import { PlusCircleOutlined} from "@ant-design/icons";
 import {
-    CheckCircleOutlined,
-    ClockCircleOutlined,
-    MessageOutlined,
-    UndoOutlined,
-    UsergroupAddOutlined
+    UndoOutlined
 } from "@ant-design/icons";
-import Search from "antd/es/input/Search";
+
 import {notifyError, notifyHttpError, notifySuccess} from "../../../services/notification/notifications";
 import {getRequest, postRequest} from "../../../services/rest/RestService";
 import EyasiContentCard from "../../templates/cards/EyasiContentCard";
@@ -33,71 +29,54 @@ import sectionIcon from "../../../assets/images/icons/projects.png"
 import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
-import {AppVersion} from "../../../interfaces/MessagesInterfaces";
-import {ProjectType} from "../../../interfaces/projects/ProjectsInterfaces";
+import {Project, ProjectType} from "../../../interfaces/projects/ProjectsInterfaces";
 
 const ProjectsListComponent = () => {
 
-    const columns: ColumnsType<Business> = [
+    const columns: ColumnsType<Project> = [
         {
-            title: 'REF',
+            title: 'ID',
             dataIndex: 'reference',
             key: 'reference',
             render: (_, record) => (
                 <>
-                    HSB-{record.id} <br/>
-                    <span style={{ fontWeight: 'lighter', fontSize: '12px'}}>{record.createdDate}</span>
+                    PRJ-{record.id}
                 </>
             ),
         },
         {
-            title: 'Business',
+            title: 'Project Name',
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => (
                 <>
                     <div>
-                        <span style={{ color:'#5555ff'}}>{record.name}</span> <br/>
-                        {record.phoneNumber} <br/>
-                        {record.email} <br/>
+                        <span style={{ color:'#5555ff'}}>{record.project_name}</span>
                     </div>
                 </>
             ),
         },
         {
-            title: 'Licence Status',
+            title: 'Status',
             dataIndex: 'status',
             key: 'status',
             render: (_, business) => (
                 <>
                     <Tag color="processing">{business.status ?? 'UNKNOWN'}</Tag><br/>
-                    Starts: {business?.subscription?.startDate}<br/>
-                    Ends: <span style={{ }}>{business?.subscription?.endDate}</span><br/>
+                    Starts: {business?.start_date}<br/>
+                    MVP: <span style={{ }}>{business?.mvp_date}</span><br/>
                 </>
             ),
         },
         {
-            title: 'Location',
-            dataIndex: 'location',
-            key: 'location',
+            title: 'Description',
+            dataIndex: 'project_description',
+            key: 'project_description',
             render: (_, record) => (
                 <>
-                    {record.physicalAddress ?? 'UNKNOWN'}
-                </>
-            ),
-        },
-        {
-            title: 'Payments',
-            dataIndex: 'transactions',
-            key: 'transactions',
-            render: (_, record) => (
-                <>
-                    <Space size="middle">
-                        <Button type="default" size="small" onClick={()=>{showTransactions(record)}} >
-                            <FileDoneOutlined/>
-                            Transactions ({record.transactions?.length})
-                        </Button>
-                    </Space>
+                    <div>
+                        <span style={{ color:'#5555ff'}}>{record.project_description}</span>
+                    </div>
                 </>
             ),
         },
@@ -106,19 +85,19 @@ const ProjectsListComponent = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary" onClick={()=>{viewBusiness(record)}}> View</Button>
+                    <Button type="primary" onClick={()=>{viewProject(record)}}>View</Button> <br/>
+                    <Button type="default" onClick={()=>{showEditForm(record)}}>Edit</Button>
                 </Space>
             ),
-        },
+        }
     ];
 
-    const [subscribersList, updateSubscribersList] = useState<Business[]>([]);
+    const [subscribersList, updateSubscribersList] = useState<Project[]>([]);
     const [currentPageNo, updateCurrentPageNo] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [pageSize, updatePageSize] = useState(50);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, updateSearchQuery] = useState("");
-    const [subscriptionStats, setStats] = useState<SubscriptionStats>();
     const [remindersStats, setRemindersStats] = useState<RemindersStats>();
     const [remindersModalOpen, setRemindersModalOpen] = useState<boolean>(false);
 
@@ -137,15 +116,14 @@ const ProjectsListComponent = () => {
     ]);
     const [selectedProjectType, setSelectedProjectType] = useState<ProjectType>();
 
-
-    const [messageModalOpen, setMessageModal] = useState(false)
-    const [messageForm] = Form.useForm();
-
+    const [messageModalOpen, setProjectModal] = useState(false)
+    const [projectForm] = Form.useForm();
 
     //Fetch products
     useEffect(() => {
         fetchProjects();
     }, [currentPageNo, pageSize, searchQuery,filter]);
+
 
     const fetchProjects = () => {
         const url = `/api/v1/projects/list?query=${searchQuery}&filterGroup=${filter}&pageSize=${pageSize}&pageNo=${currentPageNo-1}`;
@@ -164,8 +142,15 @@ const ProjectsListComponent = () => {
         })
     }
 
-    const viewBusiness = (business:Business) => {
-        navigate(`/businesses/${business.id}`);
+    const viewProject = (project:Project) => {
+        navigate(`/projects/${project.id}`);
+    }
+
+    const showEditForm = (project: { }) => {
+        projectForm.setFieldsValue(project)
+        projectForm.setFieldValue("start_date","");
+        projectForm.setFieldValue("mvp_date","");
+        setProjectModal(true)
     }
 
     const fetchRemindersStats= () => {
@@ -184,41 +169,18 @@ const ProjectsListComponent = () => {
         })
     }
 
-    const remindExpiredSubscribers = () => {
-
-        const url:string = `/api/v1/messages/broadcast/reminders`;
-        console.log(`Sending subscriptions reminders... ${url}`)
-
+    const saveProject = (item: Project) => {
         setIsLoading(true);
-        postRequest(url,{ })
-            .then((response) => {
-                console.log(response.data.payload);
-                fetchRemindersStats();
-                notifySuccess("Reminders Sent")
-                setRemindersModalOpen(false)
-            })
-            .catch((errorObj) => {
-                notifyHttpError('Operation Failed', errorObj)
-            }).finally(() => {
-            setIsLoading(false);
-            setRemindersModalOpen(false)
-        })
-    }
-
-
-    const saveMessage = (item: AppVersion) => {
-        setIsLoading(true);
-        postRequest(item.id? "/api/v1/manage/system/apps/versions/update" : "/api/v1/manage/system/apps/versions/add", item)
+        postRequest(item.id? "/api/v1/projects/update" : "/api/v1/projects/add", item)
             .then((response) => {
                 notifySuccess("Success", "Saved!")
                 setIsLoading(false);
-                setMessageModal(false)
+                setProjectModal(false)
             }).catch((errorObj) => {
             notifyHttpError('Operation Failed', errorObj)
             setIsLoading(false);
         })
     }
-
 
     const onPageChange = (page: number, pageSize: number) => {
         updateCurrentPageNo(page)
@@ -249,10 +211,10 @@ const ProjectsListComponent = () => {
         setSubscriptionsModalVisible(true);
     }
 
-
     const onProjectTypeChange = (value: any) => {
         setSelectedProjectType(value);
     };
+
 
     return <EyasiContentCard title="Projects"
                              subTitle="My Project"
@@ -269,9 +231,8 @@ const ProjectsListComponent = () => {
          /** Search
          *----------------*/}
         <Space style={{marginBottom: 24, marginTop: 8}} direction="horizontal">
-            <Button icon={<PlusCircleOutlined/>} size="large" onClick={()=>{ setMessageModal(true) }} type="primary">Add Project</Button>
+            <Button icon={<PlusCircleOutlined/>} size="large" onClick={()=>{ setProjectModal(true) }} type="primary">Create Project</Button>
         </Space>
-
 
         {/**---------------------------*
          /** Orders Table
@@ -299,74 +260,29 @@ const ProjectsListComponent = () => {
         />
 
 
-        {/***------------------------------
-         /*  Audience
-         ***------------------------------*/}
-        <Modal title="Subscription Reminders"
-               open={remindersModalOpen}
-               footer={<></>}
-               confirmLoading={isLoading}
-               onCancel={() => {
-                   setRemindersModalOpen(false)
-               }}>
 
-
-            <p style={{padding: 0, margin: 0}}>
-                <UsergroupAddOutlined style={{marginRight: '8px',color:'orange'}}/>
-                Expired Subscriptions: {remindersStats?.expiredSubscriptions}
-            </p>
-            <p style={{padding: 0, margin: 0}}>
-                <CheckCircleOutlined style={{marginRight: '8px',color:'green'}}/>
-                Reminded: {remindersStats?.sentReminders}
-            </p>
-            <p style={{padding: 0, margin: 0}}>
-                <ClockCircleOutlined style={{marginRight: '8px',color:'blue'}}/>
-                Not Reminded: {remindersStats?.pendingReminders}
-            </p>
-
-            <h3 style={{padding: 0, margin: 0, marginTop: '12px'}}>
-                <MessageOutlined style={{marginRight:'8px'}}></MessageOutlined>
-                Reminder Message</h3>
-            <p style={{padding: '8px', margin: 0,
-                border:'1px solid #a9a9a9',
-                backgroundColor: '#f5f5f5',
-                borderRadius:'4px'}}>
-                {remindersStats?.reminderMessage}
-            </p>
-
-            <Button style={{marginTop: '24px'}} type="primary" loading={isLoading} onClick={remindExpiredSubscribers}>
-                <MessageOutlined/>
-                Send Reminders to {remindersStats?.pendingReminders} Subscribers
-            </Button>
-
-        </Modal>
 
 
         {/***------------------------------
-         /*  Subscription Details
-         ***------------------------------*/}
-
-        {/***------------------------------
-         /*  Message
+         /*  Project
          ***------------------------------*/}
         <Modal title="Project"
                open={messageModalOpen}
                width="640px"
                onOk={() => {
-                   messageForm.submit()
+                   projectForm.submit()
                }}
                confirmLoading={isLoading}
                okText="Save"
                onCancel={() => {
-                   setMessageModal(false)
+                   setProjectModal(false)
                }}>
 
             <Form
-                form={messageForm}
+                form={projectForm}
                 layout="vertical"
-                onFinish={saveMessage}
+                onFinish={saveProject}
             >
-
 
                 <Form.Item name="id" hidden>
                     <Input/>
@@ -374,7 +290,7 @@ const ProjectsListComponent = () => {
 
                 <Form.Item
                     label="Project Type"
-                    name="topicId"
+                    name="project_type"
                 >
                     <Select
                         value={selectedProjectType}
@@ -384,26 +300,18 @@ const ProjectsListComponent = () => {
                     />
                 </Form.Item>
 
-                {/*<Form.Item*/}
-                {/*    label="Channel"*/}
-                {/*    name="type"*/}
-                {/*>*/}
-                {/*    <Select*/}
-                {/*        value={selectedTopic}*/}
-                {/*        onChange={onSecondCityChange}*/}
-                {/*        style={{width: '100%'}}*/}
-                {/*        options={[*/}
-                {/*            {"label": "SMS", "value": "SMS_NEWS"},*/}
-                {/*            {"label": "WhatsApp", "value": "WHATSAPP_NEWS"},*/}
-                {/*        ].map((channel) => ({label: channel.label, value: channel.value}))}*/}
-                {/*    />*/}
-                {/*</Form.Item>*/}
-
+                <Form.Item
+                    style={{marginBottom: 24, marginTop: '16px'}}
+                    label="Project name"
+                    name="project_name"
+                >
+                    <Input type="text"/>
+                </Form.Item>
 
                 <Form.Item
-                    style={{marginBottom: 48, marginTop: '16px'}}
+                    style={{marginBottom: 24, marginTop: '16px'}}
                     label="Project Description"
-                    name="content"
+                    name="project_description"
                 >
                     <TextArea showCount/>
                 </Form.Item>

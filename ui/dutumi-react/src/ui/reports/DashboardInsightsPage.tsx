@@ -82,12 +82,12 @@ const DashboardInsightsPage = () => {
     const permissions: string[] = getUserPermissions();
 
     useEffect(() => {
-        fetchBusinessesStats();
-        fetchUsersStats();
-        fetchPaymentTransactionsInsights();
-        fetchManualTransactionsInsights();
-        fetchSmsInsights();
-        fetchEmailsInsights();
+        // fetchBusinessesStats();
+        // fetchUsersStats();
+        // fetchPaymentTransactionsInsights();
+        // fetchManualTransactionsInsights();
+        // fetchSmsInsights();
+        // fetchEmailsInsights();
     }, []);
 
     //Fetch Stats
