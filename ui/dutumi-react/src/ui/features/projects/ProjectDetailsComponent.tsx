@@ -116,6 +116,7 @@ const ProjectDetailsComponent = () => {
                                        suffix={``}/>
                         </Card>
                     </Col>
+
                     <Col span={12} style={{ marginTop:'24px'}}>
                         <Card onClick={viewProducts}
                               bordered={false}
