@@ -33,7 +33,7 @@ sudo chmod -R 775             /var/www/mobiad/mobiad-subscriptions/referrals-age
 
 [migration]
 >> php artisan migrate
->> php artisan passport:install
+>> php artisan passport:client --personal
 
 [Seeding]
 #>> php artisan permission:cache-reset

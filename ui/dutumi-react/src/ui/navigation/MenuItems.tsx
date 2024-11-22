@@ -12,7 +12,7 @@ import {
     AndroidFilled,
     AndroidOutlined,
     PhoneOutlined,
-    GlobalOutlined, MoneyCollectOutlined, MoneyCollectFilled
+    GlobalOutlined, MoneyCollectOutlined, MoneyCollectFilled, FolderOutlined
 } from '@ant-design/icons';
 import type {MenuProps} from 'antd';
 import {Menu} from 'antd';
@@ -63,6 +63,9 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
     ///------------
     const operationsMenus : MenuProps['items'] = [];
     if(permissions.includes("")){
+        operationsMenus.push(toMenuItem('Projects', '/projects', <FolderOutlined/>));
+    }
+    if(permissions.includes("")){
         operationsMenus.push(toMenuItem('Features', '/projects/features', <MailOutlined/>));
     }
     if(permissions.includes("")){
@@ -73,7 +76,7 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
     }
     if(containsAny(permissions,["",'',''])){
         mainMenuItems.push(...[
-            toMenuItem('Projects', 'operations', <DesktopOutlined/>, operationsMenus),
+            toMenuItem('Projects', 'operations', <FolderOutlined/>, operationsMenus),
         ]);
     }
 

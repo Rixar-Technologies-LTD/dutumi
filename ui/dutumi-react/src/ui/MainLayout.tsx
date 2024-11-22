@@ -28,6 +28,7 @@ import AppVersionsComponent from "./features/management/apps/AppVersionsComponen
 import EmailHistoryComponent from "./features/operations/EmailHistoryComponent";
 import BusinessProductsPage from "./features/businesses/pages/BusinessProductsPage";
 import BusinessOrdersPage from "./features/businesses/pages/BusinessOrdersPage";
+import ProjectsListComponent from "./features/projects/ProjectsListComponent";
 
 const {Content} = Layout;
 
@@ -57,7 +58,7 @@ function MainLayout() {
 
 
                         <Route path="projects">
-                            <Route index element={<RequireAuth><BusinessesListComponent/></RequireAuth>}/>
+                            <Route index element={<RequireAuth><ProjectsListComponent/></RequireAuth>}/>
                             <Route path="features" element={<BusinessesListComponent/>}/>
                             <Route path="releases" element={<BusinessesListComponent/>}/>
                             <Route path="issues" element={<BusinessesListComponent/>}/>

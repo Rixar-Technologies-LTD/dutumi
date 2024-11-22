@@ -17,8 +17,9 @@ Route::prefix('v1/auth')->group(function () {
 });
 
 
-Route::prefix('v1/projects')->group(function () {
+Route::prefix('v1/projects')->middleware('auth:api')->group(function () {
 
     Route::get('list', [ProjectsController::class,'getProject']);
+    Route::post('add', [ProjectsController::class,'addProject']);
 
 });
