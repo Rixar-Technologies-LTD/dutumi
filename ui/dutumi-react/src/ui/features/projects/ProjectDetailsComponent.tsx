@@ -26,6 +26,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import GoodContentCardPlain from "../../templates/cards/GoodContentCardPlain";
 import BusinessSubscriptionsComponent from "../businesses/components/BusinessSubscriptionsComponent";
 import ProjectMembersComponent from "./components/ProjectMembersComponent";
+import ProjectIssuesComponent from "./issues/ProjectIssuesComponent";
 
 const ProjectDetailsComponent = () => {
 
@@ -33,7 +34,7 @@ const ProjectDetailsComponent = () => {
 
     const [business, setBusiness] = useState<Business>();
     const [businessSchema, setBusinessSchema] = useState<String>();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [selectedSubscription, setSelectedSubscription] = useState<Business | null>();
     const [isSubscriptionVisible, setSubscriptionsModalVisible] = useState(false);
@@ -91,57 +92,54 @@ const ProjectDetailsComponent = () => {
                                  ]}>
 
         <Row gutter={16} style={{marginTop: '32px', marginBottom: '12px'}}>
-            <Col span={6}>
-                <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
-                    <Statistic title="Issues" value={(business?.stats?.usersCount ?? 0).toLocaleString()}
-                               prefix={<UserOutlined/>}/>
-                </Card>
-            </Col>
-            <Col span={6}>
-                <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
-                    <Statistic title="Features" value={(business?.stats?.branchesCount ?? 0).toLocaleString()}
-                               prefix={<BankOutlined/>}
-                               suffix={``} />
-                </Card>
-            </Col>
-            <Col span={6}>
-                <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
-                    <Statistic title="Releases" value={(business?.stats?.usersCount ?? 0).toLocaleString()}
-                               prefix={<TeamOutlined/>}
-                               suffix={``} />
-                </Card>
-            </Col>
-            <Col span={6}>
-                <Card onClick={viewProducts}
-                      bordered={false}
-                      style={{border: '1px solid #e3d5ca'}}>
-                    <Statistic title="Products" value={(business?.stats?.products ?? 0).toLocaleString()}
-                               prefix={<TagsOutlined/>}
-                               suffix=""/>
-                </Card>
-            </Col>
-        </Row>
-
-
-        {/***---------------------------
-         /* Branches
-         **-----------------------------*/}
-        <Row style={{marginTop: '64px'}}>
             <Col span={12}>
-                <ProjectMembersComponent projectId={projectId}></ProjectMembersComponent>
+                <Row gutter={16} style={{ marginBottom: '12px'}}>
+                    <Col span={12}>
+                        <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
+                            <Statistic title="Features" value={(business?.stats?.branchesCount ?? 0).toLocaleString()}
+                                       prefix={<BankOutlined/>}
+                                       suffix={``}/>
+                        </Card>
+                    </Col>
+
+                    <Col span={12}>
+                        <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
+                            <Statistic title="Issues" value={(business?.stats?.usersCount ?? 0).toLocaleString()}
+                                       prefix={<UserOutlined/>}/>
+                        </Card>
+                    </Col>
+
+                    <Col span={12} style={{ marginTop:'24px'}}>
+                        <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
+                            <Statistic title="Releases" value={(business?.stats?.usersCount ?? 0).toLocaleString()}
+                                       prefix={<TeamOutlined/>}
+                                       suffix={``}/>
+                        </Card>
+                    </Col>
+                    <Col span={12} style={{ marginTop:'24px'}}>
+                        <Card onClick={viewProducts}
+                              bordered={false}
+                              style={{border: '1px solid #e3d5ca'}}>
+                            <Statistic title="Products" value={(business?.stats?.products ?? 0).toLocaleString()}
+                                       prefix={<TagsOutlined/>}
+                                       suffix=""/>
+                        </Card>
+                    </Col>
+                </Row>
             </Col>
 
             <Col span={12}>
                 <ProjectMembersComponent projectId={projectId}></ProjectMembersComponent>
             </Col>
         </Row>
+
 
         {/***---------------------------
          /* Subscriptions
          **-----------------------------*/}
         <Row style={{marginTop: '64px'}}>
             <Col span={24}>
-                <BusinessSubscriptionsComponent business={business}></BusinessSubscriptionsComponent>
+                <ProjectIssuesComponent business={business}></ProjectIssuesComponent>
             </Col>
         </Row>
 

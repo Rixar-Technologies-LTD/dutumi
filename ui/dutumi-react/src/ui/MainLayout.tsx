@@ -30,6 +30,7 @@ import BusinessProductsPage from "./features/businesses/pages/BusinessProductsPa
 import BusinessOrdersPage from "./features/businesses/pages/BusinessOrdersPage";
 import ProjectsListComponent from "./features/projects/ProjectsListComponent";
 import ProjectDetailsComponent from "./features/projects/ProjectDetailsComponent";
+import FeaturesListComponent from "./features/projects/features/FeaturesListComponent";
 
 const {Content} = Layout;
 
@@ -61,7 +62,7 @@ function MainLayout() {
                         <Route path="projects">
                             <Route index element={<RequireAuth><ProjectsListComponent/></RequireAuth>}/>
                             <Route path=":projectId" element={<ProjectDetailsComponent/>}/>
-                            <Route path="features" element={<BusinessesListComponent/>}/>
+                            <Route path="features" element={<FeaturesListComponent/>}/>
                             <Route path="releases" element={<BusinessesListComponent/>}/>
                             <Route path="issues" element={<BusinessesListComponent/>}/>
                         </Route>

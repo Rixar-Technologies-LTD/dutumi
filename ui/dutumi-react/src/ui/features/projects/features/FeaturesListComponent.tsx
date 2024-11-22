@@ -1,19 +1,17 @@
 import {
     Button, DatePicker,
-    Divider, Form, Input,
-    List,
+     Form, Input,
     Modal,
     Pagination,
-    Radio,
     RadioChangeEvent, Select,
     Space,
     Spin,
     Table,
-    Tag, TimePicker, Upload
+    Tag
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import {FileDoneOutlined, FileImageOutlined, UploadOutlined} from "@ant-design/icons";
+import {FileDoneOutlined, PlusCircleOutlined} from "@ant-design/icons";
 import {
     CheckCircleOutlined,
     ClockCircleOutlined,
@@ -22,7 +20,7 @@ import {
     UsergroupAddOutlined
 } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
-import sectionIcon from "../../../assets/images/icons/subscription.png"
+import sectionIcon from "../../../../assets/images/pages/features.png"
 import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
@@ -135,7 +133,8 @@ const FeaturesListComponent = () => {
         {type:"Dashboard",code:"DASHBOARD"},
         {type:"Admin Portal",code:"PORTAL"}
     ]);
-    const [selectedProjectType, setSelectedProjectType] = useState<ProjectType>();
+
+    const [selectedProject, setSelectedProject] = useState<Project>();
 
 
     const [messageModalOpen, setMessageModal] = useState(false)
@@ -155,7 +154,6 @@ const FeaturesListComponent = () => {
             .then((response) => {
                 console.log(response.data);
                 updateProjectsList(response.data.respBody.data);
-                setTotalItems(response.data.respBody.total);
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -242,7 +240,7 @@ const FeaturesListComponent = () => {
 
 
     const onProjectTypeChange = (value: any) => {
-        setSelectedProjectType(value);
+        setSelectedProject(value);
     };
 
     return <EyasiContentCard title="Features"
@@ -253,8 +251,7 @@ const FeaturesListComponent = () => {
                                  <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={()=>{
                                      fetchProjects();
                                  }} key="2"
-                                         type="default">Refresh</Button>,
-                                 <Button onClick={()=>{ setMessageModal(true) }} key="1" type="primary">Add Project</Button>
+                                         type="default">Refresh</Button>
                              ]}>
 
         {/**---------------*
@@ -264,14 +261,13 @@ const FeaturesListComponent = () => {
 
 
             <div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius:'4px'}}>
-                <span>Project</span>
                 <Select
-                    value={selectedProjectType}
+                    value={selectedProject}
                     onChange={onProjectTypeChange}
                     placeholder="Select Project"
                     style={{width: '100%',minWidth:'240px'}}
                     size="large"
-                    options={projectTypes.map((projectType) => ({label: projectType.type, value: projectType.code}))}
+                    options={projectsList.map((project) => ({label: project.name, value: project.id}))}
                 />
             </div>
 
@@ -279,6 +275,12 @@ const FeaturesListComponent = () => {
                     placeholder="Search"
                     onSearch={onSearch}
                     allowClear/>
+
+            <Button onClick={()=>{ setMessageModal(true) }}
+                    size="large"
+                    icon={<PlusCircleOutlined/>}
+                    key="1" type="primary">Add Feature</Button>
+
 
             <div style={{padding: '8px 16px'}}>
                 { filter !== 'all' && <Tag style={{ fontSize: '18px', color: 'blue', padding:'4px 8px'}} >{totalItems}</Tag>}
@@ -362,7 +364,7 @@ const FeaturesListComponent = () => {
         {/***------------------------------
          /*  Message
          ***------------------------------*/}
-        <Modal title="Project"
+        <Modal title="Feature"
                open={messageModalOpen}
                width="640px"
                onOk={() => {
@@ -380,42 +382,21 @@ const FeaturesListComponent = () => {
                 onFinish={saveMessage}
             >
 
-
                 <Form.Item name="id" hidden>
                     <Input/>
                 </Form.Item>
 
                 <Form.Item
-                    label="Project Type"
-                    name="topicId"
+                    style={{marginBottom: 16, marginTop: '16px'}}
+                    label="Feature Name"
+                    name="content"
                 >
-                    <Select
-                        value={selectedProjectType}
-                        onChange={onProjectTypeChange}
-                        style={{width: '100%'}}
-                        options={projectTypes.map((projectType) => ({label: projectType.type, value: projectType.code}))}
-                    />
+                    <Input type={"text"}/>
                 </Form.Item>
 
-                {/*<Form.Item*/}
-                {/*    label="Channel"*/}
-                {/*    name="type"*/}
-                {/*>*/}
-                {/*    <Select*/}
-                {/*        value={selectedTopic}*/}
-                {/*        onChange={onSecondCityChange}*/}
-                {/*        style={{width: '100%'}}*/}
-                {/*        options={[*/}
-                {/*            {"label": "SMS", "value": "SMS_NEWS"},*/}
-                {/*            {"label": "WhatsApp", "value": "WHATSAPP_NEWS"},*/}
-                {/*        ].map((channel) => ({label: channel.label, value: channel.value}))}*/}
-                {/*    />*/}
-                {/*</Form.Item>*/}
-
-
                 <Form.Item
-                    style={{marginBottom: 48, marginTop: '16px'}}
-                    label="Project Description"
+                    style={{marginBottom: 16, marginTop: '16px'}}
+                    label="Feature Description"
                     name="content"
                 >
                     <TextArea showCount/>
@@ -429,7 +410,7 @@ const FeaturesListComponent = () => {
                     </Form.Item>
                     <Form.Item
                         name="mvp_date"
-                        label="MPV Release Date">
+                        label="End Date">
                         <DatePicker/>
                     </Form.Item>
                 </Compact>

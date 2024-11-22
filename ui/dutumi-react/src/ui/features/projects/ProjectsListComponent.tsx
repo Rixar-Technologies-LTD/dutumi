@@ -51,7 +51,18 @@ const ProjectsListComponent = () => {
             render: (_, record) => (
                 <>
                     <div>
-                        <span style={{ color:'#5555ff'}}>{record.name}</span><br/>
+                        <span style={{ color:'#5555ff'}}>{record.name}</span>
+                    </div>
+                </>
+            ),
+        },
+        {
+            title: 'Type',
+            dataIndex: 'type',
+            key: 'type',
+            render: (_, record) => (
+                <>
+                    <div>
                         <Tag>{record.type}</Tag>
                     </div>
                 </>
@@ -76,7 +87,7 @@ const ProjectsListComponent = () => {
             render: (_, record) => (
                 <>
                     <div>
-                        <span style={{ color:'#5555ff'}}>{record.description}</span>
+                        <span style={{ color:'#5a5a5a'}}>{record.description}</span>
                     </div>
                 </>
             ),
@@ -177,6 +188,7 @@ const ProjectsListComponent = () => {
                 notifySuccess("Success", "Saved!")
                 setIsLoading(false);
                 setProjectModal(false)
+                fetchProjects();
             }).catch((errorObj) => {
             notifyHttpError('Operation Failed', errorObj)
             setIsLoading(false);
@@ -291,7 +303,7 @@ const ProjectsListComponent = () => {
 
                 <Form.Item
                     label="Project Type"
-                    name="project_type"
+                    name="type"
                 >
                     <Select
                         value={selectedProjectType}
@@ -304,7 +316,7 @@ const ProjectsListComponent = () => {
                 <Form.Item
                     style={{marginBottom: 24, marginTop: '16px'}}
                     label="Project name"
-                    name="project_name"
+                    name="name"
                 >
                     <Input type="text"/>
                 </Form.Item>
@@ -312,7 +324,7 @@ const ProjectsListComponent = () => {
                 <Form.Item
                     style={{marginBottom: 24, marginTop: '16px'}}
                     label="Project Description"
-                    name="project_description"
+                    name="description"
                 >
                     <TextArea showCount/>
                 </Form.Item>
