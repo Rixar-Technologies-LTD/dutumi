@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\management;
+namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\BaseController;
 use App\Models\User;
@@ -8,7 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Spatie\Permission\Models\Permission;
 
 class UsersManagementController extends BaseController
 {

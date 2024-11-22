@@ -20,4 +20,9 @@ class Project extends Model
         'status'
     ];
 
+    public function members()
+    {
+        return $this->hasMany(ProjectMember::class,  'project_id');
+    }
+
 }

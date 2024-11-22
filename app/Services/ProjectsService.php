@@ -1,25 +1,23 @@
 <?php
 
-namespace App\Providers;
+namespace App\Services;
 
-use Illuminate\Support\Facades\Vite;
-use Illuminate\Support\ServiceProvider;
+use App\Models\ProjectMember;
+use Illuminate\Support\Facades\Auth;
 
-class AppServiceProvider extends ServiceProvider
+class ProjectsService
 {
     /**
      * Register any application services.
      */
-    public function register(): void
+    public static function addProjectMember($projectId, $userId): ProjectMember
     {
-        //
+       return ProjectMember::query()->create([
+                'project_id'=>$projectId,
+                'user_id'=>$userId,
+                'added_by_user_id'=>Auth::id(),
+            ]);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Vite::prefetch(concurrency: 3);
-    }
+
 }
