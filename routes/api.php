@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Projects\FeaturesController;
 use App\Http\Controllers\Projects\ProjectsController;
 use App\Http\Controllers\Users\UsersManagementController;
 use Illuminate\Http\Request;
@@ -25,6 +26,14 @@ Route::prefix('v1/projects')->middleware('auth:api')->group(function () {
     Route::get('members', [ProjectsController::class,'fetchProjectMembers']);
     Route::post('members/add', [ProjectsController::class,'addProjectMember']);
     Route::post('members/remove', [ProjectsController::class,'removeProjectMember']);
+
+});
+
+Route::prefix('v1/projects/features')->middleware('auth:api')->group(function () {
+
+    Route::get('list', [FeaturesController::class,'getFeature']);
+    Route::post('add', [FeaturesController::class,'addFeature']);
+    Route::post('update', [FeaturesController::class,'updateProject']);
 
 });
 

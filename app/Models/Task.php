@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
 
-    //
-    public static $TYPE_FEATURE = "FEATURE";
-    public static $TYPE_RELEASE = "RELEASE";
-    public static $TYPE_TASK = "TASK";
-
     protected $fillable = [
+        'project_id',
+        'creator_user_id',
+        'assignee_user_id',
 
+        'name',
+        'type',
+        'start_date',
+        'end_date'
     ];
 
 }
