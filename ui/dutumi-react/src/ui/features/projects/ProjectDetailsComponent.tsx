@@ -23,16 +23,13 @@ import customerLoadingIcon from "../../templates/Loading";
 import {Business} from "../../../interfaces/businesses/BusinessInterfaces";
 import sectionIcon from "../../../assets/images/icons/subscription.png"
 import {useNavigate, useParams} from "react-router-dom";
-import GoodLabelValueWidget from "../../templates/GoodLabelValueWidget";
-import {BsBuilding} from "react-icons/bs";
 import GoodContentCardPlain from "../../templates/cards/GoodContentCardPlain";
-import BranchesComponent from "../businesses/components/BusinessBranchesComponent";
-import BusinessStaffComponent from "../businesses/components/BusinessStaffComponent";
 import BusinessSubscriptionsComponent from "../businesses/components/BusinessSubscriptionsComponent";
+import ProjectMembersComponent from "./components/ProjectMembersComponent";
 
 const ProjectDetailsComponent = () => {
 
-    const {businessId} = useParams();
+    const {projectId} = useParams();
 
     const [business, setBusiness] = useState<Business>();
     const [businessSchema, setBusinessSchema] = useState<String>();
@@ -45,11 +42,11 @@ const ProjectDetailsComponent = () => {
 
     //Fetch products
     useEffect(() => {
-        fetchBusinessesDetails();
+        // fetchBusinessesDetails();
     }, []);
 
     const fetchBusinessesDetails = () => {
-        const url = `/api/v1/manage/businesses/details?id=${businessId}`;
+        const url = `/api/v1/manage/businesses/details?id=${projectId}`;
         console.log(`fetching businesses details... ${url}`)
         setIsLoading(true);
         getRequest(url)
@@ -131,11 +128,11 @@ const ProjectDetailsComponent = () => {
          **-----------------------------*/}
         <Row style={{marginTop: '64px'}}>
             <Col span={12}>
-                <BranchesComponent business={business}></BranchesComponent>
+                <ProjectMembersComponent projectId={projectId}></ProjectMembersComponent>
             </Col>
 
             <Col span={12}>
-                <BusinessStaffComponent business={business}></BusinessStaffComponent>
+                <ProjectMembersComponent projectId={projectId}></ProjectMembersComponent>
             </Col>
         </Row>
 

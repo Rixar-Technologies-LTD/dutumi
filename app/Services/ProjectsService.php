@@ -12,11 +12,12 @@ class ProjectsService
      */
     public static function addProjectMember($projectId, $userId): ProjectMember
     {
-       return ProjectMember::query()->create([
-                'project_id'=>$projectId,
-                'user_id'=>$userId,
-                'added_by_user_id'=>Auth::id(),
-            ]);
+        return ProjectMember::query()->create([
+            'project_id' => $projectId,
+            'user_id' => $userId,
+            'added_by_user_id' => Auth::id(),
+            'status' => ProjectMember::$STATUS_ACTIVE
+        ]);
     }
 
 

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->bigInteger('project_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('added_by_user_id')->unsigned();
+            $table->string('status');
+            $table->string('remarks')->nullable();
             $table->dateTime('access_end_date')->nullable();
             $table->timestamps();
         });

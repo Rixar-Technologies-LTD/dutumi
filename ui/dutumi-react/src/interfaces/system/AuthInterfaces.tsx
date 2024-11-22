@@ -1,6 +1,13 @@
 import {Business} from "../businesses/BusinessInterfaces";
 
 
+export interface SystemUser {
+    "id": string,
+    "name": string,
+    "email": string,
+    "created_at": string
+}
+
 export interface User {
     "id": number,
     "username": string,

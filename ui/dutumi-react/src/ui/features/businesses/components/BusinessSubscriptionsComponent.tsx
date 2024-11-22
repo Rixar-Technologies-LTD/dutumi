@@ -123,7 +123,7 @@ const BusinessSubscriptionsComponent = ({ business  } : BranchesProps) => {
 
     //Fetch products
     useEffect(() => {
-        fetchSubscriptionPlans();
+        // fetchSubscriptionPlans();
     }, [ ]);
 
     const fetchSubscriptionHistory = () => {

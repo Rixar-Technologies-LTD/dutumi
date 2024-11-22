@@ -12,43 +12,61 @@ use Illuminate\Support\Facades\Auth;
 class ProjectsController extends BaseController
 {
 
-    /**
-     * Display the user's profile form.
-     */
+
     public function getProject(Request $request)
     {
         $projects = Project::query()->paginate(50);
         return $this->returnResponse("Projects",$projects);
     }
 
-
-    /**
-     * Display the user's profile form.
-     */
     public function addProject(Request $request)
     {
         $request->validate([
-            'project_name' => 'required',
-            'project_description' => 'required',
-            'project_type' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'type' => 'required',
             'start_date' => 'required|date',
             'mvp_date' => 'required|date',
         ]);
 
         $project = Project::query()->create([
             'owner_user_id'=> Auth::id(),
-            'project_name' => $request->input('project_name'),
-            'project_description' => $request->input('project_name'),
-            'project_type' => $request->input('project_name'),
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'type' => $request->input('type'),
             'start_date' => Carbon::parse($request->input('start_date')),
             'mvp_date' => Carbon::parse($request->input('mvp_date')),
             'status' => Project::$STATUS_ACTIVE
         ]);
 
-        $newProjectMember = ProjectsService::addProjectMember($project->id,Auth::id());
+        ProjectsService::addProjectMember($project->id,Auth::id());
 
         return $this->returnResponse("Projects",$project);
     }
+
+    public function updateProject(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:projects,id',
+            'name' => 'required',
+            'description' => 'required',
+            'type' => 'required',
+            'start_date' => 'required|date',
+            'mvp_date' => 'required|date',
+        ]);
+
+        $project = Project::query()->where(['id' => $request->input('id')])
+            ->update([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'type' => $request->input('type'),
+            'start_date' => Carbon::parse($request->input('start_date')),
+            'mvp_date' => Carbon::parse($request->input('mvp_date'))
+        ]);
+        return $this->returnResponse("Project Updated",$project);
+    }
+
+
 
     public function addProjectMember(Request $request)
     {
@@ -58,16 +76,29 @@ class ProjectsController extends BaseController
         ]);
 
         /// Validate member
-        $projectMember = ProjectMember::query()->first([
+        $projectMember = ProjectMember::query()->where([
             'project_id'=>$request->input('project_id'),
             'user_id'=>$request->input('user_id'),
-        ]);
+        ])->first();
         if($projectMember){
-            return $this->clientError("Project member already exists",$projectMember);
+            return $this->clientError("Project member already exists",[]);
         }
 
         $newProjectMember= ProjectsService::addProjectMember($request->input('project_id'),$request->input('user_id'));
         return $this->returnResponse("Member Added",$newProjectMember);
+    }
+
+    public function fetchProjectMembers(Request $request)
+    {
+        $request->validate([
+            'projectId' => 'required'
+        ]);
+
+         $projectMembers = ProjectMember::query()->where([
+            'project_id'=>$request->input('projectId'),
+        ])->paginate(20);
+
+        return $this->returnResponse("Project Members",$projectMembers);
     }
 
 

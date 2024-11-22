@@ -1,5 +1,5 @@
 import {PaymentTransaction} from '../PaymentTransactions';
-import {User} from '../system/AuthInterfaces';
+import {SystemUser, User} from '../system/AuthInterfaces';
 
 export interface ProjectType {
     type: string,
@@ -9,11 +9,21 @@ export interface ProjectType {
 export interface Project {
     id: string,
     owner_user_id: string
-    project_name: string
-    project_description: string
-    project_type: string
+    name: string
+    description: string
+    type: string
     start_date: string
     mvp_date: string
     status: string
     created_at: string
+}
+
+export interface ProjectMember {
+    id: string,
+    project_id: string
+    user_id: string
+    status: string
+    created_at: string,
+    user : SystemUser,
+    added_by_user : SystemUser
 }

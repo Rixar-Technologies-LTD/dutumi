@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('project_types', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger("owner_user_id")->unsigned();
-            $table->string("name");
-            $table->string("description");
-            $table->string("type");
-            $table->dateTime("start_date");
-            $table->dateTime("mvp_date");
-            $table->string("status");
+            $table->bigInteger('name')->unsigned();
+            $table->string('code');
             $table->timestamps();
         });
     }
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('project_types');
     }
 };

@@ -6,44 +6,43 @@ import "../../../../css/components.css"
 import {Button, Card, Pagination, Space, Table, Tag} from "antd";
 import {getRequest} from "../../../../services/rest/RestService";
 import {notifyHttpError} from "../../../../services/notification/notifications";
-import {  Business,Staff,
-} from "../../../../interfaces/businesses/BusinessInterfaces";
+import {  Business,Staff} from "../../../../interfaces/businesses/BusinessInterfaces";
 import type {ColumnsType} from "antd/es/table";
+import {isEmpty} from "../../../../utils/helpers";
+import {ProjectMember} from "../../../../interfaces/projects/ProjectsInterfaces";
 
-interface BranchesProps {
-    business?: Business
+interface Props {
+    projectId?: string
 }
 
-const ProjectMembersComponent = ({ business  } : BranchesProps) => {
+const ProjectMembersComponent = ({ projectId  } : Props) => {
 
-    const [staffList, updateBranchesList] = useState<Staff[]>([]);
+    const [recordsList, updateRecordsList] = useState<ProjectMember[]>([]);
     const [currentPageNo, updateCurrentPageNo] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [pageSize, updatePageSize] = useState(50);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [searchQuery, updateSearchQuery] = useState("");
 
     //Fetch products
     useEffect(() => {
-        fetchBusinessesBranches();
-    }, [business]);
+        fetchRecords();
+    }, [projectId]);
 
+    const fetchRecords = () => {
 
-    const fetchBusinessesBranches = () => {
-
-        if(business==null){
+        if(isEmpty(projectId)){
+            console.log("business is null")
             return ;
         }
 
-        const url = `/api/v1/manage/business/staff/list?businessId=${business?.id}&schema=${business?.schemaName}`;
-        console.log(`fetching staff... ${url}`)
+        const url = `/api/v1/projects/members?projectId=${projectId}`;
+        console.log(`fetching members... ${url}`)
         setIsLoading(true);
         getRequest(url)
             .then((response) => {
                 console.log(response.data);
-                updateBranchesList(response.data.items);
-                updateCurrentPageNo(response.data.currentPageNo);
-                setTotalItems(response.data.totalElements);
+                updateRecordsList(response.data.respBody.data);
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -62,21 +61,20 @@ const ProjectMembersComponent = ({ business  } : BranchesProps) => {
 
     const onSearch = (value: string) => {
         if(value===searchQuery){
-            fetchBusinessesBranches()
+            fetchRecords()
         }
         updateSearchQuery(value)
     }
 
-    const columns: ColumnsType<Staff> = [
+    const columns: ColumnsType<ProjectMember> = [
         {
             title: 'Business',
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => (
                 <>
-                    <span style={{fontWeight: 'lighter', fontSize: '12px'}}>{record.id}. {record.firstName} {record.lastName}</span><br/>
-                    <span style={{fontWeight: 'lighter', fontSize: '12px'}}>{record.phoneNumber} </span><br/>
-                    <span style={{fontWeight: 'lighter', fontSize: '12px'}}>{record.email} </span><br/>
+                    <span style={{fontWeight: 'normal', fontSize: '12px'}}>{record.id}. {record.user?.name}</span><br/>
+                    <span style={{fontWeight: 'normal', fontSize: '12px'}}>{record?.user?.email} </span><br/>
                 </>
             ),
         },
@@ -91,16 +89,6 @@ const ProjectMembersComponent = ({ business  } : BranchesProps) => {
             ),
         },
         {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (_, staff) => (
-                <>
-                    {staff.isOwner && <Tag color="teal">Admin</Tag>}
-                </>
-            ),
-        },
-        {
             title: 'Actions',
             key: 'action',
             render: (_, record) => (
@@ -111,15 +99,14 @@ const ProjectMembersComponent = ({ business  } : BranchesProps) => {
         },
     ];
 
-
     return <>
-        <Card className="good-shadow" title="Staff List" style={{marginRight:'24px'}}>
+        <Card className="good-shadow" title="Members List" style={{marginRight:'24px'}}>
             {/**---------------------------*
              /** Branches Table
              *-----------------------------*/}
             <Table
                 columns={columns}
-                dataSource={staffList}
+                dataSource={recordsList}
                 pagination={false}
                 loading={isLoading}
                 rowKey="id"

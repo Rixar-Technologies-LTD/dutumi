@@ -51,7 +51,8 @@ const ProjectsListComponent = () => {
             render: (_, record) => (
                 <>
                     <div>
-                        <span style={{ color:'#5555ff'}}>{record.project_name}</span>
+                        <span style={{ color:'#5555ff'}}>{record.name}</span><br/>
+                        <Tag>{record.type}</Tag>
                     </div>
                 </>
             ),
@@ -70,12 +71,12 @@ const ProjectsListComponent = () => {
         },
         {
             title: 'Description',
-            dataIndex: 'project_description',
+            dataIndex: 'description',
             key: 'project_description',
             render: (_, record) => (
                 <>
                     <div>
-                        <span style={{ color:'#5555ff'}}>{record.project_description}</span>
+                        <span style={{ color:'#5555ff'}}>{record.description}</span>
                     </div>
                 </>
             ),

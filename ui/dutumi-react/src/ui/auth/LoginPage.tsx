@@ -127,7 +127,7 @@ const LoginPage = () => {
 
                             {/*Login Button */}
                             <Form.Item>
-                                <Button style={{ backgroundColor:'#5e548e' }}
+                                <Button size="large" style={{ backgroundColor:'#5e548e' }}
                                         loading={isLoading} type="primary" htmlType="submit" block>
                                     Login
                                 </Button>

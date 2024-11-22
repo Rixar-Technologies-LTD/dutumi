@@ -12,9 +12,7 @@ Route::get('/user', function (Request $request) {
 
 
 Route::prefix('v1/auth')->group(function () {
-
     Route::post('login', [LoginController::class,'login']);
-
 });
 
 
@@ -22,6 +20,11 @@ Route::prefix('v1/projects')->middleware('auth:api')->group(function () {
 
     Route::get('list', [ProjectsController::class,'getProject']);
     Route::post('add', [ProjectsController::class,'addProject']);
+    Route::post('update', [ProjectsController::class,'updateProject']);
+
+    Route::get('members', [ProjectsController::class,'fetchProjectMembers']);
+    Route::post('members/add', [ProjectsController::class,'addProjectMember']);
+    Route::post('members/remove', [ProjectsController::class,'removeProjectMember']);
 
 });
 
