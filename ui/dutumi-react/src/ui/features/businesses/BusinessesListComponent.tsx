@@ -1,19 +1,19 @@
 import {
-    Button,
-    Divider,
+    Button, DatePicker,
+    Divider, Form, Input,
     List,
     Modal,
     Pagination,
     Radio,
-    RadioChangeEvent,
+    RadioChangeEvent, Select,
     Space,
     Spin,
     Table,
-    Tag
+    Tag, TimePicker, Upload
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import {FileDoneOutlined} from "@ant-design/icons";
+import {FileDoneOutlined, FileImageOutlined, UploadOutlined} from "@ant-design/icons";
 import {
     CheckCircleOutlined,
     ClockCircleOutlined,
@@ -22,8 +22,8 @@ import {
     UsergroupAddOutlined
 } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
-import {notifyHttpError, notifySuccess} from "../../../services/notification/notifications";
-import {getRequest, postRequest} from "../../../services/rest/RestService";
+import {notifyError, notifyHttpError, notifySuccess} from "../../../services/notification/notifications";
+import {getRequest, postMultipart, postRequest} from "../../../services/rest/RestService";
 import EyasiContentCard from "../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../templates/Loading";
 import {
@@ -33,9 +33,87 @@ import {
 } from "../../../interfaces/businesses/BusinessInterfaces";
 import sectionIcon from "../../../assets/images/icons/subscription.png"
 import {useNavigate} from "react-router-dom";
+import TextArea from "antd/es/input/TextArea";
+import Compact from "antd/es/space/Compact";
+import {AppVersion} from "../../../interfaces/MessagesInterfaces";
+import {ProjectType} from "../../../interfaces/projects/ProjectsInterfaces";
 
 
 const BusinessesListComponent = () => {
+
+    const columns: ColumnsType<Business> = [
+        {
+            title: 'REF',
+            dataIndex: 'reference',
+            key: 'reference',
+            render: (_, record) => (
+                <>
+                    HSB-{record.id} <br/>
+                    <span style={{ fontWeight: 'lighter', fontSize: '12px'}}>{record.createdDate}</span>
+                </>
+            ),
+        },
+        {
+            title: 'Business',
+            dataIndex: 'name',
+            key: 'name',
+            render: (_, record) => (
+                <>
+                    <div>
+                        <span style={{ color:'#5555ff'}}>{record.name}</span> <br/>
+                        {record.phoneNumber} <br/>
+                        {record.email} <br/>
+                    </div>
+                </>
+            ),
+        },
+        {
+            title: 'Licence Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (_, business) => (
+                <>
+                    <Tag color="processing">{business.status ?? 'UNKNOWN'}</Tag><br/>
+                    Starts: {business?.subscription?.startDate}<br/>
+                    Ends: <span style={{ }}>{business?.subscription?.endDate}</span><br/>
+                </>
+            ),
+        },
+        {
+            title: 'Location',
+            dataIndex: 'location',
+            key: 'location',
+            render: (_, record) => (
+                <>
+                    {record.physicalAddress ?? 'UNKNOWN'}
+                </>
+            ),
+        },
+        {
+            title: 'Payments',
+            dataIndex: 'transactions',
+            key: 'transactions',
+            render: (_, record) => (
+                <>
+                    <Space size="middle">
+                        <Button type="default" size="small" onClick={()=>{showTransactions(record)}} >
+                            <FileDoneOutlined/>
+                            Transactions ({record.transactions?.length})
+                        </Button>
+                    </Space>
+                </>
+            ),
+        },
+        {
+            title: 'Actions',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <Button type="primary" onClick={()=>{viewBusiness(record)}}> View</Button>
+                </Space>
+            ),
+        },
+    ];
 
     const [subscribersList, updateSubscribersList] = useState<Business[]>([]);
     const [currentPageNo, updateCurrentPageNo] = useState(1);
@@ -53,20 +131,34 @@ const BusinessesListComponent = () => {
     const [filter, setFilterGroup] = useState("all");
     const navigate = useNavigate();
 
+    const [projectTypes, updateProjectTypes] = useState<ProjectType[]>([
+        {type:"Mobile App",code:"MOBILE_APP"},
+        {type:"Web App",code:"WEB_APP"},
+        {type:"Micro Service",code:"MICROSERVICE"},
+        {type:"Dashboard",code:"DASHBOARD"},
+        {type:"Admin Portal",code:"PORTAL"}
+    ]);
+    const [selectedProjectType, setSelectedProjectType] = useState<ProjectType>();
+
+
+    const [messageModalOpen, setMessageModal] = useState(false)
+    const [messageForm] = Form.useForm();
+
+
     //Fetch products
     useEffect(() => {
-        fetchBusinessesList();
+        fetchProjects();
     }, [currentPageNo, pageSize, searchQuery,filter]);
 
-    const fetchBusinessesList = () => {
-        const url = `/api/v1/manage/businesses/get?query=${searchQuery}&filterGroup=${filter}&pageSize=${pageSize}&pageNo=${currentPageNo-1}`;
-        console.log(`Fetching businesses... ${url}`)
+    const fetchProjects = () => {
+        const url = `/api/v1/projects/list?query=${searchQuery}&filterGroup=${filter}&pageSize=${pageSize}&pageNo=${currentPageNo-1}`;
+        console.log(`Fetching projects... ${url}`)
         setIsLoading(true);
         getRequest(url)
             .then((response) => {
                 console.log(response.data);
-                updateSubscribersList(response.data.items);
-                setTotalItems(response.data.totalElements);
+                updateSubscribersList(response.data.respBody.data);
+                setTotalItems(response.data.respBody.total);
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -116,6 +208,21 @@ const BusinessesListComponent = () => {
         })
     }
 
+
+    const saveMessage = (item: AppVersion) => {
+        setIsLoading(true);
+        postRequest(item.id? "/api/v1/manage/system/apps/versions/update" : "/api/v1/manage/system/apps/versions/add", item)
+            .then((response) => {
+                notifySuccess("Success", "Saved!")
+                setIsLoading(false);
+                setMessageModal(false)
+            }).catch((errorObj) => {
+            notifyHttpError('Operation Failed', errorObj)
+            setIsLoading(false);
+        })
+    }
+
+
     const onPageChange = (page: number, pageSize: number) => {
         updateCurrentPageNo(page)
     }
@@ -126,7 +233,7 @@ const BusinessesListComponent = () => {
 
     const onSearch = (value: string) => {
         if(value===searchQuery){
-            fetchBusinessesList()
+            fetchProjects()
         }
         updateSearchQuery(value)
     }
@@ -145,112 +252,45 @@ const BusinessesListComponent = () => {
         setSubscriptionsModalVisible(true);
     }
 
-    const columns: ColumnsType<Business> = [
-        {
-            title: 'REF',
-            dataIndex: 'reference',
-            key: 'reference',
-            render: (_, record) => (
-                <>
-                    HSB-{record.id} <br/>
-                    <span style={{ fontWeight: 'lighter', fontSize: '12px'}}>{record.createdDate}</span>
-                </>
-            ),
-        },
-        {
-            title: 'Business',
-            dataIndex: 'name',
-            key: 'name',
-            render: (_, record) => (
-                <>
-                    <div>
-                        <span style={{ color:'#5555ff'}}>{record.name}</span> <br/>
-                        {record.phoneNumber} <br/>
-                        {record.email} <br/>
-                    </div>
-                </>
-            ),
-        },
-        {
-            title: 'Licence Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (_, business) => (
-                <>
-                    <Tag color="processing">{business.status ?? 'UNKNOWN'}</Tag><br/>
-                    Starts: {business?.subscription?.startDate}<br/>
-                    Ends: <span style={{ }}>{business?.subscription?.endDate}</span><br/>
-                </>
-            ),
-        },
-        {
-            title: 'Location',
-            dataIndex: 'location',
-            key: 'location',
-            render: (_, record) => (
-                <>
-                   {record.physicalAddress ?? 'UNKNOWN'}
-                </>
-            ),
-        },
-        {
-            title: 'Payments',
-            dataIndex: 'transactions',
-            key: 'transactions',
-            render: (_, record) => (
-                <>
-                    <Space size="middle">
-                        <Button type="default" size="small" onClick={()=>{showTransactions(record)}} >
-                            <FileDoneOutlined/>
-                            Transactions ({record.transactions?.length})
-                        </Button>
-                    </Space>
-                </>
-            ),
-        },
-        {
-            title: 'Actions',
-            key: 'action',
-            render: (_, record) => (
-                <Space size="middle">
-                    <Button type="primary" onClick={()=>{viewBusiness(record)}}> View</Button>
-                </Space>
-            ),
-        },
-    ];
 
+    const onProjectTypeChange = (value: any) => {
+        setSelectedProjectType(value);
+    };
 
-    return <EyasiContentCard title="Businesses"
-                             subTitle="history"
+    return <EyasiContentCard title="Features"
+                             subTitle="Project Features"
                              iconImage={sectionIcon}
                              extraHeaderItems={[
                                  isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,
                                  <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={()=>{
-                                     fetchBusinessesList();
+                                     fetchProjects();
                                  }} key="2"
                                          type="default">Refresh</Button>,
-                                 //  <Button href="/products/instance/new" key="1" type="primary">Add Order</Button>
+                                 <Button onClick={()=>{ setMessageModal(true) }} key="1" type="primary">Add Project</Button>
                              ]}>
 
         {/**---------------*
          /** Search
          *----------------*/}
         <Space style={{marginBottom: 24, marginTop: 48}} direction="horizontal">
+
+
+            <div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius:'4px'}}>
+                <span>Project</span>
+                <Select
+                    value={selectedProjectType}
+                    onChange={onProjectTypeChange}
+                    placeholder="Select Project"
+                    style={{width: '100%',minWidth:'240px'}}
+                    size="large"
+                    options={projectTypes.map((projectType) => ({label: projectType.type, value: projectType.code}))}
+                />
+            </div>
+
             <Search size="large"
-                    placeholder="Search Businesses"
+                    placeholder="Search"
                     onSearch={onSearch}
                     allowClear/>
-
-            <div style={{padding: '8px 16px', border: '1px solid #a9a9a9', borderRadius:'4px'}}>
-                <Radio.Group onChange={onFilterGroupChange} defaultValue="all">
-                    <Radio value="all">All</Radio>
-                    <Radio value="week">Week</Radio>
-                    <Radio value="month">Month</Radio>
-                    <Radio value="expired">
-                        <span style={{color:'#d62828'}}>Expired</span>
-                    </Radio>
-                </Radio.Group>
-            </div>
 
             <div style={{padding: '8px 16px'}}>
                 { filter !== 'all' && <Tag style={{ fontSize: '18px', color: 'blue', padding:'4px 8px'}} >{totalItems}</Tag>}
@@ -330,53 +370,84 @@ const BusinessesListComponent = () => {
         {/***------------------------------
          /*  Subscription Details
          ***------------------------------*/}
-        <Modal title="Subscription Details"
-               open={isSubscriptionVisible}
-               footer={<></>}
+
+        {/***------------------------------
+         /*  Message
+         ***------------------------------*/}
+        <Modal title="Project"
+               open={messageModalOpen}
+               width="640px"
+               onOk={() => {
+                   messageForm.submit()
+               }}
+               confirmLoading={isLoading}
+               okText="Save"
                onCancel={() => {
-                   setSubscriptionsModalVisible(false)
+                   setMessageModal(false)
                }}>
 
-            <List>
-                <List.Item key="1">
-                    <List.Item.Meta
-                        title={<p style={{fontWeight: 'lighter', padding: '0px', margin: '0px'}}>Phone</p>}
+            <Form
+                form={messageForm}
+                layout="vertical"
+                onFinish={saveMessage}
+            >
+
+
+                <Form.Item name="id" hidden>
+                    <Input/>
+                </Form.Item>
+
+                <Form.Item
+                    label="Project Type"
+                    name="topicId"
+                >
+                    <Select
+                        value={selectedProjectType}
+                        onChange={onProjectTypeChange}
+                        style={{width: '100%'}}
+                        options={projectTypes.map((projectType) => ({label: projectType.type, value: projectType.code}))}
                     />
-                    <div>
-                        {selectedSubscription?.phoneNumber}
-                    </div>
-                </List.Item>
-                <List.Item key="2" style={{margin: '0px', padding: '0px'}}>
-                    <List.Item.Meta title={<p style={{fontWeight: 'lighter', padding: '0px', margin: '0px'}}>Topic</p>}/>
-                    <div>{selectedSubscription?.name??''}</div>
-                </List.Item>
-                <List.Item key="2" style={{margin: '0px', padding: '0px'}}>
-                    <List.Item.Meta title={<p style={{fontWeight: 'lighter', padding: '0px', margin: '0px'}}>Start Date</p>}/>
-                    <div>{selectedSubscription?.startDate?? 'Unknown'}</div>
-                </List.Item>
-                <List.Item key="2" style={{margin: '0px', padding: '0px'}}>
-                    <List.Item.Meta title={<p style={{fontWeight: 'lighter', padding: '0px', margin: '0px'}}>End Date</p>}/>
-                    <div>{selectedSubscription?.endDate?? 'Unknown'}</div>
-                </List.Item>
-            </List>
-            <Divider/>
+                </Form.Item>
 
-            <h3 style={{marginTop:'48px'}}>Transactions</h3>
-            <div style={{ border: '1px solid #f1f1f1', padding:'8px 16px'}}>
-                <List
-                    dataSource={selectedSubscription?.transactions}
-                    renderItem={(transaction) => (
-                        <List.Item key={transaction.id} style={{margin:'0px', padding:'0px'}}>
-                            <List.Item.Meta
-                                title={<p>{transaction?.amount} TZS</p>}
-                                description={`${transaction.channel} ${transaction.channel}`}
-                            />
-                            <div>{transaction?.createdDate}</div>
-                        </List.Item>
-                    )}
-                />
-            </div>
+                {/*<Form.Item*/}
+                {/*    label="Channel"*/}
+                {/*    name="type"*/}
+                {/*>*/}
+                {/*    <Select*/}
+                {/*        value={selectedTopic}*/}
+                {/*        onChange={onSecondCityChange}*/}
+                {/*        style={{width: '100%'}}*/}
+                {/*        options={[*/}
+                {/*            {"label": "SMS", "value": "SMS_NEWS"},*/}
+                {/*            {"label": "WhatsApp", "value": "WHATSAPP_NEWS"},*/}
+                {/*        ].map((channel) => ({label: channel.label, value: channel.value}))}*/}
+                {/*    />*/}
+                {/*</Form.Item>*/}
 
+
+                <Form.Item
+                    style={{marginBottom: 48, marginTop: '16px'}}
+                    label="Project Description"
+                    name="content"
+                >
+                    <TextArea showCount/>
+                </Form.Item>
+
+                <Compact>
+                    <Form.Item
+                        name="start_date"
+                        label="Start Date">
+                        <DatePicker/>
+                    </Form.Item>
+                    <Form.Item
+                        name="mvp_date"
+                        label="MPV Release Date">
+                        <DatePicker/>
+                    </Form.Item>
+                </Compact>
+
+
+            </Form>
         </Modal>
 
     </EyasiContentCard>;

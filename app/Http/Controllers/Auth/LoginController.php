@@ -21,11 +21,11 @@ class LoginController extends BaseController
     {
 
         $request->validate([
-            'email' => ['required', 'email'],
+            'identifier' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        $user = User::query()->where(['email' => $request->input('email')])->first();
+        $user = User::query()->where(['email' => $request->input('identifier')])->first();
         if (!$user) {
             return $this->returnError('User does not exist', ["User does not exist"], 400);
         }

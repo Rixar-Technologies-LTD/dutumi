@@ -63,13 +63,13 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
     ///------------
     const operationsMenus : MenuProps['items'] = [];
     if(permissions.includes("")){
-        operationsMenus.push(toMenuItem('Features', '/project/features', <MailOutlined/>));
+        operationsMenus.push(toMenuItem('Features', '/projects/features', <MailOutlined/>));
     }
     if(permissions.includes("")){
-        operationsMenus.push(toMenuItem('Releases', '/project/releases', <MessageOutlined/>));
+        operationsMenus.push(toMenuItem('Releases', '/projects/releases', <MessageOutlined/>));
     }
     if(permissions.includes("")){
-        operationsMenus.push(toMenuItem('Issues', '/project/issues', <MessageOutlined/>));
+        operationsMenus.push(toMenuItem('Issues', '/projects/issues', <MessageOutlined/>));
     }
     if(containsAny(permissions,["",'',''])){
         mainMenuItems.push(...[

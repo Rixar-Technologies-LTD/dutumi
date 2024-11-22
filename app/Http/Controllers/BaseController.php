@@ -16,9 +16,9 @@ class BaseController extends Controller
     public function returnResponse($message,$data): JsonResponse
     {
     	$response = [
-             'success' => true,
+             'respCode' => 2000,
              'message' => $message,
-             'payload'    => $data,   ];
+             'respBody'    => $data ];
         return response()->json($response, 200);
     }
 
@@ -29,12 +29,30 @@ class BaseController extends Controller
      * @param int $code
      * @return JsonResponse
      */
-    public function returnError($message, array $errorsArray = [], int $code = 200): JsonResponse
+    public function serverError($message, array $errorsArray = [], int $code = 200): JsonResponse
     {
     	$response = [
-            'success' => false,
+            'respCode' => 5000,
             'message' => $message,
-            'payload' => $errorsArray,
+            'respBody' => $errorsArray,
+        ];
+
+        return response()->json($response, $code);
+    }
+
+    /**
+     * return error response.
+     * @param $message
+     * @param array $errorsArray
+     * @param int $code
+     * @return JsonResponse
+     */
+    public function clientError($message, array $errorsArray = [], int $code = 200): JsonResponse
+    {
+    	$response = [
+            'respCode' => 4000,
+            'message' => $message,
+            'respBody' => $errorsArray,
         ];
 
         return response()->json($response, $code);

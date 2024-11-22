@@ -56,6 +56,13 @@ function MainLayout() {
                         {/*<Route index element={<RolesComponent/>}/>*/}
 
 
+                        <Route path="projects">
+                            <Route index element={<RequireAuth><BusinessesListComponent/></RequireAuth>}/>
+                            <Route path="features" element={<BusinessesListComponent/>}/>
+                            <Route path="releases" element={<BusinessesListComponent/>}/>
+                            <Route path="issues" element={<BusinessesListComponent/>}/>
+                        </Route>
+
                         <Route path="businesses">
                             <Route index element={<RequireAuth><BusinessesListComponent/></RequireAuth>}/>
                             <Route path=":businessId" element={<BusinessesDetailsComponent/>}/>
@@ -66,7 +73,6 @@ function MainLayout() {
                         <Route path="transactions" >
                             <Route index element={<RequireAuth><TransactionsListComponent/></RequireAuth>} />
                         </Route>
-
 
                         <Route path="operations/sms" >
                             <Route index element={<RequireAuth><SmsHistoryComponent/></RequireAuth>} />
