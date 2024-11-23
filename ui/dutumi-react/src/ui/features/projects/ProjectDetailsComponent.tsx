@@ -24,7 +24,7 @@ import projectIcon from "../../../assets/images/icons/generic/folder.png"
 
 import {useNavigate, useParams} from "react-router-dom";
 import GoodContentCardPlain from "../../templates/cards/GoodContentCardPlain";
-import ProjectMembersComponent from "./components/ProjectMembersComponent";
+import ProjectMembersComponent from "./members/ProjectMembersComponent";
 import ProjectIssuesComponent from "./issues/ProjectIssuesComponent";
 import GoodImageIcon from "../../templates/icons/GoodImageIcon";
 import {Project} from "../../../interfaces/projects/ProjectsInterfaces";
@@ -68,7 +68,6 @@ const ProjectDetailsComponent = () => {
         return project?.status == 'ACTIVE_LICENCE';
     }
 
-
     const viewProducts = () => {
         navigate(`/businesses/products/${project?.id}?sc=${businessSchema}`);
     }
@@ -77,9 +76,6 @@ const ProjectDetailsComponent = () => {
         navigate(`/projects/features?projectId=${projectId}`);
     }
 
-    const viewOrders = () => {
-        navigate(`/businesses/orders/${project?.id}?sc=${businessSchema}`);
-    }
 
     return <GoodContentCardPlain title="Project Details"
                                  iconImage={projectIcon}
@@ -94,40 +90,41 @@ const ProjectDetailsComponent = () => {
 
         <Row gutter={16} style={{marginTop: '8px', marginBottom: '32px'}}>
             <Col span={8}>
-                    <List
-                        style={{ backgroundColor:'#ffffff'}}
-                        bordered
-                        size="large"
-                        header={<Space>
-                            Project Status <Tag color="blue">{project?.status}</Tag>
-                        </Space>}
-                        >
+                <List
+                    style={{backgroundColor: '#ffffff'}}
+                    bordered
+                    size="large"
+                    header={<Space>
+                        Project Status <Tag color="blue">{project?.status}</Tag>
+                    </Space>}
+                >
 
-                        {/*  Description */}
-                        <List.Item>
-                            {limitText(project?.description,164)}
-                        </List.Item>
+                    {/*  Description */}
+                    <List.Item>
+                        {limitText(project?.description, 164)}
+                    </List.Item>
 
-                        {/*  Created By */}
-                        <List.Item
-                            actions={[<Space> {project?.name}</Space>]}>
-                           Name
-                        </List.Item>
-                        {/*  Created By */}
-                        <List.Item
-                            actions={[<Space>  {project?.created_at}</Space>]}>
-                            <CalendarOutlined/>   Created
-                        </List.Item>
+                    {/*  Created By */}
+                    <List.Item
+                        actions={[<Space> {project?.name}</Space>]}>
+                        Name
+                    </List.Item>
+                    {/*  Created By */}
+                    <List.Item
+                        actions={[<Space>  {project?.created_at}</Space>]}>
+                        <CalendarOutlined/> Created
+                    </List.Item>
 
-                    </List>
+                </List>
             </Col>
         </Row>
 
         <Row gutter={16} style={{marginTop: '8px', marginBottom: '12px'}}>
             <Col span={24}>
-                <Row gutter={16} style={{ marginBottom: '12px'}}>
+                <Row gutter={16} style={{marginBottom: '12px'}}>
                     <Col span={6}>
-                        <Card className="dtm-btn"  onClick={navigateToFeatures} bordered={false} style={{border: '1px solid #e3d5ca'}}>
+                        <Card className="dtm-btn" onClick={navigateToFeatures} bordered={false}
+                              style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Features"
                                        value={(0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={featuresIcon}/>}
@@ -142,7 +139,7 @@ const ProjectDetailsComponent = () => {
                         </Card>
                     </Col>
 
-                    <Col span={6} style={{ marginTop:'0'}}>
+                    <Col span={6} style={{marginTop: '0'}}>
                         <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Releases" value={(0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={takeOffIcon}/>}
@@ -150,7 +147,7 @@ const ProjectDetailsComponent = () => {
                         </Card>
                     </Col>
 
-                    <Col span={6} style={{ marginTop:'0'}}>
+                    <Col span={6} style={{marginTop: '0'}}>
                         <Card onClick={viewProducts}
                               bordered={false}
                               style={{border: '1px solid #e3d5ca'}}>
@@ -168,19 +165,14 @@ const ProjectDetailsComponent = () => {
         {/***---------------------------
          /* Issues
          **-----------------------------*/}
-        <Row style={{marginTop: '64px'}}>
-            <Col span={24}>
-                <ProjectIssuesComponent project={project}></ProjectIssuesComponent>
-            </Col>
-        </Row>
+        <div style={{height: '48px'}}></div>
+        <ProjectIssuesComponent project={project}></ProjectIssuesComponent>
 
-        <Row style={{marginTop: '64px'}}>
-            <Col span={24}>
-                <ProjectMembersComponent projectId={projectId}></ProjectMembersComponent>
-            </Col>
-        </Row>
-
-
+        {/***---------------------------
+         /* Members
+         **-----------------------------*/}
+        <div style={{height: '48px'}}></div>
+        <ProjectMembersComponent projectId={projectId}></ProjectMembersComponent>
 
     </GoodContentCardPlain>;
 

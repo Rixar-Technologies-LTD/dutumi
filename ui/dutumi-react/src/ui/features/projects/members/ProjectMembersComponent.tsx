@@ -6,13 +6,13 @@ import "../../../../css/components.css"
 import {Button, Card, Pagination, Space, Table, Tag} from "antd";
 import {getRequest} from "../../../../services/rest/RestService";
 import {notifyHttpError} from "../../../../services/notification/notifications";
-import peopleIcon from "../../../../assets/images/icons/people.png";
+import peopleIcon from "../../../../assets/images/icons/users/group.png";
 
 import type {ColumnsType} from "antd/es/table";
 import {isEmpty} from "../../../../utils/helpers";
 import {ProjectMember} from "../../../../interfaces/projects/ProjectsInterfaces";
 import {PlusCircleOutlined} from "@ant-design/icons";
-import MemberAssignementForm from "../members/MemberAssignementForm";
+import MemberAssignementForm from "./MemberAssignementForm";
 import GoodImageIcon from "../../../templates/icons/GoodImageIcon";
 
 interface Props {

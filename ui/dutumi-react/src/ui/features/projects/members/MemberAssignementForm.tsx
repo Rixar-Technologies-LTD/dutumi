@@ -60,6 +60,7 @@ const MemberAssignmentForm = (formProps:Props) => {
             .then((response) => {
                 console.log(response.data.payload);
                 notifySuccess("Record Saved")
+                featureForm.resetFields();
                 formProps.onSaved();
             })
             .catch((errorObj) => {

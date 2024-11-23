@@ -40,13 +40,16 @@ const FeatureForm = (formProps:Props) => {
         const url:string = isEmpty(item.id)? '/api/v1/projects/features/add' : `/api/v1/projects/features/update`;
         setIsLoading(true);
         postRequest(url,{
+            "parent_id" : formProps.parentFeatureId,
             "project_id" : formProps.projectId,
             ...item
         })
             .then((response) => {
                 console.log(response.data.payload);
+                featureForm.resetFields();
                 notifySuccess("Record Saved")
                 formProps.onSaveCompleted();
+                featureForm.resetFields();
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)

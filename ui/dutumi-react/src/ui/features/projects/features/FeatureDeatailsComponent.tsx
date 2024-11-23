@@ -1,6 +1,6 @@
 import {
     Button, Col, List,
-    Pagination,  Row, Select,
+    Pagination, Row, Select,
     Space,
     Spin,
     Table,
@@ -15,16 +15,23 @@ import {
 import sectionIcon from "../../../../assets/images/pages/list.png"
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {Business, RemindersStats} from "../../../../interfaces/businesses/BusinessInterfaces";
-import {Project, ProjectType, Task} from "../../../../interfaces/projects/ProjectsInterfaces";
+import {Project, Task} from "../../../../interfaces/projects/ProjectsInterfaces";
 import {SubscriptionStats} from "../../../../interfaces/MessagesInterfaces";
 import {getRequest, postRequest} from "../../../../services/rest/RestService";
-import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
+import {notifyHttpError} from "../../../../services/notification/notifications";
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";
 import FeatureForm from "./components/FeatureFormComponent";
 import AssignmentForm from "./components/AssignementFormComponent";
 import {limitText} from "../../../../utils/helpers";
 
+const featureStatuses = [
+    {"label": 'In Design', "value": 'DESIGN'},
+    {"label": 'In Development', "value": 'DEVELOPMENT'},
+    {"label": 'Testing', "value": 'TESTING'},
+    {"label": 'Live', "value": 'LIVE'},
+    {"label": 'Retired', "value": 'RETIRED'}
+]
 
 const FeatureDetailsComponent = () => {
 
@@ -154,7 +161,7 @@ const FeatureDetailsComponent = () => {
     }
 
     const fetchSubFeatures = () => {
-        const url = `/api/v1/projects/features/children?parenId=${featureId}`;
+        const url = `/api/v1/projects/features/children?parentId=${featureId}`;
         console.log(`fetching children features... ${url}`)
         setIsLoading(true);
         getRequest(url)
@@ -169,7 +176,25 @@ const FeatureDetailsComponent = () => {
         })
     }
 
-    const onFeatureSaveCompleted = () => {
+    const updateFeatureStatus = (newStatus: any) => {
+        console.log(newStatus)
+        setIsLoading(true);
+        postRequest(`/api/v1/projects/features/status/update`, {
+            'id': featureId,
+            'status': newStatus
+        })
+            .then((response) => {
+                console.log(response.data);
+                fetchFeatureDetails();
+            })
+            .catch((errorObj) => {
+                notifyHttpError('Operation Failed', errorObj)
+            }).finally(() => {
+            setIsLoading(false);
+        })
+    }
+
+    const onSubFeatureSaved = () => {
         setFeatureFormOpen(false)
         fetchSubFeatures();
     }
@@ -187,15 +212,15 @@ const FeatureDetailsComponent = () => {
     }
 
     const viewFeature = (task: Task) => {
-        navigate(`/projects/features/details?projectId=${task.id}`);
+        navigate(`/projects/features/details?featureId=${task.id}`);
     }
 
-    const showAssignmentForm = ()=> {
+    const showAssignmentForm = () => {
         setAssignmentFormOpen(true);
     }
 
     return <EyasiContentCard title={`FEAT${currentFeature?.id}`}
-                             subTitle={`${currentFeature?.name}`}
+                             subTitle={``}
                              iconImage={sectionIcon}
                              extraHeaderItems={[
                                  isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,
@@ -209,17 +234,31 @@ const FeatureDetailsComponent = () => {
         <Row>
 
             <Col span={8}>
+
                 <List
                     size="large"
-                    header={<Space>
-                        Feature Status <Tag color="blue">{currentFeature?.status}</Tag>
-                    </Space>}
+                    header={<h3 style={{color: '#5e548e'}}> {currentFeature?.name}</h3>}
+
                     footer={<div> {currentFeature?.remark}</div>}
                     bordered>
 
+                    {/*  Feature Status */}
+                    <List.Item
+                        actions={[<Space>
+                            <Select
+                                value={currentFeature?.status}
+                                onChange={updateFeatureStatus}
+                                placeholder="Select Status"
+                                style={{width: '100%', minWidth: '180px',color:'#5e548e'}}
+                                size="large"
+                                options={featureStatuses}
+                            /></Space>]}>
+                        Status
+                    </List.Item>
+
                     {/*  Description */}
                     <List.Item>
-                        {limitText(currentFeature?.description,164)}
+                        {limitText(currentFeature?.description, 164)}
                     </List.Item>
 
                     {/*  Created By */}
@@ -242,61 +281,13 @@ const FeatureDetailsComponent = () => {
                 </List>
             </Col>
 
-            {/* Asignees */}
-
+            {/* Stats */}
             <Col span={8}>
-                <List
-                    style={{ marginLeft: '32px'}}
-                    size="large"
-                    header={<Space>
-                        Assignees <Button onClick={showAssignmentForm} icon={<PlusCircleOutlined/>}>Assign</Button>
-                    </Space>}
-                    footer={<div> {currentFeature?.remark}</div>}
-                    bordered>
 
-                    {/* Lead */}
-                    <List.Item
-                        actions={[<Space><UserOutlined/> {currentFeature?.owner?.name??'No Assignee'} </Space>]}>
-                        Lead
-                    </List.Item>
-
-                    {/* Designer */}
-                    <List.Item
-                        actions={[<Space><UserOutlined/> {currentFeature?.designer?.name??'No Assignee'} </Space>]}>
-                        Designer
-                    </List.Item>
-
-                    {/* Designer */}
-                    <List.Item
-                        actions={[<Space><UserOutlined/> {currentFeature?.implementor?.name??'No Assignee'} </Space>]}>
-                        Implementor/Developer
-                    </List.Item>
-
-                    {/* Tester */}
-                    <List.Item
-                        actions={[<Space><UserOutlined/> {currentFeature?.tester?.name??'No Assignee'} </Space>]}>
-                        Tester
-                    </List.Item>
-
-                    {/* Approve */}
-                    <List.Item
-                        actions={[<Space><UserOutlined/> {currentFeature?.approver?.name??'No Assignee'} </Space>]}>
-                        Approve
-                    </List.Item>
-
-                    {/* Tester */}
-                    <List.Item
-                        actions={[<Space><UserOutlined/> {currentFeature?.deployer?.name??'No Assignee'} </Space>]}>
-                        Deployer
-                    </List.Item>
-
-                </List>
             </Col>
         </Row>
 
-        {/**---------------*
-         /** Search
-         *----------------*/}
+
         <Space style={{marginBottom: 24, marginTop: 48}} direction="horizontal">
 
             <Button onClick={() => {
@@ -321,40 +312,95 @@ const FeatureDetailsComponent = () => {
         </Space>
 
 
-        {/**---------------------------*
-         /** Orders Table
-         *-----------------------------*/}
-        <Table
-            columns={columns}
-            dataSource={childrenFeaturesList}
-            pagination={false}
-            loading={isLoading}
-            rowKey="id"
-        />
+        <Row>
+            <Col span={16}>
+                {/**---------------------------*
+                 /** Orders Table
+                 *-----------------------------*/}
+                <Table
+                    columns={columns}
+                    dataSource={childrenFeaturesList}
+                    pagination={false}
+                    loading={isLoading}
+                    rowKey="id"
+                />
 
-        {/**---------------------------*
-         /** Pagination
-         *-----------------------------*/}
-        <Pagination style={{marginTop: 32, marginBottom: 32}}
-                    pageSize={pageSize}
-                    current={currentPageNo}
-                    total={totalItems}
-                    simple={false}
-                    showSizeChanger={true}
-                    onChange={onPageChange}
-                    showQuickJumper={true}
-                    onShowSizeChange={onPageSizeChange}
-        />
+                {/**---------------------------*
+                 /** Pagination
+                 *-----------------------------*/}
+                <Pagination style={{marginTop: 32, marginBottom: 32}}
+                            pageSize={pageSize}
+                            current={currentPageNo}
+                            total={totalItems}
+                            simple={false}
+                            showSizeChanger={true}
+                            onChange={onPageChange}
+                            showQuickJumper={true}
+                            onShowSizeChange={onPageSizeChange}
+                />
+            </Col>
+
+            <Col span={8}>
+                <List
+                    style={{marginLeft: '32px'}}
+                    size="large"
+                    header={<Space>
+                        Assignees <Button onClick={showAssignmentForm} icon={<PlusCircleOutlined/>}>Assign</Button>
+                    </Space>}
+                    footer={<div> {currentFeature?.remark}</div>}
+                    bordered>
+
+                    {/* Lead */}
+                    <List.Item
+                        actions={[<Space> {currentFeature?.owner?.name ?? 'No Assignee'} <UserOutlined/> </Space>]}>
+                        Lead
+                    </List.Item>
+
+                    {/* Designer */}
+                    <List.Item
+                        actions={[<Space> {currentFeature?.designer?.name ?? 'No Assignee'} <UserOutlined/></Space>]}>
+                        Designer
+                    </List.Item>
+
+                    {/* Designer */}
+                    <List.Item
+                        actions={[<Space> {currentFeature?.implementor?.name ?? 'No Assignee'}
+                            <UserOutlined/></Space>]}>
+                        Implementor/Developer
+                    </List.Item>
+
+                    {/* Tester */}
+                    <List.Item
+                        actions={[<Space> {currentFeature?.tester?.name ?? 'No Assignee'}<UserOutlined/></Space>]}>
+                        Tester
+                    </List.Item>
+
+                    {/* Approve */}
+                    <List.Item
+                        actions={[<Space>  {currentFeature?.approver?.name ?? 'No Assignee'}<UserOutlined/></Space>]}>
+                        Approve
+                    </List.Item>
+
+                    {/* Tester */}
+                    <List.Item
+                        actions={[<Space>{currentFeature?.deployer?.name??'No Assignee'}<UserOutlined/></Space>]}>
+                        Deployer
+                    </List.Item>
+
+                </List>
+            </Col>
+        </Row>
+
 
         <FeatureForm
             title="Sub Feature"
             isVisible={featureFormOpen}
-            onSaveCompleted={onFeatureSaveCompleted}
+            onSaveCompleted={onSubFeatureSaved}
             onCancelled={() => {
                 setFeatureFormOpen(false)
             }}
-            projectId={selectedProjectId ?? ''}
-            parentFeatureId={parentFeatureId}
+            projectId={currentFeature?.project_id ?? ''}
+            parentFeatureId={currentFeature?.id}
         />
 
         <AssignmentForm
@@ -362,7 +408,7 @@ const FeatureDetailsComponent = () => {
             isVisible={assignmentFormOpen}
             projectId={currentFeature?.project_id ?? ''}
             featureId={featureId}
-            onSaveCompleted={()=>{
+            onSaveCompleted={() => {
                 setAssignmentFormOpen(false)
                 fetchFeatureDetails();
             }}

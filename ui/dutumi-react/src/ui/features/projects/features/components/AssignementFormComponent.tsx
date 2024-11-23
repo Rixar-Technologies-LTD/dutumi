@@ -11,6 +11,7 @@ import {notifyHttpError, notifySuccess} from "../../../../../services/notificati
 
 import sectionIcon from "../../../../../assets/images/icons/users/owner.png"
 import {Member, Task} from "../../../../../interfaces/projects/ProjectsInterfaces";
+import {isEmpty} from "../../../../../utils/helpers";
 
 
 interface Props {
@@ -33,9 +34,13 @@ const AssignmentForm = (featureFormProps:Props) => {
     //Fetch products
     useEffect(() => {
         fetchProjectMembers();
-    }, []);
+    }, [featureFormProps]);
 
     const fetchProjectMembers = () => {
+        if(isEmpty(featureFormProps.projectId)){
+            console.log("empty project id. not fetching project members")
+            return ;
+        }
         const url = `/api/v1/projects/members?projectId=${featureFormProps.projectId}`;
         console.log(`fetching members... ${url}`)
         setIsLoading(true);
@@ -62,6 +67,7 @@ const AssignmentForm = (featureFormProps:Props) => {
             .then((response) => {
                 console.log(response.data.payload);
                 notifySuccess("Record Saved")
+                featureForm.resetFields();
                 featureFormProps.onSaveCompleted();
             })
             .catch((errorObj) => {
