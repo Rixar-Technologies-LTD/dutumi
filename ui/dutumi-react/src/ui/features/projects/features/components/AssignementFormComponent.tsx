@@ -51,9 +51,9 @@ const AssignmentForm = (featureFormProps:Props) => {
         })
     }
 
-    const addMember = (item: any) => {
+    const assignPeople = (item: any) => {
 
-        const url:string ='/api/v1/projects/members/add';
+        const url:string ='/api/v1/projects/features/assign';
         setIsLoading(true);
         postRequest(url,{
             "featureId" : featureFormProps.featureId,
@@ -101,7 +101,7 @@ const AssignmentForm = (featureFormProps:Props) => {
             <Form
                 form={featureForm}
                 layout="vertical"
-                onFinish={addMember}
+                onFinish={assignPeople}
             >
 
                 <Form.Item name="id" hidden>
@@ -111,8 +111,8 @@ const AssignmentForm = (featureFormProps:Props) => {
 
                 <Form.Item
                     style={{ marginTop: '24px'}}
-                    label="Member"
-                    name="userId"
+                    label="Lead"
+                    name="owner_id"
                 >
                     <Select
                         style={{width: '100%'}}
@@ -122,8 +122,8 @@ const AssignmentForm = (featureFormProps:Props) => {
 
                 <Form.Item
                     style={{ marginTop: '24px'}}
-                    label="Member"
-                    name="userId"
+                    label="Designer"
+                    name="designer_id"
                 >
                     <Select
                         style={{width: '100%'}}
@@ -132,11 +132,48 @@ const AssignmentForm = (featureFormProps:Props) => {
                 </Form.Item>
 
                 <Form.Item
-                    style={{marginBottom: 16, marginTop: '16px'}}
-                    label="Remark"
-                    name="remark"
+                    style={{ marginTop: '24px'}}
+                    label="Implementor (Developer)"
+                    name="implementor_id"
                 >
-                    <TextArea showCount/>
+                    <Select
+                        style={{width: '100%'}}
+                        options={membersList.map((member) => ({label: member.user?.name, value: member.user.id}))}
+                    />
+                </Form.Item>
+
+
+                <Form.Item
+                    style={{ marginTop: '24px'}}
+                    label="Tester"
+                    name="tester_id"
+                >
+                    <Select
+                        style={{width: '100%'}}
+                        options={membersList.map((member) => ({label: member.user?.name, value: member.user.id}))}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginTop: '24px'}}
+                    label="Release Approver"
+                    name="approver_id"
+                >
+                    <Select
+                        style={{width: '100%'}}
+                        options={membersList.map((member) => ({label: member.user?.name, value: member.user.id}))}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginTop: '24px'}}
+                    label="Deployer"
+                    name="deployer_id"
+                >
+                    <Select
+                        style={{width: '100%'}}
+                        options={membersList.map((member) => ({label: member.user?.name, value: member.user.id}))}
+                    />
                 </Form.Item>
 
 

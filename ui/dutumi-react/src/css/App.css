@@ -70,6 +70,11 @@
     background-color: #efe9ff !important;
 }
 
+.ant-btn-variant-outlined{
+    border-color: #7678ed !important;
+    color: #7678ed !important;
+}
+
 .dtm-btn {
     cursor: pointer;
 }

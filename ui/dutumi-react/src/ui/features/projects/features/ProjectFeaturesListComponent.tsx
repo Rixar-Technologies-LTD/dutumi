@@ -184,11 +184,6 @@ const ProjectFeaturesListComponent = () => {
         setFeatureFormOpen(true)
     }
 
-    const onFeatureSaveCompleted = () => {
-        setFeatureFormOpen(false)
-        fetchFeatures();
-    }
-
     const onPageChange = (page: number, pageSize: number) => {
         updateCurrentPageNo(page)
     }
@@ -291,7 +286,10 @@ const ProjectFeaturesListComponent = () => {
         <FeatureForm
             title="Project Featue"
             isVisible={featureFormOpen}
-            onSaveCompleted={onFeatureSaveCompleted}
+            onSaveCompleted={()=>{
+                setFeatureFormOpen(false)
+                fetchFeatures();
+            }}
             onCancelled={() => {
                 setFeatureFormOpen(false)
             }}

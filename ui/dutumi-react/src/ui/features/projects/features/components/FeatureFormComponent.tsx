@@ -27,31 +27,13 @@ interface Props {
 
 const FeatureForm = (featureFormProps:Props) => {
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [featureForm] = Form.useForm();
 
     //Fetch products
     useEffect(() => {
     }, []);
 
-    const fetchFeatures = () => {
-        if(isEmpty(featureFormProps.projectId)){
-            console.log("no project selected")
-            return ;
-        }
-        const url = `/api/v1/projects/features?projectId=${featureFormProps.projectId}`;
-        console.log(`fetching features... ${url}`)
-        setIsLoading(true);
-        getRequest(url)
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((errorObj) => {
-                notifyHttpError('Operation Failed', errorObj)
-            }).finally(() => {
-            setIsLoading(false);
-        })
-    }
 
     const saveFeature = (item: any) => {
 

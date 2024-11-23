@@ -23,6 +23,7 @@ import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";
 import FeatureForm from "./components/FeatureFormComponent";
 import AssignmentForm from "./components/AssignementFormComponent";
+import {limitText} from "../../../../utils/helpers";
 
 
 const FeatureDetailsComponent = () => {
@@ -199,33 +200,26 @@ const FeatureDetailsComponent = () => {
                              extraHeaderItems={[
                                  isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,
                                  <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={() => {
+                                     fetchFeatureDetails();
                                      fetchSubFeatures();
                                  }} key="2"
                                          type="default">Refresh</Button>
                              ]}>
 
         <Row>
+
             <Col span={8}>
                 <List
                     size="large"
                     header={<Space>
-                        Feature Status <Tag>{currentFeature?.status}</Tag>
+                        Feature Status <Tag color="blue">{currentFeature?.status}</Tag>
                     </Space>}
                     footer={<div> {currentFeature?.remark}</div>}
                     bordered>
 
                     {/*  Description */}
                     <List.Item>
-                        {currentFeature?.description}
-                    </List.Item>
-
-                    {/* Assignee */}
-                    <List.Item
-                        actions={[<Space>
-                            <UserOutlined/> {currentFeature?.assignee?.name??'No Assignee'}
-                            <Button onClick={showAssignmentForm} icon={<PlusCircleOutlined/>}>Assign</Button>
-                        </Space>]}>
-                        Assignee
+                        {limitText(currentFeature?.description,164)}
                     </List.Item>
 
                     {/*  Created By */}
@@ -245,6 +239,57 @@ const FeatureDetailsComponent = () => {
                         actions={[<Space>{currentFeature?.updated_at}</Space>]}>
                         Last Update
                     </List.Item>
+                </List>
+            </Col>
+
+            {/* Asignees */}
+
+            <Col span={8}>
+                <List
+                    style={{ marginLeft: '32px'}}
+                    size="large"
+                    header={<Space>
+                        Assignees <Button onClick={showAssignmentForm} icon={<PlusCircleOutlined/>}>Assign</Button>
+                    </Space>}
+                    footer={<div> {currentFeature?.remark}</div>}
+                    bordered>
+
+                    {/* Lead */}
+                    <List.Item
+                        actions={[<Space><UserOutlined/> {currentFeature?.owner?.name??'No Assignee'} </Space>]}>
+                        Lead
+                    </List.Item>
+
+                    {/* Designer */}
+                    <List.Item
+                        actions={[<Space><UserOutlined/> {currentFeature?.designer?.name??'No Assignee'} </Space>]}>
+                        Designer
+                    </List.Item>
+
+                    {/* Designer */}
+                    <List.Item
+                        actions={[<Space><UserOutlined/> {currentFeature?.implementor?.name??'No Assignee'} </Space>]}>
+                        Implementor/Developer
+                    </List.Item>
+
+                    {/* Tester */}
+                    <List.Item
+                        actions={[<Space><UserOutlined/> {currentFeature?.tester?.name??'No Assignee'} </Space>]}>
+                        Tester
+                    </List.Item>
+
+                    {/* Approve */}
+                    <List.Item
+                        actions={[<Space><UserOutlined/> {currentFeature?.approver?.name??'No Assignee'} </Space>]}>
+                        Approve
+                    </List.Item>
+
+                    {/* Tester */}
+                    <List.Item
+                        actions={[<Space><UserOutlined/> {currentFeature?.deployer?.name??'No Assignee'} </Space>]}>
+                        Deployer
+                    </List.Item>
+
                 </List>
             </Col>
         </Row>

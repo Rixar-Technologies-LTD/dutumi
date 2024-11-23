@@ -17,10 +17,10 @@ import {notifyHttpError} from "../../../services/notification/notifications";
 import {getRequest} from "../../../services/rest/RestService";
 import customerLoadingIcon from "../../templates/Loading";
 import {Business} from "../../../interfaces/businesses/BusinessInterfaces";
-import sectionIcon from "../../../assets/images/icons/subscription.png"
 import featuresIcon from "../../../assets/images/icons/generic/features.png"
 import issueIcon from "../../../assets/images/icons/generic/issue.png"
 import takeOffIcon from "../../../assets/images/icons/generic/takeoff.png"
+import projectIcon from "../../../assets/images/icons/generic/folder.png"
 
 import {useNavigate, useParams} from "react-router-dom";
 import GoodContentCardPlain from "../../templates/cards/GoodContentCardPlain";
@@ -88,7 +88,7 @@ const ProjectDetailsComponent = () => {
     }
 
     return <GoodContentCardPlain title="Project Details"
-                                 iconImage={sectionIcon}
+                                 iconImage={projectIcon}
                                  extraHeaderItems={[
                                      isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,
                                      <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={() => {
@@ -98,9 +98,9 @@ const ProjectDetailsComponent = () => {
                                  ]}>
 
         <Row gutter={16} style={{marginTop: '32px', marginBottom: '12px'}}>
-            <Col span={12}>
+            <Col span={24}>
                 <Row gutter={16} style={{ marginBottom: '12px'}}>
-                    <Col span={12}>
+                    <Col span={6}>
                         <Card className="dtm-btn"  onClick={navigateToFeatures} bordered={false} style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Features"
                                        value={(business?.stats?.branchesCount ?? 0).toLocaleString()}
@@ -109,14 +109,14 @@ const ProjectDetailsComponent = () => {
                         </Card>
                     </Col>
 
-                    <Col span={12}>
+                    <Col span={6}>
                         <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Issues" value={(business?.stats?.usersCount ?? 0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={issueIcon}/>}/>
                         </Card>
                     </Col>
 
-                    <Col span={12} style={{ marginTop:'24px'}}>
+                    <Col span={6} style={{ marginTop:'0'}}>
                         <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Releases" value={(business?.stats?.usersCount ?? 0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={takeOffIcon}/>}
@@ -124,7 +124,7 @@ const ProjectDetailsComponent = () => {
                         </Card>
                     </Col>
 
-                    <Col span={12} style={{ marginTop:'24px'}}>
+                    <Col span={6} style={{ marginTop:'0'}}>
                         <Card onClick={viewProducts}
                               bordered={false}
                               style={{border: '1px solid #e3d5ca'}}>
@@ -136,9 +136,7 @@ const ProjectDetailsComponent = () => {
                 </Row>
             </Col>
 
-            <Col span={12}>
-                <ProjectMembersComponent projectId={projectId}></ProjectMembersComponent>
-            </Col>
+
         </Row>
 
 
@@ -148,6 +146,12 @@ const ProjectDetailsComponent = () => {
         <Row style={{marginTop: '64px'}}>
             <Col span={24}>
                 <ProjectIssuesComponent business={business}></ProjectIssuesComponent>
+            </Col>
+        </Row>
+
+        <Row style={{marginTop: '64px'}}>
+            <Col span={24}>
+                <ProjectMembersComponent projectId={projectId}></ProjectMembersComponent>
             </Col>
         </Row>
 

@@ -10,6 +10,7 @@ import {  Business,Staff} from "../../../../interfaces/businesses/BusinessInterf
 import type {ColumnsType} from "antd/es/table";
 import {isEmpty} from "../../../../utils/helpers";
 import {ProjectMember} from "../../../../interfaces/projects/ProjectsInterfaces";
+import {PlusCircleOutlined} from "@ant-design/icons";
 
 interface Props {
     projectId?: string
@@ -66,6 +67,10 @@ const ProjectMembersComponent = ({ projectId  } : Props) => {
         updateSearchQuery(value)
     }
 
+    const showAddMemberForm = () => {
+
+    }
+
     const columns: ColumnsType<ProjectMember> = [
         {
             title: 'Business',
@@ -100,10 +105,18 @@ const ProjectMembersComponent = ({ projectId  } : Props) => {
     ];
 
     return <>
-        <Card className="good-shadow" title="Members List" style={{marginRight:'24px'}}>
-            {/**---------------------------*
-             /** Branches Table
-             *-----------------------------*/}
+        <Card className="good-shadow"
+              title={<Space>
+                      <span>Project Members</span>
+                      <Button icon={<PlusCircleOutlined/>}
+                              onClick={showAddMemberForm}
+                              style={{ marginLeft:'16px'}}
+                              variant="outlined">
+                          Add Member
+                      </Button>
+                   </Space>}
+              style={{marginRight:'24px'}}>
+
             <Table
                 columns={columns}
                 dataSource={recordsList}
@@ -113,9 +126,6 @@ const ProjectMembersComponent = ({ projectId  } : Props) => {
                 style={{ marginTop:'24px'}}
             />
 
-            {/**---------------------------*
-             /** Pagination
-             *-----------------------------*/}
             <Pagination style={{marginTop: 32, marginBottom: 32}}
                         pageSize={pageSize}
                         current={currentPageNo}
