@@ -78,7 +78,7 @@ const ProjectDetailsComponent = () => {
     }
 
     const navigateToFeatures = () => {
-        navigate(`/projects/features`);
+        navigate(`/projects/features?projectId=${projectId}`);
     }
 
     const viewOrders = () => {

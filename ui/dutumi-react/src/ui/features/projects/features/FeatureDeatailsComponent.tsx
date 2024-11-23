@@ -20,7 +20,7 @@ import {
     UsergroupAddOutlined
 } from "@ant-design/icons";
 import sectionIcon from "../../../../assets/images/pages/list.png"
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
 import {Business, RemindersStats} from "../../../../interfaces/businesses/BusinessInterfaces";
@@ -31,6 +31,7 @@ import {notifyHttpError, notifySuccess} from "../../../../services/notification/
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";
 import {isEmpty} from "../../../../utils/helpers";
+import FeatureForm from "./components/FeatureFormComponent";
 
 
 const FeatureDetailsComponent = () => {
@@ -121,20 +122,14 @@ const FeatureDetailsComponent = () => {
     const [filter, setFilterGroup] = useState("all");
     const navigate = useNavigate();
 
-    const [projectTypes, updateProjectTypes] = useState<ProjectType[]>([
-        {type:"Mobile App",code:"MOBILE_APP"},
-        {type:"Web App",code:"WEB_APP"},
-        {type:"Micro Service",code:"MICROSERVICE"},
-        {type:"Dashboard",code:"DASHBOARD"},
-        {type:"Admin Portal",code:"PORTAL"}
-    ]);
-
-    const [selectedProjectId, setSelectedProjectId] = useState<String>();
-    const [messageModalOpen, setFeatureFormOpen] = useState(false)
-    const [featureForm] = Form.useForm();
+    const [selectedProjectId, setSelectedProjectId] = useState<string>();
+    const [featureFormOpen, setFeatureFormOpen] = useState(false)
 
 
-    //Fetch products
+    const [searchParams] = useSearchParams();
+    const parentFeatureId= searchParams.get('projectId');
+
+        //Fetch products
     useEffect(() => {
         fetchProjects();
     }, []);
@@ -180,41 +175,9 @@ const FeatureDetailsComponent = () => {
         })
     }
 
-    const fetchFeaturesStats= () => {
-        setIsLoading(true);
-        const url = `/api/v1/reports/subscriptions/expired/reminders`;
-        console.log(`fetching reminders stats... ${url}`)
-        getRequest(url)
-            .then((response) => {
-                console.log(response.data.payload);
-                setRemindersStats(response.data.payload);
-            })
-            .catch((errorObj) => {
-                notifyHttpError('Operation Failed', errorObj)
-            }).finally(() => {
-            setIsLoading(false);
-        })
-    }
-
-    const saveFeature = (item: any) => {
-
-        const url:string = isEmpty(item.id)? '/api/v1/projects/features/add' : `/api/v1/projects/features/update`;
-        setIsLoading(true);
-        postRequest(url,{
-            "project_id" : selectedProjectId,
-            ...item
-        })
-            .then((response) => {
-                console.log(response.data.payload);
-                notifySuccess("Record Saved")
-                setFeatureFormOpen(false)
-                fetchFeatures();
-            })
-            .catch((errorObj) => {
-                notifyHttpError('Operation Failed', errorObj)
-            }).finally(() => {
-               setIsLoading(false);
-         })
+    const onFeatureSaveCompleted = () => {
+        setFeatureFormOpen(false)
+        fetchFeatures();
     }
 
     const onPageChange = (page: number, pageSize: number) => {
@@ -223,27 +186,6 @@ const FeatureDetailsComponent = () => {
 
     const onPageSizeChange = (current: number, size: number) => {
         updatePageSize(size)
-    }
-
-    const onSearch = (value: string) => {
-        if(value===searchQuery){
-            fetchFeatures()
-        }
-        updateSearchQuery(value)
-    }
-
-    const onFilterGroupChange = (e: RadioChangeEvent) => {
-        setFilterGroup(e.target.value);
-    };
-
-    const showReminders = ()=>{
-        setRemindersModalOpen(true)
-        fetchFeaturesStats();
-    }
-
-    const showTransactions = (subscription: Business)=>{
-        setSelectedSubscription(subscription);
-        setSubscriptionsModalVisible(true);
     }
 
     const onProjectChanged = (value: any) => {
@@ -286,7 +228,6 @@ const FeatureDetailsComponent = () => {
                     size="large"
                     icon={<PlusCircleOutlined/>}
                     key="1" type="primary">Add Sub Feature</Button>
-
 
             <div style={{padding: '8px 16px'}}>
                 { filter !== 'all' && <Tag style={{ fontSize: '18px', color: 'blue', padding:'4px 8px'}} >{totalItems}</Tag>}
@@ -367,63 +308,12 @@ w
          /*  Subscription Details
          ***------------------------------*/}
 
-        {/***------------------------------
-         /*  Message
-         ***------------------------------*/}
-        <Modal title="Feature"
-               open={messageModalOpen}
-               width="640px"
-               onOk={() => {
-                   featureForm.submit()
-               }}
-               confirmLoading={isLoading}
-               okText="Save"
-               onCancel={() => {
-                   setFeatureFormOpen(false)
-               }}>
-
-            <Form
-                form={featureForm}
-                layout="vertical"
-                onFinish={saveFeature}
-            >
-
-                <Form.Item name="id" hidden>
-                    <Input/>
-                </Form.Item>
-
-                <Form.Item
-                    style={{marginBottom: 16, marginTop: '16px'}}
-                    label="Feature Name"
-                    name="name"
-                >
-                    <Input type={"text"}/>
-                </Form.Item>
-
-                <Form.Item
-                    style={{marginBottom: 16, marginTop: '16px'}}
-                    label="Feature Description"
-                    name="description"
-                >
-                    <TextArea showCount/>
-                </Form.Item>
-
-                <Compact>
-                    <Form.Item
-                        name="start_date"
-                        label="Start Date">
-                        <DatePicker/>
-                    </Form.Item>
-                    <Form.Item
-                        name="end_date"
-                        label="End Date">
-                        <DatePicker/>
-                    </Form.Item>
-                </Compact>
-
-
-            </Form>
-        </Modal>
+        <FeatureForm isVisible={featureFormOpen}
+                     onSaveCompleted={onFeatureSaveCompleted}
+                     onCancelled={()=>{setFeatureFormOpen(false)}}
+                     projectId={selectedProjectId??''}
+                     parentFeatureId={parentFeatureId}
+        />
 
     </EyasiContentCard>;
 
