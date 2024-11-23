@@ -1,11 +1,9 @@
 import {
-    DatePicker,
     Form, Image, Input,
     Modal, Select, Space,
 } from 'antd';
 import React, {useEffect, useState} from 'react';
 
-import TextArea from "antd/es/input/TextArea";
 import {getRequest, postRequest} from "../../../../../services/rest/RestService";
 import {notifyHttpError, notifySuccess} from "../../../../../services/notification/notifications";
 

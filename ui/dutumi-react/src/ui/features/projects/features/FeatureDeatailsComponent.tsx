@@ -249,11 +249,14 @@ const FeatureDetailsComponent = () => {
                                 value={currentFeature?.status}
                                 onChange={updateFeatureStatus}
                                 placeholder="Select Status"
-                                style={{width: '100%', minWidth: '180px',color:'#5e548e'}}
+                                style={{width: '100%', minWidth: '128px',border: '1px solid #00bbf9', borderRadius:'8px'}}
                                 size="large"
                                 options={featureStatuses}
+                                labelRender={(labelInValueType)=>{
+                                    return <span style={{ color:'#00bbf9'}}>{labelInValueType.label}</span>
+                                }}
                             /></Space>]}>
-                        Status
+                        Feature Status
                     </List.Item>
 
                     {/*  Description */}

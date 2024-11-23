@@ -62,7 +62,6 @@ function MainLayout() {
                         <Route path="projects">
                             <Route index element={<RequireAuth><ProjectsListComponent/></RequireAuth>}/>
                             <Route path=":projectId" element={<ProjectDetailsComponent/>}/>
-                            <Route path="features" element={<FeaturesListComponent/>}/>
                             <Route path="features/details" element={<FeatureDetailsComponent/>}/>
                             <Route path="releases" element={<BusinessesListComponent/>}/>
                             <Route path="issues" element={<BusinessesListComponent/>}/>

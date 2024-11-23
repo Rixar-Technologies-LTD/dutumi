@@ -26,7 +26,11 @@ import GoodVisibility from "../../../templates/GoodVisibility";
 import FeatureForm from "./components/FeatureFormComponent";
 
 
-const ProjectFeaturesListComponent = () => {
+interface Props {
+    projectId: string;
+}
+
+const ProjectFeaturesListComponent = ({projectId}: Props) => {
 
     const columns: ColumnsType<Task> = [
         {
@@ -111,21 +115,19 @@ const ProjectFeaturesListComponent = () => {
     const [filter, setFilterGroup] = useState("all");
     const navigate = useNavigate();
 
-    const [selectedProjectId, setSelectedProjectId] = useState<string>();
     const [featureFormOpen, setFeatureFormOpen] = useState(false)
 
     const [searchParams] = useSearchParams();
 
     //Fetch products
     useEffect(() => {
-        setSelectedProjectId(searchParams.get('projectId') ?? '')
         fetchProjectsResources();
     }, []);
 
     //Fetch products
     useEffect(() => {
         fetchFeatures();
-    }, [selectedProjectId, currentPageNo, pageSize, searchQuery, filter]);
+    }, [projectId, currentPageNo, pageSize, searchQuery, filter]);
 
     const fetchProjectsResources = () => {
         const url = `/api/v1/projects/list`;
@@ -144,12 +146,12 @@ const ProjectFeaturesListComponent = () => {
     }
 
     const fetchFeatures = () => {
-        if (isEmpty(selectedProjectId)) {
+        if (isEmpty(projectId)) {
             console.log("no project selected")
             return;
         }
 
-        const url = `/api/v1/projects/features?projectId=${selectedProjectId}`;
+        const url = `/api/v1/projects/features?projectId=${projectId}`;
         console.log(`fetching features... ${url}`)
         setIsLoading(true);
         getRequest(url)
@@ -203,48 +205,36 @@ const ProjectFeaturesListComponent = () => {
         setFilterGroup(e.target.value);
     };
 
-    const onProjectChanged = (value: any) => {
-        setSelectedProjectId(value);
-    };
 
     const navigateToFeatureDetails = (task: Task) => {
         navigate(`/projects/features/details?featureId=${task.id}`);
     }
 
 
-    return <EyasiContentCard title="Features"
-                             subTitle="Project Features"
-                             iconImage={sectionIcon}
-                             extraHeaderItems={[
-                                 isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,
-                                 <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={() => {
-                                     fetchFeatures();
-                                 }} key="2"
-                                         type="default">Refresh</Button>
-                             ]}>
+    return <EyasiContentCard
+        title="Features"
+        subTitle=""
+        iconImage={sectionIcon}
+        margin={0}
+        extraHeaderItems={[
+            isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,
+            <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={() => {
+                fetchFeatures();
+            }} key="2"
+                    type="default">Refresh</Button>
+        ]}>
 
         {/**---------------*
          /** Search
          *----------------*/}
-        <Space style={{marginBottom: 24, marginTop: 48}} direction="horizontal">
-
-            <div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius: '4px'}}>
-                <Select
-                    value={selectedProjectId}
-                    onChange={onProjectChanged}
-                    placeholder="Select Project"
-                    style={{width: '100%', minWidth: '240px'}}
-                    size="large"
-                    options={projectsList.map((project) => ({label: project.name, value: project.id}))}
-                />
-            </div>
+        <Space style={{marginBottom: 24, marginTop: 16}} direction="horizontal">
 
             <Search size="large"
                     placeholder="Search"
                     onSearch={onSearch}
                     allowClear/>
 
-            <GoodVisibility visible={isNotEmpty(selectedProjectId)}>
+            <GoodVisibility visible={isNotEmpty(projectId)}>
                 <Button onClick={showFeatureForm}
                         size="large"
                         icon={<PlusCircleOutlined/>}
@@ -286,14 +276,14 @@ const ProjectFeaturesListComponent = () => {
         <FeatureForm
             title="Project Featue"
             isVisible={featureFormOpen}
-            onSaveCompleted={()=>{
+            onSaveCompleted={() => {
                 setFeatureFormOpen(false)
                 fetchFeatures();
             }}
             onCancelled={() => {
                 setFeatureFormOpen(false)
             }}
-            projectId={selectedProjectId ?? ''}/>
+            projectId={projectId ?? ''}/>
 
     </EyasiContentCard>;
 

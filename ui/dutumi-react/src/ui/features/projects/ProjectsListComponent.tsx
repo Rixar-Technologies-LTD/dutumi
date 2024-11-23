@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import { PlusCircleOutlined} from "@ant-design/icons";
+import {EditOutlined, EyeOutlined, PlusCircleOutlined} from "@ant-design/icons";
 import {
     UndoOutlined
 } from "@ant-design/icons";
@@ -30,6 +30,7 @@ import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
 import {Project, ProjectType} from "../../../interfaces/projects/ProjectsInterfaces";
+import {limitText} from "../../../utils/helpers";
 
 const ProjectsListComponent = () => {
 
@@ -72,22 +73,22 @@ const ProjectsListComponent = () => {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
+            width: '194px',
             render: (_, business) => (
                 <>
-                    <Tag color="processing">{business.status ?? 'UNKNOWN'}</Tag><br/>
-                    Starts: {business?.start_date}<br/>
-                    MVP: <span style={{ }}>{business?.mvp_date}</span><br/>
-                </>
+                    <Tag color="processing">{business.status ?? 'UNKNOWN'}</Tag>
+                 </>
             ),
         },
         {
             title: 'Description',
             dataIndex: 'description',
             key: 'project_description',
+            width: '208px',
             render: (_, record) => (
                 <>
                     <div>
-                        <span style={{ color:'#5a5a5a'}}>{record.description}</span>
+                        <span style={{ color:'#5a5a5a'}}>{limitText(record.description,64)}</span>
                     </div>
                 </>
             ),
@@ -96,10 +97,10 @@ const ProjectsListComponent = () => {
             title: 'Actions',
             key: 'action',
             render: (_, record) => (
-                <Space size="middle">
-                    <Button type="primary" onClick={()=>{viewProject(record)}}>View</Button> <br/>
-                    <Button type="default" onClick={()=>{showEditForm(record)}}>Edit</Button>
-                </Space>
+                <>
+                    <Button icon={<EyeOutlined/>} size="small" style={{ marginBottom:'12px'}} type="primary" onClick={()=>{viewProject(record)}}>View</Button> <br/>
+                    <Button icon={<EditOutlined/>} size="small" type="default" onClick={()=>{showEditForm(record)}}>Edit</Button>
+                </>
             ),
         }
     ];
@@ -217,7 +218,7 @@ const ProjectsListComponent = () => {
 
 
     return <EyasiContentCard title="Projects"
-                             subTitle="My Project"
+                             subTitle="List"
                              iconImage={sectionIcon}
                              extraHeaderItems={[
                                  isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,

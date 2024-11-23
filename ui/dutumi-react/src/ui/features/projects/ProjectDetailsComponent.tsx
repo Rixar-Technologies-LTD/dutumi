@@ -29,6 +29,7 @@ import ProjectIssuesComponent from "./issues/ProjectIssuesComponent";
 import GoodImageIcon from "../../templates/icons/GoodImageIcon";
 import {Project} from "../../../interfaces/projects/ProjectsInterfaces";
 import {limitText} from "../../../utils/helpers";
+import ProjectFeaturesListComponent from "./features/ProjectFeaturesListComponent";
 
 
 
@@ -89,6 +90,7 @@ const ProjectDetailsComponent = () => {
 
 
         <Row gutter={16} style={{marginTop: '8px', marginBottom: '32px'}}>
+
             <Col span={8}>
                 <List
                     style={{backgroundColor: '#ffffff'}}
@@ -117,12 +119,11 @@ const ProjectDetailsComponent = () => {
 
                 </List>
             </Col>
-        </Row>
 
-        <Row gutter={16} style={{marginTop: '8px', marginBottom: '12px'}}>
-            <Col span={24}>
+
+            <Col span={16}>
                 <Row gutter={16} style={{marginBottom: '12px'}}>
-                    <Col span={6}>
+                    <Col span={12} style={{ marginBottom:'16px'}}>
                         <Card className="dtm-btn" onClick={navigateToFeatures} bordered={false}
                               style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Features"
@@ -132,14 +133,14 @@ const ProjectDetailsComponent = () => {
                         </Card>
                     </Col>
 
-                    <Col span={6}>
+                    <Col span={12} style={{ marginBottom:'16px'}}>
                         <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
-                            <Statistic title="Issues" value={(0).toLocaleString()}
+                            <Statistic title="Issues/Bugs" value={(0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={issueIcon}/>}/>
                         </Card>
                     </Col>
 
-                    <Col span={6} style={{marginTop: '0'}}>
+                    <Col span={12} style={{marginTop: '0'}}>
                         <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Releases" value={(0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={takeOffIcon}/>}
@@ -147,26 +148,24 @@ const ProjectDetailsComponent = () => {
                         </Card>
                     </Col>
 
-                    <Col span={6} style={{marginTop: '0'}}>
+                    <Col span={12} style={{marginTop: '0'}}>
                         <Card onClick={viewProducts}
                               bordered={false}
                               style={{border: '1px solid #e3d5ca'}}>
-                            <Statistic title="Products" value={(0).toLocaleString()}
+                            <Statistic title="People" value={(0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={featuresIcon}/>}
                                        suffix=""/>
                         </Card>
                     </Col>
                 </Row>
             </Col>
-
         </Row>
 
 
         {/***---------------------------
-         /* Issues
+         /* Features
          **-----------------------------*/}
-        <div style={{height: '48px'}}></div>
-        <ProjectIssuesComponent project={project}></ProjectIssuesComponent>
+        <ProjectFeaturesListComponent projectId={projectId ?? ''}></ProjectFeaturesListComponent>
 
         {/***---------------------------
          /* Members

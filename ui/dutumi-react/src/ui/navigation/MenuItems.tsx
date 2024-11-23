@@ -66,9 +66,6 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
         operationsMenus.push(toMenuItem('Projects', '/projects', <FolderOutlined/>));
     }
     if(permissions.includes("")){
-        operationsMenus.push(toMenuItem('Features', '/projects/features', <MailOutlined/>));
-    }
-    if(permissions.includes("")){
         operationsMenus.push(toMenuItem('Releases', '/projects/releases', <MessageOutlined/>));
     }
     if(permissions.includes("")){

@@ -4,6 +4,7 @@ interface BaseCardComponentProps {
     title: string,
     iconImage?: any,
     subTitle?: string,
+    margin?: number,
     extraHeaderItems : [...any]
 }
 
