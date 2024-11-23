@@ -5,18 +5,19 @@ namespace App\Http\Controllers\Projects;
 use App\Http\Controllers\BaseController;
 use App\Models\Project;
 use App\Models\ProjectMember;
+use App\Models\User;
 use App\Services\ProjectsService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 class ProjectsController extends BaseController
 {
 
-
-    public function getProject(Request $request)
+    public function getProjects(Request $request)
     {
         $projects = Project::query()->paginate(50);
-        return $this->returnResponse("Projects",$projects);
+        return $this->returnResponse("Projects", $projects);
     }
 
     public function addProject(Request $request)
@@ -30,7 +31,7 @@ class ProjectsController extends BaseController
         ]);
 
         $project = Project::query()->create([
-            'owner_user_id'=> Auth::id(),
+            'owner_user_id' => Auth::id(),
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'type' => $request->input('type'),
@@ -39,9 +40,9 @@ class ProjectsController extends BaseController
             'status' => Project::$STATUS_ACTIVE
         ]);
 
-        ProjectsService::addProjectMember($project->id,Auth::id());
+        ProjectsService::addProjectMember($project->id, Auth::id());
 
-        return $this->returnResponse("Projects",$project);
+        return $this->returnResponse("Projects", $project);
     }
 
     public function updateProject(Request $request)
@@ -57,35 +58,33 @@ class ProjectsController extends BaseController
 
         $project = Project::query()->where(['id' => $request->input('id')])
             ->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'type' => $request->input('type'),
-            'start_date' => Carbon::parse($request->input('start_date')),
-            'mvp_date' => Carbon::parse($request->input('mvp_date'))
-        ]);
-        return $this->returnResponse("Project Updated",$project);
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'type' => $request->input('type'),
+                'start_date' => Carbon::parse($request->input('start_date')),
+                'mvp_date' => Carbon::parse($request->input('mvp_date'))
+            ]);
+        return $this->returnResponse("Project Updated", $project);
     }
-
-
 
     public function addProjectMember(Request $request)
     {
         $request->validate([
-            'project_id' => 'required',
-            'user_id' => 'required',
+            'project_id' => 'required|exists:projects,id',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         /// Validate member
         $projectMember = ProjectMember::query()->where([
-            'project_id'=>$request->input('project_id'),
-            'user_id'=>$request->input('user_id'),
+            'project_id' => $request->input('project_id'),
+            'user_id' => $request->input('user_id'),
         ])->first();
-        if($projectMember){
-            return $this->clientError("Project member already exists",[]);
+        if ($projectMember) {
+            return $this->clientError("Project member already exists", []);
         }
 
-        $newProjectMember= ProjectsService::addProjectMember($request->input('project_id'),$request->input('user_id'));
-        return $this->returnResponse("Member Added",$newProjectMember);
+        $newProjectMember = ProjectsService::addProjectMember($request->input('project_id'), $request->input('user_id'));
+        return $this->returnResponse("Member Added", $newProjectMember);
     }
 
     public function fetchProjectMembers(Request $request)
@@ -94,13 +93,28 @@ class ProjectsController extends BaseController
             'projectId' => 'required'
         ]);
 
-         $projectMembers = ProjectMember::query()->where([
-            'project_id'=>$request->input('projectId'),
+        $projectMembers = ProjectMember::query()->where([
+            'project_id' => $request->input('projectId'),
         ])->paginate(20);
 
-        return $this->returnResponse("Project Members",$projectMembers);
+        return $this->returnResponse("Project Members", $projectMembers);
     }
 
+    public function fetchAssignableUsers(Request $request)
+    {
+        $request->validate([
+            'projectId' => 'required'
+        ]);
+
+        $projectId = $request->input('projectId');
+        $assignableUsers = User::query()
+            ->whereDoesntHave('members', function ($query) use ($projectId) {
+                $query->where('project_id', $projectId);
+            })
+            ->paginate(100);
+
+        return $this->returnResponse("Assignable Users", $assignableUsers);
+    }
 
 
 }

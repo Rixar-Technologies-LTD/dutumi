@@ -1,43 +1,57 @@
 import {
-    DatePicker,
     Form, Image, Input,
-    Modal, Space,
+    Modal, Select, Space,
 } from 'antd';
 import React, {useEffect, useState} from 'react';
 
-import TextArea from "antd/es/input/TextArea";
-import Compact from "antd/es/space/Compact";
-import {getRequest, postRequest} from "../../../../../services/rest/RestService";
-import {notifyHttpError, notifySuccess} from "../../../../../services/notification/notifications";
-import {isEmpty} from "../../../../../utils/helpers";
 
-import sectionIcon from "../../../../../assets/images/pages/feature.png"
+import sectionIcon from "../../../../assets/images/icons/users/owner.png"
+import {getRequest, postRequest} from "../../../../services/rest/RestService";
+import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
+import {SystemUser} from "../../../../interfaces/system/AuthInterfaces";
+import {Member} from "../../../../interfaces/projects/ProjectsInterfaces";
 
 
 interface Props {
     isVisible: boolean;
     projectId: string;
     title: string ;
-    parentFeatureId?: string | null;
-    onSaveCompleted: () => void;
+    onSaved: () => void;
     onCancelled: () => void;
 
 }
 
 
-const FeatureForm = (formProps:Props) => {
+const MemberAssignmentForm = (formProps:Props) => {
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [systemUserList, setSystemUserList] = useState<SystemUser[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [featureForm] = Form.useForm();
 
     //Fetch products
     useEffect(() => {
+        fetchAssignableUsers();
     }, []);
 
+    const fetchAssignableUsers = () => {
+        const url = `/api/v1/projects/users/assignable?projectId=${formProps.projectId}`;
+        console.log(`fetching members... ${url}`)
+        setIsLoading(true);
+        getRequest(url)
+            .then((response) => {
+                console.log(response.data);
+                setSystemUserList(response.data.respBody.data)
+            })
+            .catch((errorObj) => {
+                notifyHttpError('Operation Failed', errorObj)
+            }).finally(() => {
+            setIsLoading(false);
+        })
+    }
 
-    const saveFeature = (item: any) => {
+    const addProjectMember = (item: any) => {
 
-        const url:string = isEmpty(item.id)? '/api/v1/projects/features/add' : `/api/v1/projects/features/update`;
+        const url:string ='/api/v1/projects/members/add';
         setIsLoading(true);
         postRequest(url,{
             "project_id" : formProps.projectId,
@@ -46,7 +60,7 @@ const FeatureForm = (formProps:Props) => {
             .then((response) => {
                 console.log(response.data.payload);
                 notifySuccess("Record Saved")
-                formProps.onSaveCompleted();
+                formProps.onSaved();
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -63,7 +77,6 @@ const FeatureForm = (formProps:Props) => {
             {formProps.title}
         </Space>
     );
-
 
     return <>
 
@@ -85,7 +98,7 @@ const FeatureForm = (formProps:Props) => {
             <Form
                 form={featureForm}
                 layout="vertical"
-                onFinish={saveFeature}
+                onFinish={addProjectMember}
             >
 
                 <Form.Item name="id" hidden>
@@ -93,33 +106,15 @@ const FeatureForm = (formProps:Props) => {
                 </Form.Item>
 
                 <Form.Item
-                    style={{marginBottom: 16, marginTop: '16px'}}
-                    label="Feature Name"
-                    name="name"
+                    style={{ marginTop: '24px'}}
+                    label="User"
+                    name="user_id"
                 >
-                    <Input type={"text"}/>
+                    <Select
+                        style={{width: '100%'}}
+                        options={systemUserList.map((user) => ({label: user.name, value: user.id}))}
+                    />
                 </Form.Item>
-
-                <Form.Item
-                    style={{marginBottom: 16, marginTop: '16px'}}
-                    label="Feature Description"
-                    name="description"
-                >
-                    <TextArea showCount/>
-                </Form.Item>
-
-                <Compact>
-                    <Form.Item
-                        name="start_date"
-                        label="Start Date">
-                        <DatePicker/>
-                    </Form.Item>
-                    <Form.Item
-                        name="end_date"
-                        label="End Date">
-                        <DatePicker/>
-                    </Form.Item>
-                </Compact>
 
 
             </Form>
@@ -129,5 +124,5 @@ const FeatureForm = (formProps:Props) => {
 
 }
 
-export default FeatureForm
+export default MemberAssignmentForm
 

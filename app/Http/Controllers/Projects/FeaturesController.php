@@ -8,23 +8,59 @@ use App\Http\Controllers\BaseController;
 use App\Models\Project;
 use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FeaturesController extends BaseController
 {
 
-    public function getFeature(Request $request)
+    /**
+     * Get top level features
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getFeatures(Request $request)
     {
-        $projects = Project::query()->paginate(50);
-        return $this->returnResponse("Projects",$projects);
+
+        $projects = Task::query()->where(['project_id' => $request->input('projectId')])
+            ->whereNull('parent_id')
+            ->with(['creator', 'owner', 'designer', 'implementor', 'tester', 'approver', 'deployer'])
+            ->paginate(50);
+
+
+        return $this->returnResponse("Top Level Features", $projects);
+    }
+
+    public function getDetails(Request $request)
+    {
+        $feature = Task::query()->where(['id' => $request->input('id')])
+            ->with(['creator', 'owner', 'designer', 'implementor', 'tester', 'approver', 'deployer'])
+            ->first();
+        $responseData['feature'] = $feature;
+        return $this->returnResponse("Feature Details", $responseData);
+    }
+
+
+    /**
+     * Get child features
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getSubFeatures(Request $request)
+    {
+        $projects = Task::query()->where(['parent_id' => $request->input('parenId')])
+            ->with(['assignee', 'creator'])
+            ->paginate(50);
+        return $this->returnResponse("Sub features", $projects);
     }
 
     public function addFeature(Request $request)
     {
+
         $request->validate([
             'project_id' => 'numeric|required',
-            'parent_id' => 'numeric',
+//            'parent_id' => 'numeric',
             'name' => 'required',
             'description' => 'required',
             'start_date' => 'required|date',
@@ -32,10 +68,11 @@ class FeaturesController extends BaseController
         ]);
 
         $project = Task::query()->create([
-            'project_id'=> $request->input('project_id'),
-            'parent_id'=> $request->input('parent_id'),
-            'creator_user_id'=> Auth::id(),
+            'project_id' => $request->input('project_id'),
+            'parent_id' => $request->input('parent_id'),
+            'creator_id' => Auth::id(),
             'name' => $request->input('name'),
+            'priority' => $request->input('priority'),
             'description' => $request->input('description'),
             'start_date' => Carbon::parse($request->input('start_date')),
             'end_date' => Carbon::parse($request->input('end_date')),
@@ -43,29 +80,45 @@ class FeaturesController extends BaseController
             'status' => FeatureStatus::DEVELOPMENT->name
         ]);
 
-        return $this->returnResponse("Projects",$project);
+        return $this->returnResponse("Feature Added ", $project);
     }
 
-    public function updateProject(Request $request)
+    public function updateFeature(Request $request)
     {
+
         $request->validate([
-            'id' => 'required|exists:projects,id',
-            'name' => 'required',
-            'description' => 'required',
-            'type' => 'required',
-            'start_date' => 'required|date',
-            'mvp_date' => 'required|date',
+            'id' => 'required|exists:features,id'
         ]);
 
-        $project = Project::query()->where(['id' => $request->input('id')])
+        $project = Task::query()->where(['id' => $request->input('id')])
             ->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'type' => $request->input('type'),
-            'start_date' => Carbon::parse($request->input('start_date')),
-            'mvp_date' => Carbon::parse($request->input('mvp_date'))
-        ]);
-        return $this->returnResponse("Project Updated",$project);
+                'owner_id' => $request->input('owner_id'),
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+            ]);
+        return $this->returnResponse("Feature Updated", $project);
     }
+
+    public function assignMembers(Request $request)
+    {
+
+        $request->validate([
+            'featureId' => 'required|exists:tasks,id'
+        ]);
+
+        $project = Task::query()->where([
+            'id' => $request->input('featureId')
+        ])
+            ->update([
+                'owner_id' => $request->input('owner_id'),
+                'designer_id' => $request->input('designer_id'),
+                'implementor_id' => $request->input('implementor_id'),
+                'tester_id' => $request->input('tester_id'),
+                'approver_id' => $request->input('approver_id'),
+                'deployer_id' => $request->input('deployer_id')
+            ]);
+        return $this->returnResponse("Feature Updated", $project);
+    }
+
 
 }

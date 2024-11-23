@@ -11,6 +11,7 @@ import type {ColumnsType} from "antd/es/table";
 import {isEmpty} from "../../../../utils/helpers";
 import {ProjectMember} from "../../../../interfaces/projects/ProjectsInterfaces";
 import {PlusCircleOutlined} from "@ant-design/icons";
+import MemberAssignementForm from "../members/MemberAssignementForm";
 
 interface Props {
     projectId?: string
@@ -18,12 +19,58 @@ interface Props {
 
 const ProjectMembersComponent = ({ projectId  } : Props) => {
 
+    const columns: ColumnsType<ProjectMember> = [
+        {
+            title: 'Business',
+            dataIndex: 'name',
+            key: 'name',
+            render: (_, record) => (
+                <>
+                    <span style={{fontWeight: 'normal', fontSize: '12px'}}>{record.id}. {record.user?.name}</span><br/>
+                    <span style={{fontWeight: 'normal', fontSize: '12px'}}>{record?.user?.email} </span><br/>
+                </>
+            ),
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (_, record) => (
+                <>
+                    <Tag color="processing">{record.status ?? 'UNKNOWN'}</Tag>
+                </>
+            ),
+        },
+        {
+            title: 'Created On',
+            dataIndex: 'status',
+            key: 'status',
+            render: (_, record) => (
+                <>
+                    {record.created_at}
+                </>
+            ),
+        },
+        {
+            title: 'Actions',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <Button type="primary" onClick={()=>{}}> View</Button>
+                </Space>
+            ),
+        },
+    ];
+
+
     const [recordsList, updateRecordsList] = useState<ProjectMember[]>([]);
     const [currentPageNo, updateCurrentPageNo] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [pageSize, updatePageSize] = useState(50);
     const [isLoading, setIsLoading] = useState(false);
     const [searchQuery, updateSearchQuery] = useState("");
+
+    const [isMemberFormOpen, setMemberAssignmentFormOpen] = useState<boolean>(false);
 
     //Fetch products
     useEffect(() => {
@@ -68,41 +115,14 @@ const ProjectMembersComponent = ({ projectId  } : Props) => {
     }
 
     const showAddMemberForm = () => {
-
+        setMemberAssignmentFormOpen(true);
     }
 
-    const columns: ColumnsType<ProjectMember> = [
-        {
-            title: 'Business',
-            dataIndex: 'name',
-            key: 'name',
-            render: (_, record) => (
-                <>
-                    <span style={{fontWeight: 'normal', fontSize: '12px'}}>{record.id}. {record.user?.name}</span><br/>
-                    <span style={{fontWeight: 'normal', fontSize: '12px'}}>{record?.user?.email} </span><br/>
-                </>
-            ),
-        },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (_, business) => (
-                <>
-                    <Tag color="processing">{business.status ?? 'UNKNOWN'}</Tag><br/>
-                </>
-            ),
-        },
-        {
-            title: 'Actions',
-            key: 'action',
-            render: (_, record) => (
-                <Space size="middle">
-                    <Button type="primary" onClick={()=>{}}> View</Button>
-                </Space>
-            ),
-        },
-    ];
+    const onMemberAdded = () => {
+        setMemberAssignmentFormOpen(false);
+        fetchRecords();
+    }
+
 
     return <>
         <Card className="good-shadow"
@@ -136,6 +156,13 @@ const ProjectMembersComponent = ({ projectId  } : Props) => {
                         showQuickJumper={true}
                         onShowSizeChange={onPageSizeChange}
             />
+
+            <MemberAssignementForm isVisible={isMemberFormOpen}
+                                   projectId={projectId??''} title="Assign Members"
+                                   onSaved={onMemberAdded}
+                                   onCancelled={()=>{
+                                       setMemberAssignmentFormOpen(false)
+                                   }}/>
         </Card>
     </>;
 

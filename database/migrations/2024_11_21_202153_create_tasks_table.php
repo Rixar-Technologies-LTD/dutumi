@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\FeatureStatus;
 use App\Enums\TaskType;
 use App\Models\Task;
 use Illuminate\Database\Migrations\Migration;
@@ -17,15 +18,27 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("project_id")->unsigned();
-            $table->bigInteger("creator_user_id")->unsigned();
-            $table->bigInteger("assignee_user_id");
+            $table->bigInteger("creator_id")->unsigned();
+
+            $table->bigInteger("parent_id")->unsigned()->nullable();
+
+            $table->bigInteger("owner_id")->unsigned()->nullable();
+            $table->bigInteger("designer_id")->unsigned()->nullable();
+            $table->bigInteger("implementor_id")->unsigned()->nullable();
+            $table->bigInteger("tester_id")->unsigned()->nullable();
+            $table->bigInteger("approver_id")->unsigned()->nullable();
+            $table->bigInteger("deployer_id")->unsigned()->nullable();
 
             $table->string("name");
-
+            $table->string("description",2048)->nullable();
             $table->string("type")->default(TaskType::FEATURE->name);
+            $table->string("status")->default(FeatureStatus::DEVELOPMENT->name);
+            $table->string("priority")->nullable();
+
             $table->dateTime("start_date")->nullable();
             $table->dateTime("end_date")->nullable();
-            $table->timestamps();
+            $table->string("remark")->nullable();
+           $table->timestamps();
         });
     }
 

@@ -156,61 +156,6 @@ const ProjectDetailsComponent = () => {
         </Row>
 
 
-        {/***------------------------------
-         /*  Subscription Details
-         ***------------------------------*/}
-        <Modal title="Subscription Details"
-               open={isSubscriptionVisible}
-               footer={<></>}
-               onCancel={() => {
-                   setSubscriptionsModalVisible(false)
-               }}>
-
-            <List>
-                <List.Item key="1">
-                    <List.Item.Meta
-                        title={<p style={{fontWeight: 'lighter', padding: '0px', margin: '0px'}}>Phone</p>}
-                    />
-                    <div>
-                        {selectedSubscription?.phoneNumber}
-                    </div>
-                </List.Item>
-                <List.Item key="2" style={{margin: '0px', padding: '0px'}}>
-                    <List.Item.Meta
-                        title={<p style={{fontWeight: 'lighter', padding: '0px', margin: '0px'}}>Topic</p>}/>
-                    <div>{selectedSubscription?.name ?? 'Unknown'}</div>
-                </List.Item>
-                <List.Item key="2" style={{margin: '0px', padding: '0px'}}>
-                    <List.Item.Meta
-                        title={<p style={{fontWeight: 'lighter', padding: '0px', margin: '0px'}}>Start Date</p>}/>
-                    <div>{selectedSubscription?.startDate ?? 'Unknown'}</div>
-                </List.Item>
-                <List.Item key="2" style={{margin: '0px', padding: '0px'}}>
-                    <List.Item.Meta
-                        title={<p style={{fontWeight: 'lighter', padding: '0px', margin: '0px'}}>End Date</p>}/>
-                    <div>{selectedSubscription?.endDate ?? 'Unknown'}</div>
-                </List.Item>
-            </List>
-            <Divider/>
-
-            <h3 style={{marginTop: '48px'}}>Transactions</h3>
-            <div style={{border: '1px solid #f1f1f1', padding: '8px 16px'}}>
-                <List
-                    dataSource={selectedSubscription?.transactions}
-                    renderItem={(transaction) => (
-                        <List.Item key={transaction.id} style={{margin: '0px', padding: '0px'}}>
-                            <List.Item.Meta
-                                title={<p>{transaction?.amount} TZS</p>}
-                                description={`${transaction.paymentMethodId} ${transaction.channel}`}
-                            />
-                            <div>{transaction?.createdDate}</div>
-                        </List.Item>
-                    )}
-                />
-            </div>
-
-        </Modal>
-
 
     </GoodContentCardPlain>;
 

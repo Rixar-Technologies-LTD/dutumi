@@ -11,7 +11,6 @@ class ProjectMember extends Model
     public static $STATUS_SUSPENDED = 'SUSPENDED';
     public static $STATUS_NOT_ACTIVE = 'NOT_ACTIVE';
 
-
     protected $with = ['user','added_by_user'];
 
     protected $fillable = [
