@@ -4,15 +4,15 @@ import {
     Divider,
     List,
     Modal,
-    Row,
-    Spin, Statistic
+    Row, Space,
+    Spin, Statistic, Tag
 } from 'antd';
 
 import '../../../css/business.css';
 import React, {useEffect, useState} from 'react';
 
 
-import {UndoOutlined} from "@ant-design/icons";
+import {CalendarOutlined, UndoOutlined, UserOutlined} from "@ant-design/icons";
 import {notifyHttpError} from "../../../services/notification/notifications";
 import {getRequest} from "../../../services/rest/RestService";
 import customerLoadingIcon from "../../templates/Loading";
@@ -27,6 +27,8 @@ import GoodContentCardPlain from "../../templates/cards/GoodContentCardPlain";
 import ProjectMembersComponent from "./components/ProjectMembersComponent";
 import ProjectIssuesComponent from "./issues/ProjectIssuesComponent";
 import GoodImageIcon from "../../templates/icons/GoodImageIcon";
+import {Project} from "../../../interfaces/projects/ProjectsInterfaces";
+import {limitText} from "../../../utils/helpers";
 
 
 
@@ -34,7 +36,7 @@ const ProjectDetailsComponent = () => {
 
     const {projectId} = useParams();
 
-    const [business, setBusiness] = useState<Business>();
+    const [project, setProject] = useState<Project>();
     const [businessSchema, setBusinessSchema] = useState<String>();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -45,17 +47,15 @@ const ProjectDetailsComponent = () => {
 
     //Fetch products
     useEffect(() => {
-        // fetchBusinessesDetails();
+        fetchProjectDetails();
     }, []);
 
-    const fetchBusinessesDetails = () => {
-        const url = `/api/v1/manage/businesses/details?id=${projectId}`;
-        console.log(`fetching businesses details... ${url}`)
+    const fetchProjectDetails = () => {
+        const url = `/api/v1/projects/details?id=${projectId}`;
         setIsLoading(true);
         getRequest(url)
             .then((response) => {
-                setBusiness(response.data.respBody);
-                setBusinessSchema(response.data.respBody.schemaName);
+                setProject(response.data.respBody);
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -65,18 +65,12 @@ const ProjectDetailsComponent = () => {
     }
 
     const isActive = () => {
-        return business?.status == 'ACTIVE_LICENCE';
+        return project?.status == 'ACTIVE_LICENCE';
     }
 
-    const showSuspensionForm = (action: string) => {
-    }
-
-    const viewUser = () => {
-        navigate(`/users/${business?.owner?.id}`);
-    }
 
     const viewProducts = () => {
-        navigate(`/businesses/products/${business?.id}?sc=${businessSchema}`);
+        navigate(`/businesses/products/${project?.id}?sc=${businessSchema}`);
     }
 
     const navigateToFeatures = () => {
@@ -84,7 +78,7 @@ const ProjectDetailsComponent = () => {
     }
 
     const viewOrders = () => {
-        navigate(`/businesses/orders/${business?.id}?sc=${businessSchema}`);
+        navigate(`/businesses/orders/${project?.id}?sc=${businessSchema}`);
     }
 
     return <GoodContentCardPlain title="Project Details"
@@ -92,18 +86,50 @@ const ProjectDetailsComponent = () => {
                                  extraHeaderItems={[
                                      isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,
                                      <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={() => {
-                                         fetchBusinessesDetails();
+                                         fetchProjectDetails();
                                      }} key="2" type="default">Refresh</Button>,
                                      //  <Button href="/products/instance/new" key="1" type="primary">Add Order</Button>
                                  ]}>
 
-        <Row gutter={16} style={{marginTop: '32px', marginBottom: '12px'}}>
+
+        <Row gutter={16} style={{marginTop: '8px', marginBottom: '32px'}}>
+            <Col span={8}>
+                    <List
+                        style={{ backgroundColor:'#ffffff'}}
+                        bordered
+                        size="large"
+                        header={<Space>
+                            Project Status <Tag color="blue">{project?.status}</Tag>
+                        </Space>}
+                        >
+
+                        {/*  Description */}
+                        <List.Item>
+                            {limitText(project?.description,164)}
+                        </List.Item>
+
+                        {/*  Created By */}
+                        <List.Item
+                            actions={[<Space> {project?.name}</Space>]}>
+                           Name
+                        </List.Item>
+                        {/*  Created By */}
+                        <List.Item
+                            actions={[<Space>  {project?.created_at}</Space>]}>
+                            <CalendarOutlined/>   Created
+                        </List.Item>
+
+                    </List>
+            </Col>
+        </Row>
+
+        <Row gutter={16} style={{marginTop: '8px', marginBottom: '12px'}}>
             <Col span={24}>
                 <Row gutter={16} style={{ marginBottom: '12px'}}>
                     <Col span={6}>
                         <Card className="dtm-btn"  onClick={navigateToFeatures} bordered={false} style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Features"
-                                       value={(business?.stats?.branchesCount ?? 0).toLocaleString()}
+                                       value={(0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={featuresIcon}/>}
                                        suffix={``}/>
                         </Card>
@@ -111,14 +137,14 @@ const ProjectDetailsComponent = () => {
 
                     <Col span={6}>
                         <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
-                            <Statistic title="Issues" value={(business?.stats?.usersCount ?? 0).toLocaleString()}
+                            <Statistic title="Issues" value={(0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={issueIcon}/>}/>
                         </Card>
                     </Col>
 
                     <Col span={6} style={{ marginTop:'0'}}>
                         <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
-                            <Statistic title="Releases" value={(business?.stats?.usersCount ?? 0).toLocaleString()}
+                            <Statistic title="Releases" value={(0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={takeOffIcon}/>}
                                        suffix={``}/>
                         </Card>
@@ -128,7 +154,7 @@ const ProjectDetailsComponent = () => {
                         <Card onClick={viewProducts}
                               bordered={false}
                               style={{border: '1px solid #e3d5ca'}}>
-                            <Statistic title="Products" value={(business?.stats?.products ?? 0).toLocaleString()}
+                            <Statistic title="Products" value={(0).toLocaleString()}
                                        prefix={<GoodImageIcon iconPath={featuresIcon}/>}
                                        suffix=""/>
                         </Card>
@@ -136,16 +162,15 @@ const ProjectDetailsComponent = () => {
                 </Row>
             </Col>
 
-
         </Row>
 
 
         {/***---------------------------
-         /* Subscriptions
+         /* Issues
          **-----------------------------*/}
         <Row style={{marginTop: '64px'}}>
             <Col span={24}>
-                <ProjectIssuesComponent business={business}></ProjectIssuesComponent>
+                <ProjectIssuesComponent project={project}></ProjectIssuesComponent>
             </Col>
         </Row>
 

@@ -11,12 +11,16 @@ class ProjectMember extends Model
     public static $STATUS_SUSPENDED = 'SUSPENDED';
     public static $STATUS_NOT_ACTIVE = 'NOT_ACTIVE';
 
-    protected $with = ['user','added_by_user'];
+    protected $casts = [
+        'created_at' => 'datetime:d-M-Y H:i'
+    ];
+
+    protected $with = ['user','author'];
 
     protected $fillable = [
         'project_id',
         'user_id',
-        'added_by_user_id',
+        'author_id',
         'status',
         'remark',
         'access_end_date'
@@ -26,8 +30,8 @@ class ProjectMember extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function added_by_user(){
-        return $this->belongsTo(User::class, 'added_by_user_id');
+    public function author(){
+        return $this->belongsTo(User::class, 'author_id');
     }
 
 }

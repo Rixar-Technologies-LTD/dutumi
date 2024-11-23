@@ -57,5 +57,5 @@ export interface Member {
     "id": string,
     "status": string,
     "user": SystemUser,
-    "added_by_user": SystemUser
+    "author": SystemUser
 }

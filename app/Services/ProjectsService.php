@@ -15,7 +15,7 @@ class ProjectsService
         return ProjectMember::query()->create([
             'project_id' => $projectId,
             'user_id' => $userId,
-            'added_by_user_id' => Auth::id(),
+            'author_id' => Auth::id(),
             'status' => ProjectMember::$STATUS_ACTIVE
         ]);
     }

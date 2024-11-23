@@ -14,12 +14,13 @@ import TextArea from "antd/es/input/TextArea";
 import GoodVisibility from "../../../templates/GoodVisibility";
 import Compact from "antd/es/space/Compact";
 import {MoneyCollectOutlined, PauseCircleOutlined, PlusCircleFilled, PlusCircleOutlined} from "@ant-design/icons";
+import {Project} from "../../../../interfaces/projects/ProjectsInterfaces";
 
 interface BranchesProps {
-    business?: Business
+    project?: Project
 }
 
-const ProjectIssuesComponent = ({ business  } : BranchesProps) => {
+const ProjectIssuesComponent = ({ project  } : BranchesProps) => {
 
     const columns: ColumnsType<LicenseSubscription> = [
         {
@@ -102,7 +103,7 @@ const ProjectIssuesComponent = ({ business  } : BranchesProps) => {
     const [currentPageNo, updateCurrentPageNo] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [pageSize, updatePageSize] = useState(4);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [searchQuery, updateSearchQuery] = useState("");
 
     const [filter, setFilterGroup] = useState("all");
@@ -117,22 +118,16 @@ const ProjectIssuesComponent = ({ business  } : BranchesProps) => {
     const [subscriptionForm] = Form.useForm();
 
     useEffect(() => {
-        fetchSubscriptionHistory();
-    }, [business,currentPageNo,pageSize]);
-
-
-    //Fetch products
-    useEffect(() => {
-        // fetchSubscriptionPlans();
-    }, [ ]);
+        // fetchSubscriptionHistory();
+    }, [project,currentPageNo,pageSize]);
 
     const fetchSubscriptionHistory = () => {
 
-        if(business==null){
+        if(project==null){
             return ;
         }
 
-        const url = `/api/v1/manage/business/subscriptions/history?businessId=${business?.id}&pageSize=${pageSize}&pageNo=${currentPageNo-1}`;
+        const url = `/api/v1/manage/business/subscriptions/history?businessId=${project?.id}&pageSize=${pageSize}&pageNo=${currentPageNo-1}`;
         console.log(`fetching branches... ${url}`)
         setIsLoading(true);
         getRequest(url)
@@ -140,22 +135,6 @@ const ProjectIssuesComponent = ({ business  } : BranchesProps) => {
                 console.log(response.data);
                 updateBranchesList(response.data.items);
                 setTotalItems(response.data.totalElements);
-            })
-            .catch((errorObj) => {
-                notifyHttpError('Operation Failed', errorObj)
-            }).finally(() => {
-            setIsLoading(false);
-        })
-    }
-
-    const fetchSubscriptionPlans= () => {
-        setIsLoading(true);
-        const url = `/api/v1/public/resources/subscriptions/plans`;
-        console.log(`fetching plans... ${url}`)
-        getRequest(url)
-            .then((response) => {
-                console.log(response.data.items);
-                setSubscriptionPlansList(response.data.items);
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -184,7 +163,7 @@ const ProjectIssuesComponent = ({ business  } : BranchesProps) => {
     const addSubscription = (subscription:any) => {
 
         const payload = {
-            "businessId" : business?.id,
+            "businessId" : project?.id,
             "activate" : false,
             "discount" : "0",
             "supportLevel": "Phone",

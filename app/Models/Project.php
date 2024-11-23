@@ -11,6 +11,10 @@ class Project extends Model
 
     public static $STATUS_NOT_ACTIVE = 'NOT_ACTIVE';
 
+    protected $casts = [
+        'created_at' => 'datetime:d-M-Y H:i'
+    ];
+
     protected $fillable = [
         'owner_user_id',
         'name',

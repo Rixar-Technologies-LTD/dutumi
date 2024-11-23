@@ -6,12 +6,14 @@ import "../../../../css/components.css"
 import {Button, Card, Pagination, Space, Table, Tag} from "antd";
 import {getRequest} from "../../../../services/rest/RestService";
 import {notifyHttpError} from "../../../../services/notification/notifications";
-import {  Business,Staff} from "../../../../interfaces/businesses/BusinessInterfaces";
+import peopleIcon from "../../../../assets/images/icons/people.png";
+
 import type {ColumnsType} from "antd/es/table";
 import {isEmpty} from "../../../../utils/helpers";
 import {ProjectMember} from "../../../../interfaces/projects/ProjectsInterfaces";
 import {PlusCircleOutlined} from "@ant-design/icons";
 import MemberAssignementForm from "../members/MemberAssignementForm";
+import GoodImageIcon from "../../../templates/icons/GoodImageIcon";
 
 interface Props {
     projectId?: string
@@ -21,13 +23,22 @@ const ProjectMembersComponent = ({ projectId  } : Props) => {
 
     const columns: ColumnsType<ProjectMember> = [
         {
-            title: 'Business',
+            title: 'Member',
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => (
                 <>
-                    <span style={{fontWeight: 'normal', fontSize: '12px'}}>{record.id}. {record.user?.name}</span><br/>
-                    <span style={{fontWeight: 'normal', fontSize: '12px'}}>{record?.user?.email} </span><br/>
+                    <span style={{fontWeight: 'normal'}}>{record.id}. {record.user?.name}</span>
+                </>
+            ),
+        },
+        {
+            title: 'Contact',
+            dataIndex: 'contact',
+            key: 'contact',
+            render: (_, record) => (
+                <>
+                    <span style={{fontWeight: 'normal', fontSize: '14px'}}>{record.id}. {record.user?.email}</span>
                 </>
             ),
         },
@@ -127,6 +138,7 @@ const ProjectMembersComponent = ({ projectId  } : Props) => {
     return <>
         <Card className="good-shadow"
               title={<Space>
+                      <GoodImageIcon iconPath={peopleIcon} iconSizeEm={32} padding={3} />
                       <span>Project Members</span>
                       <Button icon={<PlusCircleOutlined/>}
                               onClick={showAddMemberForm}

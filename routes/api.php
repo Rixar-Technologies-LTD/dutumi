@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Projects\FeaturesController;
+use App\Http\Controllers\Projects\ProjectMembersController;
 use App\Http\Controllers\Projects\ProjectsController;
 use App\Http\Controllers\Users\UsersManagementController;
 use Illuminate\Http\Request;
@@ -22,12 +23,13 @@ Route::prefix('v1/projects')->middleware('auth:api')->group(function () {
     Route::get('list', [ProjectsController::class, 'getProjects']);
     Route::post('add', [ProjectsController::class, 'addProject']);
     Route::post('update', [ProjectsController::class, 'updateProject']);
+    Route::get('details', [ProjectsController::class, 'getProjectDetails']);
 
-    Route::get('members', [ProjectsController::class, 'fetchProjectMembers']);
-    Route::post('members/add', [ProjectsController::class, 'addProjectMember']);
-    Route::post('members/remove', [ProjectsController::class, 'removeProjectMember']);
+    Route::get('members', [ProjectMembersController::class, 'fetchProjectMembers']);
+    Route::post('members/add', [ProjectMembersController::class, 'addProjectMember']);
+    Route::post('members/remove', [ProjectMembersController::class, 'removeProjectMember']);
 
-    Route::get('users/assignable', [ProjectsController::class, 'fetchAssignableUsers']);
+    Route::get('users/assignable', [ProjectMembersController::class, 'fetchAssignableUsers']);
 
 });
 
