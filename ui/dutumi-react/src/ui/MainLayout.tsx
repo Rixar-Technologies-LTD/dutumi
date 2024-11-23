@@ -30,7 +30,8 @@ import BusinessProductsPage from "./features/businesses/pages/BusinessProductsPa
 import BusinessOrdersPage from "./features/businesses/pages/BusinessOrdersPage";
 import ProjectsListComponent from "./features/projects/ProjectsListComponent";
 import ProjectDetailsComponent from "./features/projects/ProjectDetailsComponent";
-import FeaturesListComponent from "./features/projects/features/FeaturesListComponent";
+import FeaturesListComponent from "./features/projects/features/ProjectFeaturesListComponent";
+import FeatureDetailsComponent from "./features/projects/features/FeatureDeatailsComponent";
 
 const {Content} = Layout;
 
@@ -58,11 +59,11 @@ function MainLayout() {
                     <Routes>
                         {/*<Route index element={<RolesComponent/>}/>*/}
 
-
                         <Route path="projects">
                             <Route index element={<RequireAuth><ProjectsListComponent/></RequireAuth>}/>
                             <Route path=":projectId" element={<ProjectDetailsComponent/>}/>
                             <Route path="features" element={<FeaturesListComponent/>}/>
+                            <Route path="features/details" element={<FeatureDetailsComponent/>}/>
                             <Route path="releases" element={<BusinessesListComponent/>}/>
                             <Route path="issues" element={<BusinessesListComponent/>}/>
                         </Route>

@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import {FileDoneOutlined, PlusCircleOutlined} from "@ant-design/icons";
+import {FileDoneOutlined, PlusCircleOutlined, UserOutlined} from "@ant-design/icons";
 import {
     CheckCircleOutlined,
     ClockCircleOutlined,
@@ -19,67 +19,62 @@ import {
     UndoOutlined,
     UsergroupAddOutlined
 } from "@ant-design/icons";
-import Search from "antd/es/input/Search";
-import sectionIcon from "../../../../assets/images/pages/features.png"
+import sectionIcon from "../../../../assets/images/pages/list.png"
 import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
 import {Business, RemindersStats} from "../../../../interfaces/businesses/BusinessInterfaces";
-import {Project, ProjectType} from "../../../../interfaces/projects/ProjectsInterfaces";
+import {Project, ProjectType, Task} from "../../../../interfaces/projects/ProjectsInterfaces";
 import {SubscriptionStats} from "../../../../interfaces/MessagesInterfaces";
 import {getRequest, postRequest} from "../../../../services/rest/RestService";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";
+import {isEmpty} from "../../../../utils/helpers";
 
 
-const FeaturesListComponent = () => {
+const FeatureDetailsComponent = () => {
 
-    const columns: ColumnsType<Business> = [
+    const columns: ColumnsType<Task> = [
         {
             title: 'REF',
             dataIndex: 'reference',
             key: 'reference',
             render: (_, record) => (
                 <>
-                    HSB-{record.id} <br/>
-                    <span style={{ fontWeight: 'lighter', fontSize: '12px'}}>{record.createdDate}</span>
+                    FEAT-{record.id}
                 </>
             ),
         },
         {
-            title: 'Business',
+            title: 'Name',
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => (
                 <>
                     <div>
-                        <span style={{ color:'#5555ff'}}>{record.name}</span> <br/>
-                        {record.phoneNumber} <br/>
-                        {record.email} <br/>
+                         {record.name}
                     </div>
                 </>
             ),
         },
         {
-            title: 'Licence Status',
+            title: 'Status',
             dataIndex: 'status',
             key: 'status',
             render: (_, business) => (
                 <>
                     <Tag color="processing">{business.status ?? 'UNKNOWN'}</Tag><br/>
-                    Starts: {business?.subscription?.startDate}<br/>
-                    Ends: <span style={{ }}>{business?.subscription?.endDate}</span><br/>
                 </>
             ),
         },
         {
-            title: 'Location',
+            title: 'Assignee',
             dataIndex: 'location',
             key: 'location',
             render: (_, record) => (
                 <>
-                    {record.physicalAddress ?? 'UNKNOWN'}
+                    {record.creator?.name ?? 'No Assignee'}
                 </>
             ),
         },
@@ -90,9 +85,8 @@ const FeaturesListComponent = () => {
             render: (_, record) => (
                 <>
                     <Space size="middle">
-                        <Button type="default" size="small" onClick={()=>{showTransactions(record)}} >
+                        <Button type="default" size="small" onClick={()=>{}} >
                             <FileDoneOutlined/>
-                            Transactions ({record.transactions?.length})
                         </Button>
                     </Space>
                 </>
@@ -103,14 +97,15 @@ const FeaturesListComponent = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary" onClick={()=>{viewBusiness(record)}}> View</Button>
+                    <Button type="primary" onClick={()=>{viewFeature(record)}}> View</Button>
                 </Space>
             ),
         },
     ];
 
-    const [subscribersList, updateSubscribersList] = useState<Business[]>([]);
     const [projectsList, updateProjectsList] = useState<Project[]>([]);
+    const [featuresList, updateFeaturesList] = useState<Task[]>([]);
+
     const [currentPageNo, updateCurrentPageNo] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [pageSize, updatePageSize] = useState(50);
@@ -134,17 +129,20 @@ const FeaturesListComponent = () => {
         {type:"Admin Portal",code:"PORTAL"}
     ]);
 
-    const [selectedProject, setSelectedProject] = useState<Project>();
-
-
-    const [messageModalOpen, setMessageModal] = useState(false)
-    const [messageForm] = Form.useForm();
+    const [selectedProjectId, setSelectedProjectId] = useState<String>();
+    const [messageModalOpen, setFeatureFormOpen] = useState(false)
+    const [featureForm] = Form.useForm();
 
 
     //Fetch products
     useEffect(() => {
         fetchProjects();
-    }, [currentPageNo, pageSize, searchQuery,filter]);
+    }, []);
+
+    //Fetch products
+    useEffect(() => {
+        fetchFeatures();
+    }, [selectedProjectId,currentPageNo, pageSize, searchQuery,filter]);
 
     const fetchProjects = () => {
         const url = `/api/v1/projects/list`;
@@ -162,11 +160,27 @@ const FeaturesListComponent = () => {
         })
     }
 
-    const viewBusiness = (business:Business) => {
-        navigate(`/businesses/${business.id}`);
+    const fetchFeatures = () => {
+        if(isEmpty(selectedProjectId)){
+            console.log("no project selected")
+            return ;
+        }
+        const url = `/api/v1/projects/features?projectId=${selectedProjectId}`;
+        console.log(`fetching features... ${url}`)
+        setIsLoading(true);
+        getRequest(url)
+            .then((response) => {
+                console.log(response.data);
+                updateFeaturesList(response.data.respBody.data);
+            })
+            .catch((errorObj) => {
+                notifyHttpError('Operation Failed', errorObj)
+            }).finally(() => {
+            setIsLoading(false);
+        })
     }
 
-    const fetchRemindersStats= () => {
+    const fetchFeaturesStats= () => {
         setIsLoading(true);
         const url = `/api/v1/reports/subscriptions/expired/reminders`;
         console.log(`fetching reminders stats... ${url}`)
@@ -182,32 +196,26 @@ const FeaturesListComponent = () => {
         })
     }
 
-    const remindExpiredSubscribers = () => {
+    const saveFeature = (item: any) => {
 
-        const url:string = `/api/v1/messages/broadcast/reminders`;
-        console.log(`Sending subscriptions reminders... ${url}`)
-
+        const url:string = isEmpty(item.id)? '/api/v1/projects/features/add' : `/api/v1/projects/features/update`;
         setIsLoading(true);
-        postRequest(url,{ })
+        postRequest(url,{
+            "project_id" : selectedProjectId,
+            ...item
+        })
             .then((response) => {
                 console.log(response.data.payload);
-                fetchRemindersStats();
-                notifySuccess("Reminders Sent")
-                setRemindersModalOpen(false)
+                notifySuccess("Record Saved")
+                setFeatureFormOpen(false)
+                fetchFeatures();
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
             }).finally(() => {
-            setIsLoading(false);
-            setRemindersModalOpen(false)
-        })
+               setIsLoading(false);
+         })
     }
-
-
-    const saveMessage = (item: {  }) => {
-
-    }
-
 
     const onPageChange = (page: number, pageSize: number) => {
         updateCurrentPageNo(page)
@@ -219,7 +227,7 @@ const FeaturesListComponent = () => {
 
     const onSearch = (value: string) => {
         if(value===searchQuery){
-            fetchProjects()
+            fetchFeatures()
         }
         updateSearchQuery(value)
     }
@@ -230,7 +238,7 @@ const FeaturesListComponent = () => {
 
     const showReminders = ()=>{
         setRemindersModalOpen(true)
-        fetchRemindersStats();
+        fetchFeaturesStats();
     }
 
     const showTransactions = (subscription: Business)=>{
@@ -238,18 +246,21 @@ const FeaturesListComponent = () => {
         setSubscriptionsModalVisible(true);
     }
 
-
-    const onProjectTypeChange = (value: any) => {
-        setSelectedProject(value);
+    const onProjectChanged = (value: any) => {
+        setSelectedProjectId(value);
     };
 
-    return <EyasiContentCard title="Features"
-                             subTitle="Project Features"
+    const viewFeature = (task:Task) => {
+        navigate(`/projects/features/details?projectId=${task.id}`);
+    }
+
+    return <EyasiContentCard title="Feature"
+                             subTitle="Status Panel"
                              iconImage={sectionIcon}
                              extraHeaderItems={[
                                  isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,
                                  <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={()=>{
-                                     fetchProjects();
+                                     fetchFeatures();
                                  }} key="2"
                                          type="default">Refresh</Button>
                              ]}>
@@ -259,27 +270,22 @@ const FeaturesListComponent = () => {
          *----------------*/}
         <Space style={{marginBottom: 24, marginTop: 48}} direction="horizontal">
 
-
             <div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius:'4px'}}>
                 <Select
-                    value={selectedProject}
-                    onChange={onProjectTypeChange}
-                    placeholder="Select Project"
+                    suffixIcon={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    value={selectedProjectId}
+                    onChange={onProjectChanged}
+                    placeholder="Select Assignee"
                     style={{width: '100%',minWidth:'240px'}}
                     size="large"
                     options={projectsList.map((project) => ({label: project.name, value: project.id}))}
                 />
             </div>
 
-            <Search size="large"
-                    placeholder="Search"
-                    onSearch={onSearch}
-                    allowClear/>
-
-            <Button onClick={()=>{ setMessageModal(true) }}
+            <Button onClick={()=>{ setFeatureFormOpen(true) }}
                     size="large"
                     icon={<PlusCircleOutlined/>}
-                    key="1" type="primary">Add Feature</Button>
+                    key="1" type="primary">Add Sub Feature</Button>
 
 
             <div style={{padding: '8px 16px'}}>
@@ -293,7 +299,7 @@ const FeaturesListComponent = () => {
          *-----------------------------*/}
         <Table
             columns={columns}
-            dataSource={subscribersList}
+            dataSource={featuresList}
             pagination={false}
             loading={isLoading}
             rowKey="id"
@@ -348,8 +354,8 @@ const FeaturesListComponent = () => {
                 borderRadius:'4px'}}>
                 {remindersStats?.reminderMessage}
             </p>
-
-            <Button style={{marginTop: '24px'}} type="primary" loading={isLoading} onClick={remindExpiredSubscribers}>
+w
+            <Button style={{marginTop: '24px'}} type="primary" loading={isLoading}>
                 <MessageOutlined/>
                 Send Reminders to {remindersStats?.pendingReminders} Subscribers
             </Button>
@@ -368,18 +374,18 @@ const FeaturesListComponent = () => {
                open={messageModalOpen}
                width="640px"
                onOk={() => {
-                   messageForm.submit()
+                   featureForm.submit()
                }}
                confirmLoading={isLoading}
                okText="Save"
                onCancel={() => {
-                   setMessageModal(false)
+                   setFeatureFormOpen(false)
                }}>
 
             <Form
-                form={messageForm}
+                form={featureForm}
                 layout="vertical"
-                onFinish={saveMessage}
+                onFinish={saveFeature}
             >
 
                 <Form.Item name="id" hidden>
@@ -389,7 +395,7 @@ const FeaturesListComponent = () => {
                 <Form.Item
                     style={{marginBottom: 16, marginTop: '16px'}}
                     label="Feature Name"
-                    name="content"
+                    name="name"
                 >
                     <Input type={"text"}/>
                 </Form.Item>
@@ -397,7 +403,7 @@ const FeaturesListComponent = () => {
                 <Form.Item
                     style={{marginBottom: 16, marginTop: '16px'}}
                     label="Feature Description"
-                    name="content"
+                    name="description"
                 >
                     <TextArea showCount/>
                 </Form.Item>
@@ -409,7 +415,7 @@ const FeaturesListComponent = () => {
                         <DatePicker/>
                     </Form.Item>
                     <Form.Item
-                        name="mvp_date"
+                        name="end_date"
                         label="End Date">
                         <DatePicker/>
                     </Form.Item>
@@ -423,5 +429,5 @@ const FeaturesListComponent = () => {
 
 }
 
-export default FeaturesListComponent
+export default FeatureDetailsComponent
 

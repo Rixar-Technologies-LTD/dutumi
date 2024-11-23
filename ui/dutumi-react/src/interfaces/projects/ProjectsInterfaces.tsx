@@ -24,6 +24,24 @@ export interface ProjectMember {
     user_id: string
     status: string
     created_at: string,
-    user : SystemUser,
-    added_by_user : SystemUser
+    user: SystemUser,
+    added_by_user: SystemUser
+}
+
+
+export interface Task {
+    "id": string,
+    "project_id": string,
+    "creator_user_id": string,
+    "assignee_user_id": string,
+    "name": string,
+    "type": string,
+    "status": string,
+    "description": string,
+    "start_date": string,
+    "end_date": string,
+    "remark": string,
+    "created_at": string,
+    "updated_at": string,
+    "creator": SystemUser
 }

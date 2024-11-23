@@ -77,6 +77,10 @@ const ProjectDetailsComponent = () => {
         navigate(`/businesses/products/${business?.id}?sc=${businessSchema}`);
     }
 
+    const navigateToFeatures = () => {
+        navigate(`/projects/features`);
+    }
+
     const viewOrders = () => {
         navigate(`/businesses/orders/${business?.id}?sc=${businessSchema}`);
     }
@@ -95,7 +99,7 @@ const ProjectDetailsComponent = () => {
             <Col span={12}>
                 <Row gutter={16} style={{ marginBottom: '12px'}}>
                     <Col span={12}>
-                        <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
+                        <Card  onClick={navigateToFeatures} bordered={false} style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Features" value={(business?.stats?.branchesCount ?? 0).toLocaleString()}
                                        prefix={<BankOutlined/>}
                                        suffix={``}/>
