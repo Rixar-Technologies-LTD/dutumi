@@ -15,6 +15,7 @@ class Task extends Model
     ];
 
     protected $fillable = [
+
         'project_id',
         'parent_id',
 
@@ -33,7 +34,14 @@ class Task extends Model
         'priority',
         'description',
         'start_date',
-        'end_date'
+        'end_date',
+
+        'design_status',
+        'dev_status',
+        'test_status',
+        'approval_status',
+        'deployment_status'
+
     ];
 
 

@@ -51,6 +51,12 @@ export interface Task {
     "tester": SystemUser,
     "approver": SystemUser,
     "deployer": SystemUser,
+
+    "design_status": string,
+    "dev_status": string,
+    "test_status": string,
+    "approval_status": string,
+    "deployment_status": string
 }
 
 export interface Member {

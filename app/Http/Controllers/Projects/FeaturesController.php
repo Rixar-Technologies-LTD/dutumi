@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class FeaturesController extends BaseController
 {
@@ -41,7 +42,6 @@ class FeaturesController extends BaseController
         return $this->returnResponse("Feature Details", $responseData);
     }
 
-
     /**
      * Get child features
      * @param Request $request
@@ -49,14 +49,15 @@ class FeaturesController extends BaseController
      */
     public function getSubFeatures(Request $request)
     {
-        $projects = Task::query()->where(['parent_id' => $request->input('parenId')])
-            ->with(['assignee', 'creator'])
+        $projects = Task::query()->where(['parent_id' => $request->input('parentId')])
+            ->with(['creator'])
             ->paginate(50);
         return $this->returnResponse("Sub features", $projects);
     }
 
     public function addFeature(Request $request)
     {
+        Log::info(json_encode($request->all()));
 
         $request->validate([
             'project_id' => 'numeric|required',
@@ -87,7 +88,7 @@ class FeaturesController extends BaseController
     {
 
         $request->validate([
-            'id' => 'required|exists:features,id'
+            'id' => 'required|exists:tasks,id'
         ]);
 
         $project = Task::query()->where(['id' => $request->input('id')])
@@ -95,6 +96,36 @@ class FeaturesController extends BaseController
                 'owner_id' => $request->input('owner_id'),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
+            ]);
+        return $this->returnResponse("Feature Updated", $project);
+    }
+
+    public function updateFeatureStatus(Request $request)
+    {
+
+        $request->validate([
+            'id' => 'required|exists:tasks,id',
+            'status' => 'required',
+        ]);
+
+        $project = Task::query()->where(['id' => $request->input('id')])
+            ->update([
+                'status' => $request->input('status')
+            ]);
+        return $this->returnResponse("Feature Updated", $project);
+    }
+
+    public function updateProgress(Request $request)
+    {
+
+        $request->validate([
+            'id' => 'required|exists:tasks,id',
+            'status' => 'required',
+        ]);
+
+        $project = Task::query()->where(['id' => $request->input('id')])
+            ->update([
+                'status' => $request->input('status')
             ]);
         return $this->returnResponse("Feature Updated", $project);
     }

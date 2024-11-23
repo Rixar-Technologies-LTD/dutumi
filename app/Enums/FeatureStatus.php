@@ -5,8 +5,10 @@ namespace App\Enums;
 enum FeatureStatus
 {
 
+    case DESIGN;
     case DEVELOPMENT;
-    case PRODUCTION;
-    case DEPRECATED;
+    case TESTING;
+    case LIVE;
+    case RETIRED;
 
 }

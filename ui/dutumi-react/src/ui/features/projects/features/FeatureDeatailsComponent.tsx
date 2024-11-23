@@ -1,5 +1,5 @@
 import {
-    Button, Col, List,
+    Button, Card, Col, List,
     Pagination, Row, Select,
     Space,
     Spin,
@@ -18,12 +18,13 @@ import {Business, RemindersStats} from "../../../../interfaces/businesses/Busine
 import {Project, Task} from "../../../../interfaces/projects/ProjectsInterfaces";
 import {SubscriptionStats} from "../../../../interfaces/MessagesInterfaces";
 import {getRequest, postRequest} from "../../../../services/rest/RestService";
-import {notifyHttpError} from "../../../../services/notification/notifications";
+import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";
 import FeatureForm from "./components/FeatureFormComponent";
 import AssignmentForm from "./components/AssignementFormComponent";
 import {limitText} from "../../../../utils/helpers";
+import FeatureProgressComponent from "./components/FeatureProgressComponent";
 
 const featureStatuses = [
     {"label": 'In Design', "value": 'DESIGN'},
@@ -115,12 +116,6 @@ const FeatureDetailsComponent = () => {
     const [pageSize, updatePageSize] = useState(50);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, updateSearchQuery] = useState("");
-    const [subscriptionStats, setStats] = useState<SubscriptionStats>();
-    const [remindersStats, setRemindersStats] = useState<RemindersStats>();
-    const [remindersModalOpen, setRemindersModalOpen] = useState<boolean>(false);
-
-    const [selectedSubscription, setSelectedSubscription] = useState<Business | null>();
-    const [isSubscriptionVisible, setSubscriptionsModalVisible] = useState(false);
 
     const [filter, setFilterGroup] = useState("all");
     const navigate = useNavigate();
@@ -137,7 +132,7 @@ const FeatureDetailsComponent = () => {
     //Fetch products
     useEffect(() => {
         fetchFeatureDetails();
-    }, []);
+    }, [featureId]);
 
     //Fetch products
     useEffect(() => {
@@ -185,6 +180,7 @@ const FeatureDetailsComponent = () => {
         })
             .then((response) => {
                 console.log(response.data);
+                notifySuccess("Feature Status Updated")
                 fetchFeatureDetails();
             })
             .catch((errorObj) => {
@@ -234,12 +230,10 @@ const FeatureDetailsComponent = () => {
         <Row>
 
             <Col span={8}>
-
                 <List
+                    style={{marginRight: '32px'}}
                     size="large"
-                    header={<h3 style={{color: '#5e548e'}}> {currentFeature?.name}</h3>}
-
-                    footer={<div> {currentFeature?.remark}</div>}
+                    header={<h3 style={{color: '#5e548e', padding: 0, margin: 0}}> {currentFeature?.name}</h3>}
                     bordered>
 
                     {/*  Feature Status */}
@@ -249,11 +243,16 @@ const FeatureDetailsComponent = () => {
                                 value={currentFeature?.status}
                                 onChange={updateFeatureStatus}
                                 placeholder="Select Status"
-                                style={{width: '100%', minWidth: '128px',border: '1px solid #00bbf9', borderRadius:'8px'}}
+                                style={{
+                                    width: '100%',
+                                    minWidth: '148px',
+                                    border: '1px solid #f7b801',
+                                    borderRadius: '8px'
+                                }}
                                 size="large"
                                 options={featureStatuses}
-                                labelRender={(labelInValueType)=>{
-                                    return <span style={{ color:'#00bbf9'}}>{labelInValueType.label}</span>
+                                labelRender={(labelInValueType) => {
+                                    return <span style={{color: '#f7b801'}}>{labelInValueType.label}</span>
                                 }}
                             /></Space>]}>
                         Feature Status
@@ -285,115 +284,127 @@ const FeatureDetailsComponent = () => {
             </Col>
 
             {/* Stats */}
-            <Col span={8}>
-
-            </Col>
-        </Row>
-
-
-        <Space style={{marginBottom: 24, marginTop: 48}} direction="horizontal">
-
-            <Button onClick={() => {
-                setFeatureFormOpen(true)
-            }}
-                    size="large"
-                    icon={<PlusCircleOutlined/>}
-                    key="1" type="primary">Add Sub Feature</Button>
-
-            <div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius: '4px'}}>
-                <Select
-                    suffixIcon={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
-                    value={selectedProjectId}
-                    onChange={onProjectChanged}
-                    placeholder="Filter Assignee"
-                    style={{width: '100%', minWidth: '240px'}}
-                    size="large"
-                    options={projectsList.map((project) => ({label: project.name, value: project.id}))}
-                />
-            </div>
-
-        </Space>
-
-
-        <Row>
             <Col span={16}>
-                {/**---------------------------*
-                 /** Orders Table
-                 *-----------------------------*/}
-                <Table
-                    columns={columns}
-                    dataSource={childrenFeaturesList}
-                    pagination={false}
-                    loading={isLoading}
-                    rowKey="id"
-                />
+                <Card title={<h3 style={{color: '#5e548e', padding: 0, margin: 0}}>Feature Progress</h3>}
+                      style={{padding: '12px 8px', border: '1px solid #e1e1e1'}}>
 
-                {/**---------------------------*
-                 /** Pagination
-                 *-----------------------------*/}
-                <Pagination style={{marginTop: 32, marginBottom: 32}}
-                            pageSize={pageSize}
-                            current={currentPageNo}
-                            total={totalItems}
-                            simple={false}
-                            showSizeChanger={true}
-                            onChange={onPageChange}
-                            showQuickJumper={true}
-                            onShowSizeChange={onPageSizeChange}
-                />
-            </Col>
-
-            <Col span={8}>
-                <List
-                    style={{marginLeft: '32px'}}
-                    size="large"
-                    header={<Space>
-                        Assignees <Button onClick={showAssignmentForm} icon={<PlusCircleOutlined/>}>Assign</Button>
-                    </Space>}
-                    footer={<div> {currentFeature?.remark}</div>}
-                    bordered>
-
-                    {/* Lead */}
-                    <List.Item
-                        actions={[<Space> {currentFeature?.owner?.name ?? 'No Assignee'} <UserOutlined/> </Space>]}>
-                        Lead
-                    </List.Item>
-
-                    {/* Designer */}
-                    <List.Item
-                        actions={[<Space> {currentFeature?.designer?.name ?? 'No Assignee'} <UserOutlined/></Space>]}>
-                        Designer
-                    </List.Item>
-
-                    {/* Designer */}
-                    <List.Item
-                        actions={[<Space> {currentFeature?.implementor?.name ?? 'No Assignee'}
-                            <UserOutlined/></Space>]}>
-                        Implementor/Developer
-                    </List.Item>
-
-                    {/* Tester */}
-                    <List.Item
-                        actions={[<Space> {currentFeature?.tester?.name ?? 'No Assignee'}<UserOutlined/></Space>]}>
-                        Tester
-                    </List.Item>
-
-                    {/* Approve */}
-                    <List.Item
-                        actions={[<Space>  {currentFeature?.approver?.name ?? 'No Assignee'}<UserOutlined/></Space>]}>
-                        Approve
-                    </List.Item>
-
-                    {/* Tester */}
-                    <List.Item
-                        actions={[<Space>{currentFeature?.deployer?.name??'No Assignee'}<UserOutlined/></Space>]}>
-                        Deployer
-                    </List.Item>
-
-                </List>
+                    <FeatureProgressComponent
+                        feature={currentFeature}
+                        isVisible={false}
+                        onChanged={()=>{
+                            fetchFeatureDetails();
+                        }}
+                    />
+                </Card>
             </Col>
         </Row>
 
+
+        <Row style={{marginBottom: 24, marginTop: 48}}>
+            <Col span={24}>
+
+                <Card style={{border: '1px solid #d9bbf9'}}>
+                    <Space direction="horizontal" style={{marginBottom: 24}}>
+
+                        <h3 style={{color: '#5e548e', padding: 0, margin: 0}}>Sub Feature</h3>
+
+                        <Button onClick={() => {
+                            setFeatureFormOpen(true)
+                        }}
+                                size="large"
+                                icon={<PlusCircleOutlined/>}
+                                key="1" type="primary">Add Sub Feature</Button>
+
+                        <div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius: '4px'}}>
+                            <Select
+                                suffixIcon={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                value={selectedProjectId}
+                                onChange={onProjectChanged}
+                                placeholder="Filter Assignee"
+                                style={{width: '100%', minWidth: '240px'}}
+                                size="large"
+                                options={projectsList.map((project) => ({label: project.name, value: project.id}))}
+                            />
+                        </div>
+
+                    </Space>
+
+                    {/**---------------------------*
+                     /** Child Features
+                     *-----------------------------*/}
+                    <Table
+                        columns={columns}
+                        dataSource={childrenFeaturesList}
+                        pagination={false}
+                        loading={isLoading}
+                        rowKey="id"
+                    />
+
+                    {/**---------------------------*
+                     /** Pagination
+                     *-----------------------------*/}
+                    <Pagination style={{marginTop: 32, marginBottom: 32}}
+                                pageSize={pageSize}
+                                current={currentPageNo}
+                                total={totalItems}
+                                simple={false}
+                                showSizeChanger={true}
+                                onChange={onPageChange}
+                                showQuickJumper={true}
+                                onShowSizeChange={onPageSizeChange}
+                    />
+                </Card>
+
+            </Col>
+        </Row>
+
+
+        <List
+            style={{marginLeft: '32px'}}
+            size="large"
+            header={<Space>Assignees <Button onClick={showAssignmentForm}
+                                             icon={<PlusCircleOutlined/>}>Assign</Button></Space>}
+            footer={<div> {currentFeature?.remark}</div>}
+            bordered>
+
+            {/* Lead */}
+            <List.Item
+                actions={[<Space> {currentFeature?.owner?.name ?? 'No Assignee'} <UserOutlined/> </Space>]}>
+                Lead
+            </List.Item>
+
+            {/* Designer */}
+            <List.Item
+                actions={[<Space> {currentFeature?.designer?.name ?? 'No Assignee'} <UserOutlined/></Space>]}>
+                Designer
+            </List.Item>
+
+            {/* Designer */}
+            <List.Item
+                actions={[<Space> {currentFeature?.implementor?.name ?? 'No Assignee'}
+                    <UserOutlined/></Space>]}>
+                Implementor/Developer
+            </List.Item>
+
+            {/* Tester */}
+            <List.Item
+                actions={[<Space> {currentFeature?.tester?.name ?? 'No Assignee'}<UserOutlined/></Space>]}>
+                Tester
+            </List.Item>
+
+            {/* Approve */}
+            <List.Item
+                actions={[<Space>  {currentFeature?.approver?.name ?? 'No Assignee'}<UserOutlined/></Space>]}>
+                Approve
+            </List.Item>
+
+            {/* Tester */}
+            <List.Item
+                actions={[<Space>{currentFeature?.deployer?.name ?? 'No Assignee'}<UserOutlined/></Space>]}>
+                Deployer
+            </List.Item>
+
+        </List>
 
         <FeatureForm
             title="Sub Feature"
@@ -419,6 +430,7 @@ const FeatureDetailsComponent = () => {
                 setAssignmentFormOpen(false)
             }}
         />
+
 
     </EyasiContentCard>;
 
