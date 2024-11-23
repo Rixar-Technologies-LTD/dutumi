@@ -30,17 +30,21 @@ class Task extends Model
 
         'name',
         'type',
-        'status',
         'priority',
         'description',
+
         'start_date',
         'end_date',
+
+        'status',
+        'status_remark',
 
         'design_status',
         'dev_status',
         'test_status',
         'approval_status',
-        'deployment_status'
+        'deployment_status',
+        'verification_Status'
 
     ];
 

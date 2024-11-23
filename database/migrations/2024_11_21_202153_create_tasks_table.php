@@ -32,13 +32,23 @@ return new class extends Migration
             $table->string("name");
             $table->string("description",2048)->nullable();
             $table->string("type")->default(TaskType::FEATURE->name);
-            $table->string("status")->default(FeatureStatus::DEVELOPMENT->name);
             $table->string("priority")->nullable();
 
             $table->dateTime("start_date")->nullable();
             $table->dateTime("end_date")->nullable();
             $table->string("remark")->nullable();
-           $table->timestamps();
+
+            $table->string("design_status")->nullable();
+            $table->string("dev_status")->nullable();
+            $table->string("test_status")->nullable();
+            $table->string("approval_status")->nullable();
+            $table->string("deployment_status")->nullable();
+            $table->string("verification_status")->nullable();
+
+            $table->string("status")->default(FeatureStatus::DEVELOPMENT->name);
+            $table->string("status_remark")->nullable();
+
+            $table->timestamps();
         });
     }
 

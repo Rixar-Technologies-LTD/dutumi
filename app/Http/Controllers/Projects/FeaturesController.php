@@ -120,7 +120,12 @@ class FeaturesController extends BaseController
 
         $request->validate([
             'id' => 'required|exists:tasks,id',
-            'status' => 'required',
+            'design_status' => 'required',
+            'dev_status' => 'required',
+            'test_status' => 'required',
+            'approval_status' => 'required',
+            'deployment_status' => 'required',
+            'verification_Status' => 'required'
         ]);
 
         $project = Task::query()->where(['id' => $request->input('id')])
@@ -129,7 +134,8 @@ class FeaturesController extends BaseController
                 'dev_status' => $request->input('dev_status'),
                 'test_status' => $request->input('test_status'),
                 'approval_status' => $request->input('approval_status'),
-                'deployment_status' => $request->input('deployment_status')
+                'deployment_status' => $request->input('deployment_status'),
+                'verification_status' => $request->input('verification_status'),
             ]);
 
         return $this->returnResponse("Feature Updated", $project);
