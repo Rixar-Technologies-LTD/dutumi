@@ -1,50 +1,48 @@
 import {
     DatePicker,
     Form, Image, Input,
-    Modal, Space,
+    Modal, Select, Space,
 } from 'antd';
 import React, {useEffect, useState} from 'react';
 
 import TextArea from "antd/es/input/TextArea";
-import Compact from "antd/es/space/Compact";
 import {getRequest, postRequest} from "../../../../../services/rest/RestService";
 import {notifyHttpError, notifySuccess} from "../../../../../services/notification/notifications";
-import {isEmpty} from "../../../../../utils/helpers";
 
-import sectionIcon from "../../../../../assets/images/pages/feature.png"
+import sectionIcon from "../../../../../assets/images/icons/users/owner.png"
+import {Member, Task} from "../../../../../interfaces/projects/ProjectsInterfaces";
 
 
 interface Props {
     isVisible: boolean;
     projectId: string;
     title: string ;
-    parentFeatureId?: string | null;
+    featureId?: string | null;
     onSaveCompleted: () => void;
     onCancelled: () => void;
 
 }
 
 
-const FeatureForm = (featureFormProps:Props) => {
+const AssignmentForm = (featureFormProps:Props) => {
 
+    const [membersList, setMembersList] = useState<Member[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [featureForm] = Form.useForm();
 
     //Fetch products
     useEffect(() => {
+        fetchProjectMembers();
     }, []);
 
-    const fetchFeatures = () => {
-        if(isEmpty(featureFormProps.projectId)){
-            console.log("no project selected")
-            return ;
-        }
-        const url = `/api/v1/projects/features?projectId=${featureFormProps.projectId}`;
-        console.log(`fetching features... ${url}`)
+    const fetchProjectMembers = () => {
+        const url = `/api/v1/projects/members?projectId=${featureFormProps.projectId}`;
+        console.log(`fetching members... ${url}`)
         setIsLoading(true);
         getRequest(url)
             .then((response) => {
                 console.log(response.data);
+                setMembersList(response.data.respBody.data)
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -53,12 +51,12 @@ const FeatureForm = (featureFormProps:Props) => {
         })
     }
 
-    const saveFeature = (item: any) => {
+    const addMember = (item: any) => {
 
-        const url:string = isEmpty(item.id)? '/api/v1/projects/features/add' : `/api/v1/projects/features/update`;
+        const url:string ='/api/v1/projects/members/add';
         setIsLoading(true);
         postRequest(url,{
-            "project_id" : featureFormProps.projectId,
+            "featureId" : featureFormProps.featureId,
             ...item
         })
             .then((response) => {
@@ -103,41 +101,43 @@ const FeatureForm = (featureFormProps:Props) => {
             <Form
                 form={featureForm}
                 layout="vertical"
-                onFinish={saveFeature}
+                onFinish={addMember}
             >
 
                 <Form.Item name="id" hidden>
                     <Input/>
                 </Form.Item>
 
+
                 <Form.Item
-                    style={{marginBottom: 16, marginTop: '16px'}}
-                    label="Feature Name"
-                    name="name"
+                    style={{ marginTop: '24px'}}
+                    label="Member"
+                    name="userId"
                 >
-                    <Input type={"text"}/>
+                    <Select
+                        style={{width: '100%'}}
+                        options={membersList.map((member) => ({label: member.user?.name, value: member.user.id}))}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginTop: '24px'}}
+                    label="Member"
+                    name="userId"
+                >
+                    <Select
+                        style={{width: '100%'}}
+                        options={membersList.map((member) => ({label: member.user?.name, value: member.user.id}))}
+                    />
                 </Form.Item>
 
                 <Form.Item
                     style={{marginBottom: 16, marginTop: '16px'}}
-                    label="Feature Description"
-                    name="description"
+                    label="Remark"
+                    name="remark"
                 >
                     <TextArea showCount/>
                 </Form.Item>
-
-                <Compact>
-                    <Form.Item
-                        name="start_date"
-                        label="Start Date">
-                        <DatePicker/>
-                    </Form.Item>
-                    <Form.Item
-                        name="end_date"
-                        label="End Date">
-                        <DatePicker/>
-                    </Form.Item>
-                </Compact>
 
 
             </Form>
@@ -147,5 +147,5 @@ const FeatureForm = (featureFormProps:Props) => {
 
 }
 
-export default FeatureForm
+export default AssignmentForm
 

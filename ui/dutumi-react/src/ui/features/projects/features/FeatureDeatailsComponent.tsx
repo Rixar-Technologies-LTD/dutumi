@@ -1,9 +1,6 @@
 import {
-    Button, DatePicker,
-     Form, Input,
-    Modal,
-    Pagination,
-    RadioChangeEvent, Select,
+    Button, Col, List,
+    Pagination,  Row, Select,
     Space,
     Spin,
     Table,
@@ -13,16 +10,10 @@ import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
 import {FileDoneOutlined, PlusCircleOutlined, UserOutlined} from "@ant-design/icons";
 import {
-    CheckCircleOutlined,
-    ClockCircleOutlined,
-    MessageOutlined,
-    UndoOutlined,
-    UsergroupAddOutlined
+    UndoOutlined
 } from "@ant-design/icons";
 import sectionIcon from "../../../../assets/images/pages/list.png"
 import {useNavigate, useSearchParams} from "react-router-dom";
-import TextArea from "antd/es/input/TextArea";
-import Compact from "antd/es/space/Compact";
 import {Business, RemindersStats} from "../../../../interfaces/businesses/BusinessInterfaces";
 import {Project, ProjectType, Task} from "../../../../interfaces/projects/ProjectsInterfaces";
 import {SubscriptionStats} from "../../../../interfaces/MessagesInterfaces";
@@ -30,8 +21,8 @@ import {getRequest, postRequest} from "../../../../services/rest/RestService";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";
-import {isEmpty} from "../../../../utils/helpers";
 import FeatureForm from "./components/FeatureFormComponent";
+import AssignmentForm from "./components/AssignementFormComponent";
 
 
 const FeatureDetailsComponent = () => {
@@ -54,7 +45,7 @@ const FeatureDetailsComponent = () => {
             render: (_, record) => (
                 <>
                     <div>
-                         {record.name}
+                        {record.name}
                     </div>
                 </>
             ),
@@ -86,7 +77,8 @@ const FeatureDetailsComponent = () => {
             render: (_, record) => (
                 <>
                     <Space size="middle">
-                        <Button type="default" size="small" onClick={()=>{}} >
+                        <Button type="default" size="small" onClick={() => {
+                        }}>
                             <FileDoneOutlined/>
                         </Button>
                     </Space>
@@ -98,14 +90,17 @@ const FeatureDetailsComponent = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary" onClick={()=>{viewFeature(record)}}> View</Button>
+                    <Button type="primary" onClick={() => {
+                        viewFeature(record)
+                    }}> View</Button>
                 </Space>
             ),
         },
     ];
 
     const [projectsList, updateProjectsList] = useState<Project[]>([]);
-    const [featuresList, updateFeaturesList] = useState<Task[]>([]);
+    const [childrenFeaturesList, updateChildrenFeaturesList] = useState<Task[]>([]);
+    const [currentFeature, setCurrentFeature] = useState<Task>();
 
     const [currentPageNo, updateCurrentPageNo] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
@@ -116,7 +111,7 @@ const FeatureDetailsComponent = () => {
     const [remindersStats, setRemindersStats] = useState<RemindersStats>();
     const [remindersModalOpen, setRemindersModalOpen] = useState<boolean>(false);
 
-    const [selectedSubscription, setSelectedSubscription] = useState<Business|null>();
+    const [selectedSubscription, setSelectedSubscription] = useState<Business | null>();
     const [isSubscriptionVisible, setSubscriptionsModalVisible] = useState(false);
 
     const [filter, setFilterGroup] = useState("all");
@@ -124,29 +119,31 @@ const FeatureDetailsComponent = () => {
 
     const [selectedProjectId, setSelectedProjectId] = useState<string>();
     const [featureFormOpen, setFeatureFormOpen] = useState(false)
+    const [assignmentFormOpen, setAssignmentFormOpen] = useState(false)
 
 
     const [searchParams] = useSearchParams();
-    const parentFeatureId= searchParams.get('projectId');
+    const featureId = searchParams.get('featureId');
+    const parentFeatureId = searchParams.get('projectId');
 
-        //Fetch products
+    //Fetch products
     useEffect(() => {
-        fetchProjects();
+        fetchFeatureDetails();
     }, []);
 
     //Fetch products
     useEffect(() => {
-        fetchFeatures();
-    }, [selectedProjectId,currentPageNo, pageSize, searchQuery,filter]);
+        fetchSubFeatures();
+        fetchFeatureDetails();
+    }, [selectedProjectId, currentPageNo, pageSize, searchQuery, filter]);
 
-    const fetchProjects = () => {
-        const url = `/api/v1/projects/list`;
-        console.log(`fetching projects... ${url}`)
+    const fetchFeatureDetails = () => {
+        const url = `/api/v1/projects/features/details?id=${featureId}`;
         setIsLoading(true);
         getRequest(url)
             .then((response) => {
                 console.log(response.data);
-                updateProjectsList(response.data.respBody.data);
+                setCurrentFeature(response.data.respBody.feature);
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -155,18 +152,14 @@ const FeatureDetailsComponent = () => {
         })
     }
 
-    const fetchFeatures = () => {
-        if(isEmpty(selectedProjectId)){
-            console.log("no project selected")
-            return ;
-        }
-        const url = `/api/v1/projects/features?projectId=${selectedProjectId}`;
-        console.log(`fetching features... ${url}`)
+    const fetchSubFeatures = () => {
+        const url = `/api/v1/projects/features/children?parenId=${featureId}`;
+        console.log(`fetching children features... ${url}`)
         setIsLoading(true);
         getRequest(url)
             .then((response) => {
                 console.log(response.data);
-                updateFeaturesList(response.data.respBody.data);
+                updateChildrenFeaturesList(response.data.respBody.data);
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -177,7 +170,7 @@ const FeatureDetailsComponent = () => {
 
     const onFeatureSaveCompleted = () => {
         setFeatureFormOpen(false)
-        fetchFeatures();
+        fetchSubFeatures();
     }
 
     const onPageChange = (page: number, pageSize: number) => {
@@ -190,48 +183,96 @@ const FeatureDetailsComponent = () => {
 
     const onProjectChanged = (value: any) => {
         setSelectedProjectId(value);
-    };
+    }
 
-    const viewFeature = (task:Task) => {
+    const viewFeature = (task: Task) => {
         navigate(`/projects/features/details?projectId=${task.id}`);
     }
 
-    return <EyasiContentCard title="Feature"
-                             subTitle="Status Panel"
+    const showAssignmentForm = ()=> {
+        setAssignmentFormOpen(true);
+    }
+
+    return <EyasiContentCard title={`FEAT${currentFeature?.id}`}
+                             subTitle={`${currentFeature?.name}`}
                              iconImage={sectionIcon}
                              extraHeaderItems={[
                                  isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,
-                                 <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={()=>{
-                                     fetchFeatures();
+                                 <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={() => {
+                                     fetchSubFeatures();
                                  }} key="2"
                                          type="default">Refresh</Button>
                              ]}>
+
+        <Row>
+            <Col span={8}>
+                <List
+                    size="large"
+                    header={<Space>
+                        Feature Status <Tag>{currentFeature?.status}</Tag>
+                    </Space>}
+                    footer={<div> {currentFeature?.remark}</div>}
+                    bordered>
+
+                    {/*  Description */}
+                    <List.Item>
+                        {currentFeature?.description}
+                    </List.Item>
+
+                    {/* Assignee */}
+                    <List.Item
+                        actions={[<Space>
+                            <UserOutlined/> {currentFeature?.assignee?.name??'No Assignee'}
+                            <Button onClick={showAssignmentForm} icon={<PlusCircleOutlined/>}>Assign</Button>
+                        </Space>]}>
+                        Assignee
+                    </List.Item>
+
+                    {/*  Created By */}
+                    <List.Item
+                        actions={[<Space> <UserOutlined/> {currentFeature?.creator?.name}</Space>]}>
+                        Created By
+                    </List.Item>
+
+                    {/*  Creation Date */}
+                    <List.Item
+                        actions={[<Space>{currentFeature?.created_at}</Space>]}>
+                        Creation Date
+                    </List.Item>
+
+                    {/*  Last Update */}
+                    <List.Item
+                        actions={[<Space>{currentFeature?.updated_at}</Space>]}>
+                        Last Update
+                    </List.Item>
+                </List>
+            </Col>
+        </Row>
 
         {/**---------------*
          /** Search
          *----------------*/}
         <Space style={{marginBottom: 24, marginTop: 48}} direction="horizontal">
 
-            <div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius:'4px'}}>
+            <Button onClick={() => {
+                setFeatureFormOpen(true)
+            }}
+                    size="large"
+                    icon={<PlusCircleOutlined/>}
+                    key="1" type="primary">Add Sub Feature</Button>
+
+            <div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius: '4px'}}>
                 <Select
-                    suffixIcon={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    suffixIcon={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
                     value={selectedProjectId}
                     onChange={onProjectChanged}
-                    placeholder="Select Assignee"
-                    style={{width: '100%',minWidth:'240px'}}
+                    placeholder="Filter Assignee"
+                    style={{width: '100%', minWidth: '240px'}}
                     size="large"
                     options={projectsList.map((project) => ({label: project.name, value: project.id}))}
                 />
             </div>
 
-            <Button onClick={()=>{ setFeatureFormOpen(true) }}
-                    size="large"
-                    icon={<PlusCircleOutlined/>}
-                    key="1" type="primary">Add Sub Feature</Button>
-
-            <div style={{padding: '8px 16px'}}>
-                { filter !== 'all' && <Tag style={{ fontSize: '18px', color: 'blue', padding:'4px 8px'}} >{totalItems}</Tag>}
-            </div>
         </Space>
 
 
@@ -240,7 +281,7 @@ const FeatureDetailsComponent = () => {
          *-----------------------------*/}
         <Table
             columns={columns}
-            dataSource={featuresList}
+            dataSource={childrenFeaturesList}
             pagination={false}
             loading={isLoading}
             rowKey="id"
@@ -260,59 +301,29 @@ const FeatureDetailsComponent = () => {
                     onShowSizeChange={onPageSizeChange}
         />
 
+        <FeatureForm
+            title="Sub Feature"
+            isVisible={featureFormOpen}
+            onSaveCompleted={onFeatureSaveCompleted}
+            onCancelled={() => {
+                setFeatureFormOpen(false)
+            }}
+            projectId={selectedProjectId ?? ''}
+            parentFeatureId={parentFeatureId}
+        />
 
-        {/***------------------------------
-         /*  Audience
-         ***------------------------------*/}
-        <Modal title="Subscription Reminders"
-               open={remindersModalOpen}
-               footer={<></>}
-               confirmLoading={isLoading}
-               onCancel={() => {
-                   setRemindersModalOpen(false)
-               }}>
-
-
-            <p style={{padding: 0, margin: 0}}>
-                <UsergroupAddOutlined style={{marginRight: '8px',color:'orange'}}/>
-                Expired Subscriptions: {remindersStats?.expiredSubscriptions}
-            </p>
-            <p style={{padding: 0, margin: 0}}>
-                <CheckCircleOutlined style={{marginRight: '8px',color:'green'}}/>
-                Reminded: {remindersStats?.sentReminders}
-            </p>
-            <p style={{padding: 0, margin: 0}}>
-                <ClockCircleOutlined style={{marginRight: '8px',color:'blue'}}/>
-                Not Reminded: {remindersStats?.pendingReminders}
-            </p>
-
-            <h3 style={{padding: 0, margin: 0, marginTop: '12px'}}>
-                <MessageOutlined style={{marginRight:'8px'}}></MessageOutlined>
-                Reminder Message</h3>
-            <p style={{padding: '8px', margin: 0,
-                border:'1px solid #a9a9a9',
-                backgroundColor: '#f5f5f5',
-                borderRadius:'4px'}}>
-                {remindersStats?.reminderMessage}
-            </p>
-w
-            <Button style={{marginTop: '24px'}} type="primary" loading={isLoading}>
-                <MessageOutlined/>
-                Send Reminders to {remindersStats?.pendingReminders} Subscribers
-            </Button>
-
-        </Modal>
-
-
-        {/***------------------------------
-         /*  Subscription Details
-         ***------------------------------*/}
-
-        <FeatureForm isVisible={featureFormOpen}
-                     onSaveCompleted={onFeatureSaveCompleted}
-                     onCancelled={()=>{setFeatureFormOpen(false)}}
-                     projectId={selectedProjectId??''}
-                     parentFeatureId={parentFeatureId}
+        <AssignmentForm
+            title="Assign Member"
+            isVisible={assignmentFormOpen}
+            projectId={currentFeature?.project_id ?? ''}
+            featureId={featureId}
+            onSaveCompleted={()=>{
+                setAssignmentFormOpen(false)
+                fetchFeatureDetails();
+            }}
+            onCancelled={() => {
+                setAssignmentFormOpen(false)
+            }}
         />
 
     </EyasiContentCard>;

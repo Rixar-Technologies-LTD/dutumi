@@ -10,23 +10,25 @@ import {
 
 import '../../../css/business.css';
 import React, {useEffect, useState} from 'react';
-import {
-    BankOutlined,
-    CalendarOutlined, ExportOutlined, PauseCircleOutlined,
-    PlayCircleOutlined, TagsOutlined, TeamOutlined,
-    UserOutlined
-} from "@ant-design/icons";
+
+
 import {UndoOutlined} from "@ant-design/icons";
 import {notifyHttpError} from "../../../services/notification/notifications";
 import {getRequest} from "../../../services/rest/RestService";
 import customerLoadingIcon from "../../templates/Loading";
 import {Business} from "../../../interfaces/businesses/BusinessInterfaces";
 import sectionIcon from "../../../assets/images/icons/subscription.png"
+import featuresIcon from "../../../assets/images/icons/generic/features.png"
+import issueIcon from "../../../assets/images/icons/generic/issue.png"
+import takeOffIcon from "../../../assets/images/icons/generic/takeoff.png"
+
 import {useNavigate, useParams} from "react-router-dom";
 import GoodContentCardPlain from "../../templates/cards/GoodContentCardPlain";
-import BusinessSubscriptionsComponent from "../businesses/components/BusinessSubscriptionsComponent";
 import ProjectMembersComponent from "./components/ProjectMembersComponent";
 import ProjectIssuesComponent from "./issues/ProjectIssuesComponent";
+import GoodImageIcon from "../../templates/icons/GoodImageIcon";
+
+
 
 const ProjectDetailsComponent = () => {
 
@@ -99,9 +101,10 @@ const ProjectDetailsComponent = () => {
             <Col span={12}>
                 <Row gutter={16} style={{ marginBottom: '12px'}}>
                     <Col span={12}>
-                        <Card  onClick={navigateToFeatures} bordered={false} style={{border: '1px solid #e3d5ca'}}>
-                            <Statistic title="Features" value={(business?.stats?.branchesCount ?? 0).toLocaleString()}
-                                       prefix={<BankOutlined/>}
+                        <Card className="dtm-btn"  onClick={navigateToFeatures} bordered={false} style={{border: '1px solid #e3d5ca'}}>
+                            <Statistic title="Features"
+                                       value={(business?.stats?.branchesCount ?? 0).toLocaleString()}
+                                       prefix={<GoodImageIcon iconPath={featuresIcon}/>}
                                        suffix={``}/>
                         </Card>
                     </Col>
@@ -109,14 +112,14 @@ const ProjectDetailsComponent = () => {
                     <Col span={12}>
                         <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Issues" value={(business?.stats?.usersCount ?? 0).toLocaleString()}
-                                       prefix={<UserOutlined/>}/>
+                                       prefix={<GoodImageIcon iconPath={issueIcon}/>}/>
                         </Card>
                     </Col>
 
                     <Col span={12} style={{ marginTop:'24px'}}>
                         <Card bordered={false} style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Releases" value={(business?.stats?.usersCount ?? 0).toLocaleString()}
-                                       prefix={<TeamOutlined/>}
+                                       prefix={<GoodImageIcon iconPath={takeOffIcon}/>}
                                        suffix={``}/>
                         </Card>
                     </Col>
@@ -126,7 +129,7 @@ const ProjectDetailsComponent = () => {
                               bordered={false}
                               style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="Products" value={(business?.stats?.products ?? 0).toLocaleString()}
-                                       prefix={<TagsOutlined/>}
+                                       prefix={<GoodImageIcon iconPath={featuresIcon}/>}
                                        suffix=""/>
                         </Card>
                     </Col>

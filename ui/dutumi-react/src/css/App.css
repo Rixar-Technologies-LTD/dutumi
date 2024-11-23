@@ -65,3 +65,11 @@
     border-color: #7678ed !important;
     color: white !important;
 }
+
+.bg-light {
+    background-color: #efe9ff !important;
+}
+
+.dtm-btn {
+    cursor: pointer;
+}

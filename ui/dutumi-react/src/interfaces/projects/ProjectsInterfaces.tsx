@@ -43,5 +43,14 @@ export interface Task {
     "remark": string,
     "created_at": string,
     "updated_at": string,
-    "creator": SystemUser
+    "creator": SystemUser,
+    "assignee": SystemUser
+}
+
+
+export interface Member {
+    "id": string,
+    "status": string,
+    "user": SystemUser,
+    "added_by_user": SystemUser
 }

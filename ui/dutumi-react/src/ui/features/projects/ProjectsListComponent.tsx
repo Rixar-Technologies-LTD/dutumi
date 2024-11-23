@@ -113,9 +113,6 @@ const ProjectsListComponent = () => {
     const [remindersStats, setRemindersStats] = useState<RemindersStats>();
     const [remindersModalOpen, setRemindersModalOpen] = useState<boolean>(false);
 
-    const [selectedSubscription, setSelectedSubscription] = useState<Business|null>();
-    const [isSubscriptionVisible, setSubscriptionsModalVisible] = useState(false);
-
     const [filter, setFilterGroup] = useState("all");
     const navigate = useNavigate();
 
@@ -213,16 +210,6 @@ const ProjectsListComponent = () => {
     const onFilterGroupChange = (e: RadioChangeEvent) => {
         setFilterGroup(e.target.value);
     };
-
-    const showReminders = ()=>{
-        setRemindersModalOpen(true)
-        fetchRemindersStats();
-    }
-
-    const showTransactions = (subscription: Business)=>{
-        setSelectedSubscription(subscription);
-        setSubscriptionsModalVisible(true);
-    }
 
     const onProjectTypeChange = (value: any) => {
         setSelectedProjectType(value);
