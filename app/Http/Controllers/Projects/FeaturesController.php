@@ -125,10 +125,16 @@ class FeaturesController extends BaseController
 
         $project = Task::query()->where(['id' => $request->input('id')])
             ->update([
-                'status' => $request->input('status')
+                'design_status' => $request->input('design_status'),
+                'dev_status' => $request->input('dev_status'),
+                'test_status' => $request->input('test_status'),
+                'approval_status' => $request->input('approval_status'),
+                'deployment_status' => $request->input('deployment_status')
             ]);
+
         return $this->returnResponse("Feature Updated", $project);
     }
+
 
     public function assignMembers(Request $request)
     {
