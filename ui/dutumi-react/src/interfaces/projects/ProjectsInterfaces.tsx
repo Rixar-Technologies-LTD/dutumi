@@ -45,7 +45,7 @@ export interface Task {
     "updated_at": string,
 
     "creator": SystemUser,
-    "owner": SystemUser,
+    "champion": SystemUser,
     "designer": SystemUser,
     "implementor": SystemUser,
     "tester": SystemUser,

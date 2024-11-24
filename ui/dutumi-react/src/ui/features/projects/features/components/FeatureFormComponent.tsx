@@ -74,6 +74,7 @@ const FeatureForm = ({   isVisible,
 
 
     const setInitialValues = ()=>{
+        featureForm.setFieldValue('id',selectedFeature?.id);
         featureForm.setFieldValue('name',selectedFeature?.name);
         featureForm.setFieldValue('description',selectedFeature?.description);
         featureForm.setFieldValue('start_date',dayjs(selectedFeature?.start_date, 'DD-MM-YYYY'));
@@ -81,6 +82,8 @@ const FeatureForm = ({   isVisible,
     }
 
     const saveFeature = (item: any) => {
+
+        console.log(`selectedFeature?.id ${selectedFeature?.id}`)
 
         const url:string = editMode? `/api/v1/projects/features/update` : '/api/v1/projects/features/add';
         setIsLoading(true);
@@ -139,6 +142,8 @@ const FeatureForm = ({   isVisible,
                 <Form.Item name="id" hidden>
                     <Input/>
                 </Form.Item>
+
+                <p>{selectedFeature?.id}</p>
 
                 <Form.Item
                     style={{marginBottom: 16, marginTop: '16px'}}

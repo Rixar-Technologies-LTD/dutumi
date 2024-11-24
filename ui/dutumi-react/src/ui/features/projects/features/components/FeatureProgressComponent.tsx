@@ -233,7 +233,6 @@ const FeatureProgressComponent = ({isVisible,feature,onChanged}:Props) => {
         console.log(`${taskType} ${newAssigneeId}`)
         const newAssignments = {
             "featureId": feature?.id,
-            "owner_id": feature?.owner?.id,
             "designer_id": feature?.designer?.id,
             "implementor_id": feature?.implementor?.id,
             "tester_id": feature?.tester?.id,

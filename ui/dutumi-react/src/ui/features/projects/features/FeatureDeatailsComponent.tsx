@@ -292,9 +292,9 @@ const FeatureDetailsComponent = () => {
 
                     {/*  Created By */}
                     <List.Item
-                        actions={[<Space>  {currentFeature?.owner?.name}</Space>]}>
+                        actions={[<Space>  {currentFeature?.champion?.name}</Space>]}>
                         <UserOutlined style={{marginRight: '12px'}}/>
-                        Lead
+                        Champion/Lead
                     </List.Item>
 
                     {/*  Creation Date */}

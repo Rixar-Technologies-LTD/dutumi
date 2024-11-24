@@ -19,7 +19,6 @@ interface Props {
     featureId?: string | null;
     onSaveCompleted: () => void;
     onCancelled: () => void;
-
 }
 
 
@@ -112,17 +111,6 @@ const AssignmentForm = (featureFormProps:Props) => {
                     <Input/>
                 </Form.Item>
 
-
-                <Form.Item
-                    style={{ marginTop: '24px'}}
-                    label="Lead"
-                    name="owner_id"
-                >
-                    <Select
-                        style={{width: '100%'}}
-                        options={membersList.map((member) => ({label: member.user?.name, value: member.user.id}))}
-                    />
-                </Form.Item>
 
                 <Form.Item
                     style={{ marginTop: '24px'}}
