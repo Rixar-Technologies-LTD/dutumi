@@ -12,7 +12,9 @@ class Project extends Model
     public static $STATUS_NOT_ACTIVE = 'NOT_ACTIVE';
 
     protected $casts = [
-        'created_at' => 'datetime:d-M-Y H:i'
+        'created_at' => 'datetime:d-M-Y H:i',
+        'start_date' => 'datetime:d-m-Y',
+        'mvp_date' => 'datetime:d-m-Y',
     ];
 
     protected $fillable = [

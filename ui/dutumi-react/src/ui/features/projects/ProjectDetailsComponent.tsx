@@ -12,7 +12,7 @@ import '../../../css/business.css';
 import React, {useEffect, useState} from 'react';
 
 
-import {CalendarOutlined, UndoOutlined, UserOutlined} from "@ant-design/icons";
+import {CalendarOutlined, UndoOutlined} from "@ant-design/icons";
 import {notifyHttpError} from "../../../services/notification/notifications";
 import {getRequest} from "../../../services/rest/RestService";
 import customerLoadingIcon from "../../templates/Loading";
@@ -24,8 +24,6 @@ import projectIcon from "../../../assets/images/icons/generic/folder.png"
 
 import {useNavigate, useParams} from "react-router-dom";
 import GoodContentCardPlain from "../../templates/cards/GoodContentCardPlain";
-import ProjectMembersComponent from "./members/ProjectMembersComponent";
-import ProjectIssuesComponent from "./issues/ProjectIssuesComponent";
 import GoodImageIcon from "../../templates/icons/GoodImageIcon";
 import {Project} from "../../../interfaces/projects/ProjectsInterfaces";
 import {limitText} from "../../../utils/helpers";
@@ -153,7 +151,7 @@ const ProjectDetailsComponent = () => {
                     </Col>
 
                     <Col span={12} style={{marginTop: '0'}}>
-                        <Card onClick={navigateToMembers}
+                        <Card className="dtm-btn" onClick={navigateToMembers}
                               bordered={false}
                               style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="People" value={(0).toLocaleString()}

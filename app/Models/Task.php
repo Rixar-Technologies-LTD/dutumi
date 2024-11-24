@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
 
+
     protected $casts = [
         'created_at' => 'datetime:d-M-Y H:i',
         'updated_at' => 'datetime:d-M-Y H:i',
-        'start_date' => 'datetime:d-M-Y',
-        'end_date' => 'datetime:d-M-Y',
+        'start_date' => 'datetime:d-m-Y',
+        'end_date' => 'datetime:d-m-Y',
     ];
 
     protected $fillable = [
@@ -21,7 +22,7 @@ class Task extends Model
 
         'creator_id',
 
-        'owner_id',
+        'champion_id',
         'designer_id',
         'implementor_id',
         'tester_id',
@@ -54,9 +55,9 @@ class Task extends Model
         return $this->belongsTo(User::class, 'creator_id');
     }
 
-    public function owner()
+    public function champion()
     {
-        return $this->belongsTo(User::class, 'owner_id');
+        return $this->belongsTo(User::class, 'champion_id');
     }
 
     public function designer()

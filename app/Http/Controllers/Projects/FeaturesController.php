@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Projects;
 
+use App\Dtos\Feature;
 use App\Enums\FeatureStatus;
 use App\Enums\TaskType;
 use App\Http\Controllers\BaseController;
@@ -26,7 +27,7 @@ class FeaturesController extends BaseController
 
         $projects = Task::query()->where(['project_id' => $request->input('projectId')])
             ->whereNull('parent_id')
-            ->with(['creator', 'owner', 'designer', 'implementor', 'tester', 'approver', 'deployer'])
+            ->with(['creator', 'champion', 'designer', 'implementor', 'tester', 'approver', 'deployer'])
             ->paginate(50);
 
 
@@ -36,8 +37,14 @@ class FeaturesController extends BaseController
     public function getDetails(Request $request)
     {
         $feature = Task::query()->where(['id' => $request->input('id')])
-            ->with(['creator', 'owner', 'designer', 'implementor', 'tester', 'approver', 'deployer'])
+            ->with(['creator', 'champion', 'designer', 'implementor', 'tester', 'approver', 'deployer'])
             ->first();
+
+        $parents = Feature::query()->where(['id' => $feature->parent_id])
+            ->with(['parent'])
+            ->first();
+
+        $responseData['parents'] = $parents;
         $responseData['feature'] = $feature;
         return $this->returnResponse("Feature Details", $responseData);
     }
@@ -57,11 +64,10 @@ class FeaturesController extends BaseController
 
     public function addFeature(Request $request)
     {
-        Log::info(json_encode($request->all()));
-
+        Log::info("new feature: ".json_encode($request->all()));
         $request->validate([
             'project_id' => 'numeric|required',
-//            'parent_id' => 'numeric',
+            'champion_id' => 'numeric',
             'name' => 'required',
             'description' => 'required',
             'start_date' => 'required|date',
@@ -71,6 +77,7 @@ class FeaturesController extends BaseController
         $project = Task::query()->create([
             'project_id' => $request->input('project_id'),
             'parent_id' => $request->input('parent_id'),
+            'champion_id' => $request->input('champion_id'),
             'creator_id' => Auth::id(),
             'name' => $request->input('name'),
             'priority' => $request->input('priority'),
@@ -87,16 +94,20 @@ class FeaturesController extends BaseController
     public function updateFeature(Request $request)
     {
 
+        Log::info("feature update: ".json_encode($request->all()));
         $request->validate([
             'id' => 'required|exists:tasks,id'
         ]);
 
         $project = Task::query()->where(['id' => $request->input('id')])
             ->update([
-                'owner_id' => $request->input('owner_id'),
+                'champion_id' => $request->input('champion_id'),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
+                'start_date' => Carbon::parse($request->input('start_date')),
+                'end_date' => Carbon::parse($request->input('end_date')),
             ]);
+
         return $this->returnResponse("Feature Updated", $project);
     }
 
@@ -119,16 +130,15 @@ class FeaturesController extends BaseController
     {
 
         $request->validate([
-            'id' => 'required|exists:tasks,id',
+            'featureId' => 'required|exists:tasks,id',
             'design_status' => 'required',
             'dev_status' => 'required',
             'test_status' => 'required',
             'approval_status' => 'required',
-            'deployment_status' => 'required',
-            'verification_Status' => 'required'
+            'deployment_status' => 'required'
         ]);
 
-        $project = Task::query()->where(['id' => $request->input('id')])
+        $project = Task::query()->where(['id' => $request->input('featureId')])
             ->update([
                 'design_status' => $request->input('design_status'),
                 'dev_status' => $request->input('dev_status'),
@@ -153,7 +163,6 @@ class FeaturesController extends BaseController
             'id' => $request->input('featureId')
         ])
             ->update([
-                'owner_id' => $request->input('owner_id'),
                 'designer_id' => $request->input('designer_id'),
                 'implementor_id' => $request->input('implementor_id'),
                 'tester_id' => $request->input('tester_id'),

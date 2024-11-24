@@ -56,7 +56,7 @@ const FeatureDetailsComponent = () => {
             ),
         },
         {
-            title: 'Name',
+            title: 'Summary',
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => (
@@ -84,21 +84,6 @@ const FeatureDetailsComponent = () => {
             render: (_, record) => (
                 <>
                     {record.creator?.name ?? 'No Assignee'}
-                </>
-            ),
-        },
-        {
-            title: 'Payments',
-            dataIndex: 'transactions',
-            key: 'transactions',
-            render: (_, record) => (
-                <>
-                    <Space size="middle">
-                        <Button type="default" size="small" onClick={() => {
-                        }}>
-                            <FileDoneOutlined/>
-                        </Button>
-                    </Space>
                 </>
             ),
         },
@@ -141,6 +126,7 @@ const FeatureDetailsComponent = () => {
     //Fetch products
     useEffect(() => {
         fetchFeatureDetails();
+        fetchSubFeatures();
     }, [featureId]);
 
     //Fetch products
@@ -237,7 +223,7 @@ const FeatureDetailsComponent = () => {
 
 
     return <EyasiContentCard title={`FEAT${currentFeature?.id}`}
-                             subTitle={``}
+                             subTitle={`  ${currentFeature?.name}`}
                              iconImage={sectionIcon}
                              extraHeaderItems={[
                                  isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>,
@@ -253,6 +239,7 @@ const FeatureDetailsComponent = () => {
              /* Feature Details Overview
              ---------------------------*/}
             <Col span={8}>
+
                 <List className="dtm-elevated"
                       style={{marginRight: '32px'}}
                       size="large"
@@ -331,17 +318,31 @@ const FeatureDetailsComponent = () => {
 
 
                 </List>
-            </Col>
 
-            {/*** --------------------
-             /* Progress & Assignees
-             -----------------------*/}
+
+                <Card className="dtm-elevated" style={{marginRight:'24px', marginTop:'32px'}}>
+                    <Space direction="horizontal" style={{marginBottom: 24}}>
+                        <h2 style={{color: '#758bfd', padding: 0, margin: 0,marginRight:'48px'}}>Updates</h2>
+                        <Button onClick={() => {setFeatureFormOpen(true)}}
+                                size="large"
+                                icon={<PlusCircleOutlined/>}
+                                key="1" type="primary">Add Update</Button>
+                    </Space>
+
+                </Card>
+            </Col>
+            
             <Col span={16}>
+
+
+                {/*** --------------------
+                 /* Progress & Assignees
+                 -----------------------*/}
                 <Card
                     className="dtm-elevated"
                     title={<Flex justify="space-between">
-                        <h3 className="dtm-text" style={{padding: 0, margin: 0}}>Progress Update</h3>
-                        <Image width={48} preview={false} src={progressIcon}/>
+                        <h3 className="dtm-text" style={{padding: 0, margin: 0}}>Progress</h3>
+                        <Image width={32} preview={false} src={progressIcon}/>
                     </Flex>}
                     style={{padding: '12px 8px', border: '1px solid #e1e1e1'}}>
 
@@ -353,18 +354,14 @@ const FeatureDetailsComponent = () => {
                         }}
                     />
                 </Card>
-            </Col>
-        </Row>
 
 
 
-        {/*** --------------------
-         /* Sub Features List
-         -----------------------*/}
-        <Row style={{marginBottom: 24, marginTop: 48}}>
-            <Col span={24}>
 
-                <Card className="dtm-elevated">
+                {/*** --------------------
+                 /* Sub Features
+                 -----------------------*/}
+                <Card className="dtm-elevated" style={{ marginTop:'32px'}}>
                     <Space direction="horizontal" style={{marginBottom: 24}}>
                         <GoodImageIcon iconPath={subFeatureIcon}/>
                         <h2 style={{color: '#758bfd', padding: 0, margin: 0,marginRight:'48px'}}>Sub Features</h2>
@@ -372,20 +369,6 @@ const FeatureDetailsComponent = () => {
                                 size="large"
                                 icon={<PlusCircleOutlined/>}
                                 key="1" type="primary">Add Sub Feature</Button>
-
-                        {/*---- Filter Assignees ----*/}
-                        {/*<div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius: '4px'}}>*/}
-                        {/*    <Select*/}
-                        {/*        suffixIcon={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}*/}
-                        {/*        value={selectedProjectId}*/}
-                        {/*        onChange={onProjectChanged}*/}
-                        {/*        placeholder="Filter Assignee"*/}
-                        {/*        style={{width: '100%', minWidth: '240px'}}*/}
-                        {/*        size="large"*/}
-                        {/*        options={projectsList.map((project) => ({label: project.name, value: project.id}))}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-
                     </Space>
 
                     {/**---------------------------*

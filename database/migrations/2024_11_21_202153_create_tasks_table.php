@@ -22,7 +22,8 @@ return new class extends Migration
 
             $table->bigInteger("parent_id")->unsigned()->nullable();
 
-            $table->bigInteger("owner_id")->unsigned()->nullable();
+            $table->bigInteger("champion_id")->unsigned()->nullable();
+
             $table->bigInteger("designer_id")->unsigned()->nullable();
             $table->bigInteger("implementor_id")->unsigned()->nullable();
             $table->bigInteger("tester_id")->unsigned()->nullable();

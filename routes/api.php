@@ -40,6 +40,7 @@ Route::prefix('v1/projects/features')->middleware('auth:api')->group(function ()
     Route::get('children', [FeaturesController::class, 'getSubFeatures']);
 
     Route::post('add', [FeaturesController::class, 'addFeature']);
+    Route::post('update', [FeaturesController::class, 'updateFeature']);
     Route::post('assign', [FeaturesController::class, 'assignMembers']);
     Route::post('status/update', [FeaturesController::class, 'updateFeatureStatus']);
     Route::post('progress/update', [FeaturesController::class, 'updateProgress']);
