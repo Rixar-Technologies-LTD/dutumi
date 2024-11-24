@@ -1,5 +1,5 @@
 import {
-    Button, Card, Col, List,
+    Button, Card, Col, Flex, List,
     Pagination, Row, Select,
     Space,
     Spin,
@@ -8,21 +8,25 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import {CalendarOutlined, FileDoneOutlined, PlusCircleOutlined, UserOutlined} from "@ant-design/icons";
+import {
+    CalendarOutlined,
+    CheckCircleOutlined,
+    EditOutlined,
+    FileDoneOutlined,
+    PlusCircleOutlined,
+    UserOutlined
+} from "@ant-design/icons";
 import {
     UndoOutlined
 } from "@ant-design/icons";
-import sectionIcon from "../../../../assets/images/pages/list.png"
+import sectionIcon from "../../../../assets/images/icons/sections/feature2.png"
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {Business, RemindersStats} from "../../../../interfaces/businesses/BusinessInterfaces";
 import {Project, Task} from "../../../../interfaces/projects/ProjectsInterfaces";
-import {SubscriptionStats} from "../../../../interfaces/MessagesInterfaces";
 import {getRequest, postRequest} from "../../../../services/rest/RestService";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";
 import FeatureForm from "./components/FeatureFormComponent";
-import AssignmentForm from "./components/AssignementFormComponent";
 import {limitText} from "../../../../utils/helpers";
 import FeatureProgressComponent from "./components/FeatureProgressComponent";
 
@@ -122,6 +126,7 @@ const FeatureDetailsComponent = () => {
 
     const [selectedProjectId, setSelectedProjectId] = useState<string>();
     const [featureFormOpen, setFeatureFormOpen] = useState(false)
+    const [featureFormEditMode, setFeatureFormEditMode] = useState(false)
     const [assignmentFormOpen, setAssignmentFormOpen] = useState(false)
 
 
@@ -192,6 +197,7 @@ const FeatureDetailsComponent = () => {
 
     const onSubFeatureSaved = () => {
         setFeatureFormOpen(false)
+        fetchFeatureDetails();
         fetchSubFeatures();
     }
 
@@ -215,6 +221,17 @@ const FeatureDetailsComponent = () => {
         setAssignmentFormOpen(true);
     }
 
+    const showEditForm = () => {
+        setFeatureFormEditMode(true);
+        setFeatureFormOpen(true);
+    }
+
+    const closeFeatureForm = () => {
+        setFeatureFormEditMode(false);
+        setFeatureFormOpen(false);
+    }
+
+
     return <EyasiContentCard title={`FEAT${currentFeature?.id}`}
                              subTitle={``}
                              iconImage={sectionIcon}
@@ -235,8 +252,21 @@ const FeatureDetailsComponent = () => {
                 <List className="dtm-elevated"
                       style={{marginRight: '32px'}}
                       size="large"
-                      header={<h3 className="dtm-text" style={{padding: 0, margin: 0}}> {currentFeature?.name}</h3>}
+                      header={<Flex justify="space-between">
+                          <h3 className="dtm-text" style={{padding: 0, margin: 0}}> {currentFeature?.name}</h3>
+                          <Button variant="outlined"
+                                  onClick={showEditForm}
+                                  icon={<EditOutlined/>}
+                          >Edit</Button>
+                      </Flex>}
                       bordered>
+
+
+                    {/*  Description */}
+                    <List.Item>
+                        {limitText(currentFeature?.description, 164)}
+                    </List.Item>
+
 
                     {/*  Feature Status */}
                     <List.Item
@@ -260,9 +290,25 @@ const FeatureDetailsComponent = () => {
                         Feature Status
                     </List.Item>
 
-                    {/*  Description */}
-                    <List.Item>
-                        {limitText(currentFeature?.description, 164)}
+                    {/*  Created By */}
+                    <List.Item
+                        actions={[<Space>  {currentFeature?.owner?.name}</Space>]}>
+                        <UserOutlined style={{marginRight: '12px'}}/>
+                        Lead
+                    </List.Item>
+
+                    {/*  Creation Date */}
+                    <List.Item
+                        actions={[<Space>{currentFeature?.start_date}</Space>]}>
+                        <CalendarOutlined style={{marginRight: '12px'}}/>
+                        Start Date
+                    </List.Item>
+
+                    {/*  Creation Date */}
+                    <List.Item
+                        actions={[<Space>{currentFeature?.end_date}</Space>]}>
+                        <CheckCircleOutlined style={{marginRight: '12px'}}/>
+                        Completion Date
                     </List.Item>
 
                     {/*  Created By */}
@@ -279,11 +325,7 @@ const FeatureDetailsComponent = () => {
                         Creation Date
                     </List.Item>
 
-                    {/*  Last Update */}
-                    <List.Item
-                        actions={[<Space>{currentFeature?.updated_at}</Space>]}>
-                        Last Update
-                    </List.Item>
+
                 </List>
             </Col>
 
@@ -315,7 +357,7 @@ const FeatureDetailsComponent = () => {
         <Row style={{marginBottom: 24, marginTop: 48}}>
             <Col span={24}>
 
-                <Card style={{border: '1px solid #d9bbf9'}}>
+                <Card className="dtm-elevated">
                     <Space direction="horizontal" style={{marginBottom: 24}}>
 
                         <h3 style={{color: '#5e548e', padding: 0, margin: 0}}>Sub Feature</h3>
@@ -374,13 +416,15 @@ const FeatureDetailsComponent = () => {
         <FeatureForm
             title="Sub Feature"
             isVisible={featureFormOpen}
+            editMode={featureFormEditMode}
+            selectedFeature={currentFeature}
             onSaveCompleted={onSubFeatureSaved}
             onCancelled={() => {
-                setFeatureFormOpen(false)
+                closeFeatureForm();
             }}
             projectId={currentFeature?.project_id ?? ''}
             parentFeatureId={currentFeature?.id}
-        />
+         />
 
 
 

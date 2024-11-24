@@ -1,7 +1,7 @@
 import {
     DatePicker,
     Form, Image, Input,
-    Modal, Space,
+    Modal, Select, Space,
 } from 'antd';
 import React, {useEffect, useState} from 'react';
 
@@ -12,43 +12,88 @@ import {notifyHttpError, notifySuccess} from "../../../../../services/notificati
 import {isEmpty} from "../../../../../utils/helpers";
 
 import sectionIcon from "../../../../../assets/images/pages/feature.png"
+import {Member, Task} from "../../../../../interfaces/projects/ProjectsInterfaces";
+import dayjs from "dayjs";
 
 
 interface Props {
-    isVisible: boolean;
-    projectId: string;
     title: string ;
+    isVisible: boolean;
+    editMode?: boolean | null;
+    projectId: string;
+    selectedFeature?: Task | null;
     parentFeatureId?: string | null;
     onSaveCompleted: () => void;
     onCancelled: () => void;
-
 }
 
+const FeatureForm = ({   isVisible,
+                         editMode=false,
+                         title,
+                         projectId,
+                         selectedFeature,
+                         parentFeatureId,
+                         onSaveCompleted,
+                         onCancelled
+                         }:Props) => {
 
-const FeatureForm = (formProps:Props) => {
-
+    const [membersList, setMembersList] = useState<Member[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [featureForm] = Form.useForm();
 
-    //Fetch products
+
     useEffect(() => {
+        fetchProjectMembers();
     }, []);
 
+    //Fetch products
+    useEffect(() => {
+        if(editMode){
+            setInitialValues();
+        }
+    }, [isVisible]);
+
+    const fetchProjectMembers = () => {
+        if(isEmpty(projectId)){
+            console.log("empty project id. not fetching project members")
+            return ;
+        }
+        const url = `/api/v1/projects/members?projectId=${projectId}`;
+        setIsLoading(true);
+        getRequest(url)
+            .then((response) => {
+                console.log(response.data);
+                setMembersList(response.data.respBody.data)
+            })
+            .catch((errorObj) => {
+                notifyHttpError('Operation Failed', errorObj)
+            }).finally(() => {
+            setIsLoading(false);
+        })
+    }
+
+
+    const setInitialValues = ()=>{
+        featureForm.setFieldValue('name',selectedFeature?.name);
+        featureForm.setFieldValue('description',selectedFeature?.description);
+        featureForm.setFieldValue('start_date',dayjs(selectedFeature?.start_date, 'DD-MM-YYYY'));
+        featureForm.setFieldValue('end_date',dayjs(selectedFeature?.end_date, 'DD-MM-YYYY'));
+    }
 
     const saveFeature = (item: any) => {
 
-        const url:string = isEmpty(item.id)? '/api/v1/projects/features/add' : `/api/v1/projects/features/update`;
+        const url:string = editMode? `/api/v1/projects/features/update` : '/api/v1/projects/features/add';
         setIsLoading(true);
         postRequest(url,{
-            "parent_id" : formProps.parentFeatureId,
-            "project_id" : formProps.projectId,
+            "parent_id" : parentFeatureId,
+            "project_id" : projectId,
             ...item
         })
             .then((response) => {
                 console.log(response.data.payload);
                 featureForm.resetFields();
                 notifySuccess("Record Saved")
-                formProps.onSaveCompleted();
+                onSaveCompleted();
                 featureForm.resetFields();
             })
             .catch((errorObj) => {
@@ -63,7 +108,7 @@ const FeatureForm = (formProps:Props) => {
             <div className="bg-light" style={{padding:'4px',borderRadius:'4px', border:'1px solid #8a8a8a'}}>
                 <Image width={28} src={sectionIcon}></Image>
             </div>
-            {formProps.title}
+            {title}
         </Space>
     );
 
@@ -74,7 +119,7 @@ const FeatureForm = (formProps:Props) => {
          /*  Feature
          ***------------------------------*/}
         <Modal title={modalTitle}
-               open={formProps.isVisible}
+               open={isVisible}
                width="640px"
                onOk={() => {
                    featureForm.submit()
@@ -82,7 +127,7 @@ const FeatureForm = (formProps:Props) => {
                confirmLoading={isLoading}
                okText="Save"
                onCancel={() => {
-                   formProps.onCancelled();
+                   onCancelled();
                }}>
 
             <Form
@@ -111,15 +156,26 @@ const FeatureForm = (formProps:Props) => {
                     <TextArea showCount/>
                 </Form.Item>
 
-                <Compact>
+                <Form.Item
+                    style={{ marginTop: '24px'}}
+                    label="Champion/Lead/Coordinator"
+                    name="champion_id"
+                >
+                    <Select
+                        style={{width: '100%'}}
+                        options={membersList.map((member) => ({label: member.user?.name, value: member.user.id}))}
+                    />
+                </Form.Item>
+
+                <Compact   style={{marginTop:'16px'}}>
                     <Form.Item
                         name="start_date"
                         label="Start Date">
-                        <DatePicker/>
+                        <DatePicker />
                     </Form.Item>
                     <Form.Item
                         name="end_date"
-                        label="End Date">
+                        label="Completion Date">
                         <DatePicker/>
                     </Form.Item>
                 </Compact>

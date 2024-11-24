@@ -65,7 +65,7 @@ const FeatureProgressComponent = ({isVisible,feature,onChanged}:Props) => {
             render: (_, record) => (
                 <>
                     <Space>
-                        <Image width={38} src={record.icon}></Image>
+                        <Image preview={false} width={38} src={record.icon}></Image>
                         {record.taskName}
                     </Space>
                 </>
