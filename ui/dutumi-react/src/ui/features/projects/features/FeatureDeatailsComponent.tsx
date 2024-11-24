@@ -8,7 +8,7 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import {FileDoneOutlined, PlusCircleOutlined, UserOutlined} from "@ant-design/icons";
+import {CalendarOutlined, FileDoneOutlined, PlusCircleOutlined, UserOutlined} from "@ant-design/icons";
 import {
     UndoOutlined
 } from "@ant-design/icons";
@@ -223,18 +223,20 @@ const FeatureDetailsComponent = () => {
                                  <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={() => {
                                      fetchFeatureDetails();
                                      fetchSubFeatures();
-                                 }} key="2"
-                                         type="default">Refresh</Button>
+                                 }} key="2" type="default">Refresh</Button>
                              ]}>
 
         <Row>
 
+            {/*** ------------------------
+             /* Feature Details Overview
+             ---------------------------*/}
             <Col span={8}>
-                <List
-                    style={{marginRight: '32px'}}
-                    size="large"
-                    header={<h3 style={{color: '#5e548e', padding: 0, margin: 0}}> {currentFeature?.name}</h3>}
-                    bordered>
+                <List className="dtm-elevated"
+                      style={{marginRight: '32px'}}
+                      size="large"
+                      header={<h3 className="dtm-text" style={{padding: 0, margin: 0}}> {currentFeature?.name}</h3>}
+                      bordered>
 
                     {/*  Feature Status */}
                     <List.Item
@@ -265,13 +267,15 @@ const FeatureDetailsComponent = () => {
 
                     {/*  Created By */}
                     <List.Item
-                        actions={[<Space> <UserOutlined/> {currentFeature?.creator?.name}</Space>]}>
+                        actions={[<Space>  {currentFeature?.creator?.name}</Space>]}>
+                        <UserOutlined style={{marginRight: '12px'}}/>
                         Created By
                     </List.Item>
 
                     {/*  Creation Date */}
                     <List.Item
                         actions={[<Space>{currentFeature?.created_at}</Space>]}>
+                        <CalendarOutlined style={{marginRight: '12px'}}/>
                         Creation Date
                     </List.Item>
 
@@ -283,15 +287,19 @@ const FeatureDetailsComponent = () => {
                 </List>
             </Col>
 
-            {/* Stats */}
+            {/*** --------------------
+             /* Progress & Assignees
+             -----------------------*/}
             <Col span={16}>
-                <Card title={<h3 style={{color: '#5e548e', padding: 0, margin: 0}}>Feature Progress</h3>}
-                      style={{padding: '12px 8px', border: '1px solid #e1e1e1'}}>
+                <Card
+                    className="dtm-elevated"
+                    title={<h3 className="dtm-text" style={{padding: 0, margin: 0}}>Progress Update</h3>}
+                    style={{padding: '12px 8px', border: '1px solid #e1e1e1'}}>
 
                     <FeatureProgressComponent
                         feature={currentFeature}
                         isVisible={false}
-                        onChanged={()=>{
+                        onChanged={() => {
                             fetchFeatureDetails();
                         }}
                     />
@@ -300,6 +308,10 @@ const FeatureDetailsComponent = () => {
         </Row>
 
 
+
+        {/*** --------------------
+         /* Sub Features List
+         -----------------------*/}
         <Row style={{marginBottom: 24, marginTop: 48}}>
             <Col span={24}>
 
@@ -307,10 +319,7 @@ const FeatureDetailsComponent = () => {
                     <Space direction="horizontal" style={{marginBottom: 24}}>
 
                         <h3 style={{color: '#5e548e', padding: 0, margin: 0}}>Sub Feature</h3>
-
-                        <Button onClick={() => {
-                            setFeatureFormOpen(true)
-                        }}
+                        <Button onClick={() => {setFeatureFormOpen(true)}}
                                 size="large"
                                 icon={<PlusCircleOutlined/>}
                                 key="1" type="primary">Add Sub Feature</Button>
@@ -330,7 +339,7 @@ const FeatureDetailsComponent = () => {
                     </Space>
 
                     {/**---------------------------*
-                     /** Child Features
+                     /** Child Features Table
                      *-----------------------------*/}
                     <Table
                         columns={columns}
@@ -359,53 +368,9 @@ const FeatureDetailsComponent = () => {
         </Row>
 
 
-        <List
-            style={{marginLeft: '32px'}}
-            size="large"
-            header={<Space>Assignees <Button onClick={showAssignmentForm}
-                                             icon={<PlusCircleOutlined/>}>Assign</Button></Space>}
-            footer={<div> {currentFeature?.remark}</div>}
-            bordered>
-
-            {/* Lead */}
-            <List.Item
-                actions={[<Space> {currentFeature?.owner?.name ?? 'No Assignee'} <UserOutlined/> </Space>]}>
-                Lead
-            </List.Item>
-
-            {/* Designer */}
-            <List.Item
-                actions={[<Space> {currentFeature?.designer?.name ?? 'No Assignee'} <UserOutlined/></Space>]}>
-                Designer
-            </List.Item>
-
-            {/* Designer */}
-            <List.Item
-                actions={[<Space> {currentFeature?.implementor?.name ?? 'No Assignee'}
-                    <UserOutlined/></Space>]}>
-                Implementor/Developer
-            </List.Item>
-
-            {/* Tester */}
-            <List.Item
-                actions={[<Space> {currentFeature?.tester?.name ?? 'No Assignee'}<UserOutlined/></Space>]}>
-                Tester
-            </List.Item>
-
-            {/* Approve */}
-            <List.Item
-                actions={[<Space>  {currentFeature?.approver?.name ?? 'No Assignee'}<UserOutlined/></Space>]}>
-                Approve
-            </List.Item>
-
-            {/* Tester */}
-            <List.Item
-                actions={[<Space>{currentFeature?.deployer?.name ?? 'No Assignee'}<UserOutlined/></Space>]}>
-                Deployer
-            </List.Item>
-
-        </List>
-
+         {/*** --------------------
+         /* Feature Edit Form
+          -----------------------*/}
         <FeatureForm
             title="Sub Feature"
             isVisible={featureFormOpen}
@@ -417,19 +382,6 @@ const FeatureDetailsComponent = () => {
             parentFeatureId={currentFeature?.id}
         />
 
-        <AssignmentForm
-            title="Assign Member"
-            isVisible={assignmentFormOpen}
-            projectId={currentFeature?.project_id ?? ''}
-            featureId={featureId}
-            onSaveCompleted={() => {
-                setAssignmentFormOpen(false)
-                fetchFeatureDetails();
-            }}
-            onCancelled={() => {
-                setAssignmentFormOpen(false)
-            }}
-        />
 
 
     </EyasiContentCard>;

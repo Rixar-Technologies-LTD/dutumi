@@ -1,13 +1,21 @@
 import {
     Button,
     DatePicker,
-    Form, Input,
+    Form, Image, Input,
     Modal, Select, Space, Table, Tag,
 } from 'antd';
 import React, {useEffect, useState} from 'react';
 
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
+
+import designIcon from "../../../../../assets/images/icons/progress/design.png";
+import developmentIcon from "../../../../../assets/images/icons/progress/development.png";
+import testingIcon from "../../../../../assets/images/icons/progress/testing.png";
+import approvalIcon from "../../../../../assets/images/icons/progress/approval.png";
+import deploymentIcon from "../../../../../assets/images/icons/progress/deployment.png";
+import verificationIcon from "../../../../../assets/images/icons/progress/verification.png";
+
 import {getRequest, postRequest} from "../../../../../services/rest/RestService";
 import {notifyHttpError, notifySuccess} from "../../../../../services/notification/notifications";
 import {isEmpty} from "../../../../../utils/helpers";
@@ -23,6 +31,7 @@ interface Props {
 }
 
 interface Todo {
+    icon: any;
     code: string;
     taskName: string;
     status: string;
@@ -34,7 +43,8 @@ const TodoType = {
     DEVELOPMENT: "DEVELOPMENT",
     TESTING: "TESTING",
     APPROVAL: "APPROVAL",
-    DEPLOYMENT: "DEPLOYMENT" // or whichever term you prefer
+    DEPLOYMENT: "DEPLOYMENT",
+    VERIFICATION: "VERIFICATION",// or whichever term you prefer
 };
 
 const TodoStatus = [
@@ -54,9 +64,10 @@ const FeatureProgressComponent = ({isVisible,feature,onChanged}:Props) => {
             key: 'name',
             render: (_, record) => (
                 <>
-                    <div>
+                    <Space>
+                        <Image width={38} src={record.icon}></Image>
                         {record.taskName}
-                    </div>
+                    </Space>
                 </>
             )
         },
@@ -69,10 +80,10 @@ const FeatureProgressComponent = ({isVisible,feature,onChanged}:Props) => {
                     <Select
                         value={record.status}
                         onChange={(value, option)=>{
-                            onAssigneeChange(record.code,value);
+                            onStatusChange(record.code,value);
                         }}
                         placeholder="Select Status"
-                        style={{ minWidth: '140px'}}
+                        style={{ minWidth: '128px'}}
                         size="large"
                         options={TodoStatus.map((status)=>{return {'value':status,'label':status}})}
                         labelRender={(labelInValueType)=>{
@@ -130,6 +141,53 @@ const FeatureProgressComponent = ({isVisible,feature,onChanged}:Props) => {
         buildTodoList();
     }, [feature]);
 
+
+    const buildTodoList = ()=>{
+        const newList: Todo[] = [];
+        newList.push({
+            icon: designIcon,
+            code: TodoType.DESIGN,
+            taskName: "Design",
+            status: feature?.design_status??'',
+            assignee: feature?.designer
+        })
+        newList.push({
+            icon: developmentIcon,
+            code: TodoType.DEVELOPMENT,
+            taskName: "Implementation",
+            status: feature?.dev_status??'',
+            assignee: feature?.implementor
+        })
+        newList.push({
+            icon: testingIcon,
+            code: TodoType.TESTING,
+            taskName: "Testing",
+            status: feature?.test_status??'',
+            assignee: feature?.tester
+        })
+        newList.push({
+            icon: approvalIcon,
+            code: TodoType.APPROVAL,
+            taskName: "Approval",
+            status: feature?.approval_status??'',
+            assignee: feature?.approver
+        })
+        newList.push({
+            icon: deploymentIcon,
+            code: TodoType.DEPLOYMENT,
+            taskName: "Deployment",
+            status: feature?.deployment_status??'',
+            assignee: feature?.deployer
+        })
+        newList.push({
+            icon: verificationIcon,
+            code: TodoType.VERIFICATION,
+            taskName: "Verification",
+            status: feature?.verification_status??'',
+            assignee: feature?.tester
+        })
+        setTodoList(newList)
+    }
 
     const fetchProjectMembers = () => {
         if(isEmpty(feature?.project_id)){
@@ -225,7 +283,6 @@ const FeatureProgressComponent = ({isVisible,feature,onChanged}:Props) => {
         })
     }
 
-
     const onStatusChange = (taskType: any,newStatus: any) => {
 
         console.log(`${taskType} ${newStatus}`)
@@ -235,7 +292,8 @@ const FeatureProgressComponent = ({isVisible,feature,onChanged}:Props) => {
             "dev_status": feature?.dev_status,
             "test_status": feature?.test_status,
             "approval_status": feature?.approval_status,
-            "deployment_status": feature?.deployment_status
+            "deployment_status": feature?.deployment_status,
+            "verification_status": feature?.verification_status
         }
 
         switch (taskType){
@@ -259,18 +317,21 @@ const FeatureProgressComponent = ({isVisible,feature,onChanged}:Props) => {
                 newStatusProgress.deployment_status = newStatus;
                 break;
             }
+            case TodoType.VERIFICATION: {
+                newStatusProgress.verification_status = newStatus;
+                break;
+            }
         }
 
-        saveStatus(newStatusProgress);
+        saveProgress(newStatusProgress);
     }
 
-    const saveStatus = (newStatusProgress: any) => {
-        const url:string ='/api/v1/projects/features/assign';
+    const saveProgress = (newStatusProgress: any) => {
+        const url:string ='/api/v1/projects/features/progress/update';
         setIsLoading(true);
         postRequest(url,newStatusProgress)
             .then((response) => {
-                console.log(response.data.payload);
-                notifySuccess("Assignment Updated")
+                notifySuccess("Progress Updated")
                 onChanged();
             })
             .catch((errorObj) => {
@@ -282,40 +343,6 @@ const FeatureProgressComponent = ({isVisible,feature,onChanged}:Props) => {
 
 
 
-    const buildTodoList = ()=>{
-        const newList: Todo[] = [];
-        newList.push({
-            code: TodoType.DESIGN,
-            taskName: "Design",
-            status: "Completed",
-            assignee: feature?.designer
-        })
-        newList.push({
-            code: TodoType.DEVELOPMENT,
-            taskName: "Implementation",
-            status: "In Progress",
-            assignee: feature?.implementor
-        })
-        newList.push({
-            code: TodoType.TESTING,
-            taskName: "Testing",
-            status: "Pending",
-            assignee: feature?.tester
-        })
-        newList.push({
-            code: TodoType.APPROVAL,
-            taskName: "Approval",
-            status: "Pending",
-            assignee: feature?.approver
-        })
-        newList.push({
-            code: TodoType.DEPLOYMENT,
-            taskName: "Deployment",
-            status: "Pending",
-            assignee: feature?.deployer
-        })
-        setTodoList(newList)
-    }
 
     return <>
 

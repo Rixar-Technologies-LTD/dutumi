@@ -56,7 +56,8 @@ export interface Task {
     "dev_status": string,
     "test_status": string,
     "approval_status": string,
-    "deployment_status": string
+    "deployment_status": string,
+    "verification_status": string,
 }
 
 export interface Member {

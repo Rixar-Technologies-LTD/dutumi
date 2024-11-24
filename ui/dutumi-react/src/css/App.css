@@ -70,11 +70,37 @@
     background-color: #efe9ff !important;
 }
 
+/*** Buttons **/
 .ant-btn-variant-outlined{
-    border-color: #7678ed !important;
-    color: #7678ed !important;
+    border-color: #758bfd !important;
+    color: #758bfd !important;
 }
 
 .dtm-btn {
     cursor: pointer;
+}
+
+
+/*** Texts **/
+
+.dtm-text {
+    color: #758bfd !important;
+}
+
+/*** Divs **/
+.dtm-elevated {
+    background: #fff; /* White background */
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px; /* Inner padding */
+    box-shadow:
+        0px 4px 6px rgba(0, 0, 0, 0.1),  /* Soft outer shadow */
+        0px 1px 3px rgba(0, 0, 0, 0.06); /* Slightly sharper inner shadow */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+}
+
+.dtm-elevated:hover {
+    box-shadow:
+        0px 6px 12px rgba(0, 0, 0, 0.15), /* Slightly stronger shadow on hover */
+        0px 2px 4px rgba(0, 0, 0, 0.1);  /* Accent shadow */
+    transform: translateY(-2px); /* Lift effect */
 }
