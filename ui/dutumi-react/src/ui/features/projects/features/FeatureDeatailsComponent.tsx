@@ -1,5 +1,5 @@
 import {
-    Button, Card, Col, Flex, List,
+    Button, Card, Col, Flex, Image, List,
     Pagination, Row, Select,
     Space,
     Spin,
@@ -20,6 +20,9 @@ import {
     UndoOutlined
 } from "@ant-design/icons";
 import sectionIcon from "../../../../assets/images/icons/sections/feature2.png"
+import subFeatureIcon from "../../../../assets/images/icons/sections/sub-features.png"
+import progressIcon from "../../../../assets/images/icons/sections/progress.png"
+
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {Project, Task} from "../../../../interfaces/projects/ProjectsInterfaces";
 import {getRequest, postRequest} from "../../../../services/rest/RestService";
@@ -29,6 +32,7 @@ import customerLoadingIcon from "../../../templates/Loading";
 import FeatureForm from "./components/FeatureFormComponent";
 import {limitText} from "../../../../utils/helpers";
 import FeatureProgressComponent from "./components/FeatureProgressComponent";
+import GoodImageIcon from "../../../templates/icons/GoodImageIcon";
 
 const featureStatuses = [
     {"label": 'In Design', "value": 'DESIGN'},
@@ -335,7 +339,10 @@ const FeatureDetailsComponent = () => {
             <Col span={16}>
                 <Card
                     className="dtm-elevated"
-                    title={<h3 className="dtm-text" style={{padding: 0, margin: 0}}>Progress Update</h3>}
+                    title={<Flex justify="space-between">
+                        <h3 className="dtm-text" style={{padding: 0, margin: 0}}>Progress Update</h3>
+                        <Image width={48} preview={false} src={progressIcon}/>
+                    </Flex>}
                     style={{padding: '12px 8px', border: '1px solid #e1e1e1'}}>
 
                     <FeatureProgressComponent
@@ -359,24 +366,25 @@ const FeatureDetailsComponent = () => {
 
                 <Card className="dtm-elevated">
                     <Space direction="horizontal" style={{marginBottom: 24}}>
-
-                        <h3 style={{color: '#5e548e', padding: 0, margin: 0}}>Sub Feature</h3>
+                        <GoodImageIcon iconPath={subFeatureIcon}/>
+                        <h2 style={{color: '#758bfd', padding: 0, margin: 0,marginRight:'48px'}}>Sub Features</h2>
                         <Button onClick={() => {setFeatureFormOpen(true)}}
                                 size="large"
                                 icon={<PlusCircleOutlined/>}
                                 key="1" type="primary">Add Sub Feature</Button>
 
-                        <div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius: '4px'}}>
-                            <Select
-                                suffixIcon={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                value={selectedProjectId}
-                                onChange={onProjectChanged}
-                                placeholder="Filter Assignee"
-                                style={{width: '100%', minWidth: '240px'}}
-                                size="large"
-                                options={projectsList.map((project) => ({label: project.name, value: project.id}))}
-                            />
-                        </div>
+                        {/*---- Filter Assignees ----*/}
+                        {/*<div style={{padding: '8px 16px', border: '1px solid #00000000', borderRadius: '4px'}}>*/}
+                        {/*    <Select*/}
+                        {/*        suffixIcon={<UserOutlined style={{color: 'rgba(0,0,0,.25)'}}/>}*/}
+                        {/*        value={selectedProjectId}*/}
+                        {/*        onChange={onProjectChanged}*/}
+                        {/*        placeholder="Filter Assignee"*/}
+                        {/*        style={{width: '100%', minWidth: '240px'}}*/}
+                        {/*        size="large"*/}
+                        {/*        options={projectsList.map((project) => ({label: project.name, value: project.id}))}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
 
                     </Space>
 

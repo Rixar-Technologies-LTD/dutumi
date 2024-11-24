@@ -31,6 +31,7 @@ import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
 import {Project, ProjectType} from "../../../interfaces/projects/ProjectsInterfaces";
 import {limitText} from "../../../utils/helpers";
+import dayjs from "dayjs";
 
 const ProjectsListComponent = () => {
 
@@ -156,36 +157,25 @@ const ProjectsListComponent = () => {
         navigate(`/projects/${project.id}`);
     }
 
-    const showEditForm = (project: { }) => {
-        projectForm.setFieldsValue(project)
-        projectForm.setFieldValue("start_date","");
-        projectForm.setFieldValue("mvp_date","");
+    const showEditForm = (project: Project) => {
+        projectForm.setFieldValue('id',project.id);
+        projectForm.setFieldValue('name',project.name);
+        projectForm.setFieldValue('type',project.type);
+        projectForm.setFieldValue('description',project.description);
+        projectForm.setFieldValue('start_date',dayjs(project?.start_date, 'DD-MM-YYYY'));
+        projectForm.setFieldValue('mvp_date',dayjs(project?.mvp_date, 'DD-MM-YYYY'));
         setProjectModal(true)
     }
 
-    const fetchRemindersStats= () => {
-        setIsLoading(true);
-        const url = `/api/v1/reports/subscriptions/expired/reminders`;
-        console.log(`fetching reminders stats... ${url}`)
-        getRequest(url)
-            .then((response) => {
-                console.log(response.data.payload);
-                setRemindersStats(response.data.payload);
-            })
-            .catch((errorObj) => {
-                notifyHttpError('Operation Failed', errorObj)
-            }).finally(() => {
-            setIsLoading(false);
-        })
-    }
 
     const saveProject = (item: Project) => {
         setIsLoading(true);
         postRequest(item.id? "/api/v1/projects/update" : "/api/v1/projects/add", item)
             .then((response) => {
                 notifySuccess("Success", "Saved!")
+                projectForm.resetFields();
                 setIsLoading(false);
-                setProjectModal(false)
+                setProjectModal(false);
                 fetchProjects();
             }).catch((errorObj) => {
             notifyHttpError('Operation Failed', errorObj)
@@ -277,6 +267,7 @@ const ProjectsListComponent = () => {
                okText="Save"
                onCancel={() => {
                    setProjectModal(false)
+                   projectForm.resetFields();
                }}>
 
             <Form

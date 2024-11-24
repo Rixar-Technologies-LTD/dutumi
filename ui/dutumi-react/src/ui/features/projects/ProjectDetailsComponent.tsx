@@ -77,6 +77,10 @@ const ProjectDetailsComponent = () => {
         navigate(`/projects/features?projectId=${projectId}`);
     }
 
+    const navigateToMembers = () => {
+        navigate(`/projects/members/${projectId}`);
+    }
+
 
     return <GoodContentCardPlain title="Project Details"
                                  iconImage={projectIcon}
@@ -149,7 +153,7 @@ const ProjectDetailsComponent = () => {
                     </Col>
 
                     <Col span={12} style={{marginTop: '0'}}>
-                        <Card onClick={viewProducts}
+                        <Card onClick={navigateToMembers}
                               bordered={false}
                               style={{border: '1px solid #e3d5ca'}}>
                             <Statistic title="People" value={(0).toLocaleString()}
@@ -167,11 +171,6 @@ const ProjectDetailsComponent = () => {
          **-----------------------------*/}
         <ProjectFeaturesListComponent projectId={projectId ?? ''}></ProjectFeaturesListComponent>
 
-        {/***---------------------------
-         /* Members
-         **-----------------------------*/}
-        <div style={{height: '48px'}}></div>
-        <ProjectMembersComponent projectId={projectId}></ProjectMembersComponent>
 
     </GoodContentCardPlain>;
 

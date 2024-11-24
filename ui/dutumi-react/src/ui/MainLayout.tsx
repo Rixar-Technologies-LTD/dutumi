@@ -32,6 +32,7 @@ import ProjectsListComponent from "./features/projects/ProjectsListComponent";
 import ProjectDetailsComponent from "./features/projects/ProjectDetailsComponent";
 import FeaturesListComponent from "./features/projects/features/ProjectFeaturesListComponent";
 import FeatureDetailsComponent from "./features/projects/features/FeatureDeatailsComponent";
+import ProjectMembersHolderComponent from "./features/projects/members/ProjectMembersHolderComponent";
 
 const {Content} = Layout;
 
@@ -62,6 +63,7 @@ function MainLayout() {
                         <Route path="projects">
                             <Route index element={<RequireAuth><ProjectsListComponent/></RequireAuth>}/>
                             <Route path=":projectId" element={<ProjectDetailsComponent/>}/>
+                            <Route path="members/:projectId" element={<ProjectMembersHolderComponent/>}/>
                             <Route path="features/details" element={<FeatureDetailsComponent/>}/>
                             <Route path="releases" element={<BusinessesListComponent/>}/>
                             <Route path="issues" element={<BusinessesListComponent/>}/>

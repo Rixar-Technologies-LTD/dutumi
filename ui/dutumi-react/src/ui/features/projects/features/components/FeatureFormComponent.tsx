@@ -77,6 +77,7 @@ const FeatureForm = ({   isVisible,
         featureForm.setFieldValue('id',selectedFeature?.id);
         featureForm.setFieldValue('name',selectedFeature?.name);
         featureForm.setFieldValue('description',selectedFeature?.description);
+        featureForm.setFieldValue('champion_id',selectedFeature?.champion?.id??'');
         featureForm.setFieldValue('start_date',dayjs(selectedFeature?.start_date, 'DD-MM-YYYY'));
         featureForm.setFieldValue('end_date',dayjs(selectedFeature?.end_date, 'DD-MM-YYYY'));
     }
@@ -143,10 +144,8 @@ const FeatureForm = ({   isVisible,
                     <Input/>
                 </Form.Item>
 
-                <p>{selectedFeature?.id}</p>
-
                 <Form.Item
-                    style={{marginBottom: 16, marginTop: '16px'}}
+                    style={{ marginTop: '16px'}}
                     label="Feature Name"
                     name="name"
                 >
@@ -154,7 +153,7 @@ const FeatureForm = ({   isVisible,
                 </Form.Item>
 
                 <Form.Item
-                    style={{marginBottom: 16, marginTop: '16px'}}
+                    style={{ marginTop: '16px'}}
                     label="Feature Description"
                     name="description"
                 >
