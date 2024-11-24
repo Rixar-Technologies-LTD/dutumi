@@ -39,12 +39,28 @@ class FeaturesController extends BaseController
         $feature = Task::query()->where(['id' => $request->input('id')])
             ->with(['creator', 'champion', 'designer', 'implementor', 'tester', 'approver', 'deployer'])
             ->first();
+        if (!$feature) {
+            return $this->clientError("Feature Not Found");
+        }
 
-        $parents = Feature::query()->where(['id' => $feature->parent_id])
+        $topParent = Feature::query()->where(['id' => $feature->parent_id])
             ->with(['parent'])
             ->first();
 
-        $responseData['parents'] = $parents;
+        $parents[] = [
+            'id' => $feature->id,
+            'name' => $feature->name,
+        ];
+
+        while ($topParent != null) {
+            $parents[] = [
+                'id' => $topParent->id,
+                'name' => $topParent->name,
+            ];
+            $topParent = $topParent->parent;
+        }
+
+        $responseData['parents'] = array_reverse($parents);
         $responseData['feature'] = $feature;
         return $this->returnResponse("Feature Details", $responseData);
     }
@@ -64,7 +80,7 @@ class FeaturesController extends BaseController
 
     public function addFeature(Request $request)
     {
-        Log::info("new feature: ".json_encode($request->all()));
+        Log::info("new feature: " . json_encode($request->all()));
         $request->validate([
             'project_id' => 'numeric|required',
             'champion_id' => 'numeric',
@@ -94,7 +110,7 @@ class FeaturesController extends BaseController
     public function updateFeature(Request $request)
     {
 
-        Log::info("feature update: ".json_encode($request->all()));
+        Log::info("feature update: " . json_encode($request->all()));
         $request->validate([
             'id' => 'required|exists:tasks,id'
         ]);

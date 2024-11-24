@@ -1,4 +1,5 @@
 import {
+    Breadcrumb,
     Button, Card, Col, Flex, Image, List,
     Pagination, Row, Select,
     Space,
@@ -33,6 +34,7 @@ import FeatureForm from "./components/FeatureFormComponent";
 import {limitText} from "../../../../utils/helpers";
 import FeatureProgressComponent from "./components/FeatureProgressComponent";
 import GoodImageIcon from "../../../templates/icons/GoodImageIcon";
+import GoodVisibility from "../../../templates/GoodVisibility";
 
 const featureStatuses = [
     {"label": 'In Design', "value": 'DESIGN'},
@@ -92,9 +94,10 @@ const FeatureDetailsComponent = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary" onClick={() => {
-                        viewFeature(record)
-                    }}> View</Button>
+                    <Button
+                        target="_blank"
+                        href={`/projects/features/details?featureId=${record.id}`}
+                        variant="outlined"> View</Button>
                 </Space>
             ),
         },
@@ -102,6 +105,7 @@ const FeatureDetailsComponent = () => {
 
     const [projectsList, updateProjectsList] = useState<Project[]>([]);
     const [childrenFeaturesList, updateChildrenFeaturesList] = useState<Task[]>([]);
+    const [parents, setParentsList] = useState<Task[]>([]);
     const [currentFeature, setCurrentFeature] = useState<Task>();
 
     const [currentPageNo, updateCurrentPageNo] = useState(1);
@@ -142,6 +146,7 @@ const FeatureDetailsComponent = () => {
             .then((response) => {
                 console.log(response.data);
                 setCurrentFeature(response.data.respBody.feature);
+                setParentsList(response.data.respBody.parents);
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -203,9 +208,6 @@ const FeatureDetailsComponent = () => {
         setSelectedProjectId(value);
     }
 
-    const viewFeature = (task: Task) => {
-        navigate(`/projects/features/details?featureId=${task.id}`);
-    }
 
     const showAssignmentForm = () => {
         setAssignmentFormOpen(true);
@@ -232,6 +234,26 @@ const FeatureDetailsComponent = () => {
                                      fetchSubFeatures();
                                  }} key="2" type="default">Refresh</Button>
                              ]}>
+
+        {/*Bread Crumbs*/}
+        <div>
+            <GoodVisibility visible={parents.length > 1}>
+                <Card style={{marginBottom: '16px'}}>
+                    <Breadcrumb
+                        separator=">"
+                        items={parents.map((feature) => {
+                            return {
+                                title: <a style={{color: '#00a6fb'}}
+                                          href={`/projects/features/details?featureId=${feature.id}`}>
+                                    FEAT{feature.id}
+                                </a>,
+                            }
+                        })}
+                    />
+                </Card>
+            </GoodVisibility>
+        </div>
+
 
         <Row>
 
@@ -320,10 +342,12 @@ const FeatureDetailsComponent = () => {
                 </List>
 
 
-                <Card className="dtm-elevated" style={{marginRight:'24px', marginTop:'32px'}}>
+                <Card className="dtm-elevated" style={{marginRight: '24px', marginTop: '32px'}}>
                     <Space direction="horizontal" style={{marginBottom: 24}}>
-                        <h2 style={{color: '#758bfd', padding: 0, margin: 0,marginRight:'48px'}}>Updates</h2>
-                        <Button onClick={() => {setFeatureFormOpen(true)}}
+                        <h2 style={{color: '#758bfd', padding: 0, margin: 0, marginRight: '48px'}}>Updates</h2>
+                        <Button onClick={() => {
+                            setFeatureFormOpen(true)
+                        }}
                                 size="large"
                                 icon={<PlusCircleOutlined/>}
                                 key="1" type="primary">Add Update</Button>
@@ -331,7 +355,7 @@ const FeatureDetailsComponent = () => {
 
                 </Card>
             </Col>
-            
+
             <Col span={16}>
 
 
@@ -356,16 +380,16 @@ const FeatureDetailsComponent = () => {
                 </Card>
 
 
-
-
                 {/*** --------------------
                  /* Sub Features
                  -----------------------*/}
-                <Card className="dtm-elevated" style={{ marginTop:'32px'}}>
+                <Card className="dtm-elevated" style={{marginTop: '32px'}}>
                     <Space direction="horizontal" style={{marginBottom: 24}}>
                         <GoodImageIcon iconPath={subFeatureIcon}/>
-                        <h2 style={{color: '#758bfd', padding: 0, margin: 0,marginRight:'48px'}}>Sub Features</h2>
-                        <Button onClick={() => {setFeatureFormOpen(true)}}
+                        <h2 style={{color: '#758bfd', padding: 0, margin: 0, marginRight: '48px'}}>Sub Features</h2>
+                        <Button onClick={() => {
+                            setFeatureFormOpen(true)
+                        }}
                                 size="large"
                                 icon={<PlusCircleOutlined/>}
                                 key="1" type="primary">Add Sub Feature</Button>
@@ -401,9 +425,9 @@ const FeatureDetailsComponent = () => {
         </Row>
 
 
-         {/*** --------------------
+        {/*** --------------------
          /* Feature Edit Form
-          -----------------------*/}
+         -----------------------*/}
         <FeatureForm
             title="Sub Feature"
             isVisible={featureFormOpen}
@@ -415,8 +439,7 @@ const FeatureDetailsComponent = () => {
             }}
             projectId={currentFeature?.project_id ?? ''}
             parentFeatureId={currentFeature?.id}
-         />
-
+        />
 
 
     </EyasiContentCard>;
