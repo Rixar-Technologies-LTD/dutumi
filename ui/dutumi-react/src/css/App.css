@@ -76,6 +76,10 @@
     color: #758bfd !important;
 }
 
+.ant-btn-variant-link {
+    border-color: #000000 !important;
+}
+
 .dtm-btn {
     cursor: pointer;
 }

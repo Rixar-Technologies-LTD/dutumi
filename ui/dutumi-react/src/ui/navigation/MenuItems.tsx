@@ -12,7 +12,13 @@ import {
     AndroidFilled,
     AndroidOutlined,
     PhoneOutlined,
-    GlobalOutlined, MoneyCollectOutlined, MoneyCollectFilled, FolderOutlined
+    GlobalOutlined,
+    MoneyCollectOutlined,
+    MoneyCollectFilled,
+    FolderOutlined,
+    DatabaseOutlined,
+    PoundCircleFilled,
+    PoundCircleOutlined
 } from '@ant-design/icons';
 import type {MenuProps} from 'antd';
 import {Menu} from 'antd';
@@ -93,7 +99,7 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
 
     if(containsAny(permissions,["",'',''])){
         mainMenuItems.push(...[
-            toMenuItem('Finance', 'finance/index', <MoneyCollectFilled/>, financeMenus),
+            toMenuItem('Finance', 'finance/index', <PoundCircleOutlined/>, financeMenus),
         ]);
     }
 
@@ -103,16 +109,12 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
     const assetsMenus : MenuProps['items'] = [];
 
     if(permissions.includes("")){
-        assetsMenus.push(toMenuItem('Servers', '/transactions', <ContainerOutlined/>))
-    }
-
-    if(permissions.includes("")){
-        assetsMenus.push(toMenuItem('Domains', '/agents', <CiBullhorn/>));
+        assetsMenus.push(toMenuItem('Assets', '/assets/groups', <DatabaseOutlined/>))
     }
 
     if(containsAny(permissions,["",'',''])){
         mainMenuItems.push(...[
-            toMenuItem('Assets', 'finance/assets', <GlobalOutlined/>, assetsMenus),
+            toMenuItem('Assets', 'finance/assets', <DatabaseOutlined/>, assetsMenus),
         ]);
     }
 

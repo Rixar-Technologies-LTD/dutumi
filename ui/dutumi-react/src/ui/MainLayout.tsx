@@ -33,6 +33,8 @@ import ProjectDetailsComponent from "./features/projects/ProjectDetailsComponent
 import FeaturesListComponent from "./features/projects/features/ProjectFeaturesListComponent";
 import FeatureDetailsComponent from "./features/projects/features/FeatureDeatailsComponent";
 import ProjectMembersHolderComponent from "./features/projects/members/ProjectMembersHolderComponent";
+import AssetGroupsListComponent from "ui/features/assets/AssetGroupsListComponent";
+import AssetsListComponent from "ui/features/assets/AssetsListComponent";
 
 const {Content} = Layout;
 
@@ -58,7 +60,7 @@ function MainLayout() {
                 <Content style={{minHeight: '100vh', padding: '0 0'}}>
 
                     <Routes>
-                        {/*<Route index element={<RolesComponent/>}/>*/}
+
 
                         <Route path="projects">
                             <Route index element={<RequireAuth><ProjectsListComponent/></RequireAuth>}/>
@@ -69,12 +71,12 @@ function MainLayout() {
                             <Route path="issues" element={<BusinessesListComponent/>}/>
                         </Route>
 
-                        <Route path="businesses">
+                        <Route path="assets">
                             <Route index element={<RequireAuth><BusinessesListComponent/></RequireAuth>}/>
-                            <Route path=":businessId" element={<BusinessesDetailsComponent/>}/>
-                            <Route path="products/:businessId" element={<BusinessProductsPage/>}/>
-                            <Route path="orders/:businessId" element={<BusinessOrdersPage/>}/>
+                            <Route path="groups" element={<RequireAuth><AssetGroupsListComponent/></RequireAuth>}/>
+                            <Route path="list/:groupId" element={<RequireAuth><AssetsListComponent/></RequireAuth>}/>
                         </Route>
+
 
                         <Route path="transactions" >
                             <Route index element={<RequireAuth><TransactionsListComponent/></RequireAuth>} />
@@ -86,7 +88,6 @@ function MainLayout() {
                         <Route path="operations/emails" >
                             <Route index element={<RequireAuth><EmailHistoryComponent/></RequireAuth>} />
                         </Route>
-
 
 
                         <Route path="users">
