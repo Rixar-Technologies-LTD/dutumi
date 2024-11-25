@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('usage_status')->default(AssetUsageStatus::IN_USE->name);
             $table->integer('months_between_payments')->default(0);
             $table->dateTime('next_payment');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

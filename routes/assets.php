@@ -1,24 +1,24 @@
 <?php
 
 
-use App\Http\Controllers\Projects\ProjectsController;
-use App\Http\Controllers\Users\UsersManagementController;
+use App\Http\Controllers\Assets\AssetsController;
+use App\Http\Controllers\Assets\AssetsGroupsController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('v1/assets/groups')->middleware('auth:api')->group(function () {
 
-    Route::get('list', [ProjectsController::class, 'getProjects']);
-    Route::post('add', [ProjectsController::class, 'addProject']);
-    Route::post('update', [ProjectsController::class, 'updateProject']);
-    Route::get('details', [ProjectsController::class, 'getProjectDetails']);
+    Route::get('', [AssetsGroupsController::class, 'getAssetGroups']);
+    Route::post('add', [AssetsGroupsController::class, 'addAssetGroup']);
+    Route::post('update', [AssetsGroupsController::class, 'updateGroup']);
+    Route::get('details', [AssetsGroupsController::class, 'getAssetGroupDetails']);
 
 });
-
 
 
 Route::prefix("/v1/assets")->middleware('auth:api')->group(function () {
-    Route::get('/', [UsersManagementController::class, 'fetchUsers']);
-    Route::post('/add', [UsersManagementController::class, 'createUser']);
-    Route::post('/update', [UsersManagementController::class, 'updateUser']);
+    Route::get('/', [AssetsController::class, 'getAssets']);
+    Route::post('/add', [AssetsController::class, 'createUser']);
+    Route::post('/update', [AssetsController::class, 'updateUser']);
 });
+

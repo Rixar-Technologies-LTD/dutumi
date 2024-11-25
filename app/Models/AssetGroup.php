@@ -11,4 +11,10 @@ class AssetGroup extends Model
         'author_id',
         'name'
     ];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
+
 }
