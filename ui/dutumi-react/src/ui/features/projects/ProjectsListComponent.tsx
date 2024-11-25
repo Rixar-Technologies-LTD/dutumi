@@ -20,17 +20,13 @@ import {notifyError, notifyHttpError, notifySuccess} from "../../../services/not
 import {getRequest, postRequest} from "../../../services/rest/RestService";
 import EyasiContentCard from "../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../templates/Loading";
-import {
-    RemindersStats,
-    Business,
-    SubscriptionStats
-} from "../../../interfaces/businesses/BusinessInterfaces";
-import sectionIcon from "../../../assets/images/icons/projects.png"
+import { RemindersStats } from "interfaces/businesses/BusinessInterfaces";
+import sectionIcon from "assets/images/icons/projects.png"
 import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
-import {Project, ProjectType} from "../../../interfaces/projects/ProjectsInterfaces";
-import {limitText} from "../../../utils/helpers";
+import {Project, ProjectType} from "interfaces/projects/ProjectsInterfaces";
+import {limitText} from "utils/helpers";
 import dayjs from "dayjs";
 
 const ProjectsListComponent = () => {

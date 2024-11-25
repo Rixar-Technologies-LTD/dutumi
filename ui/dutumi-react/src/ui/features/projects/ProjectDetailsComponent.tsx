@@ -1,9 +1,7 @@
 import {
     Button, Card,
     Col,
-    Divider,
     List,
-    Modal,
     Row, Space,
     Spin, Statistic, Tag
 } from 'antd';
@@ -13,22 +11,21 @@ import React, {useEffect, useState} from 'react';
 
 
 import {CalendarOutlined, UndoOutlined} from "@ant-design/icons";
-import {notifyHttpError} from "../../../services/notification/notifications";
-import {getRequest} from "../../../services/rest/RestService";
+import {notifyHttpError} from "services/notification/notifications";
+import {getRequest} from "services/rest/RestService";
 import customerLoadingIcon from "../../templates/Loading";
-import {Business} from "../../../interfaces/businesses/BusinessInterfaces";
-import featuresIcon from "../../../assets/images/icons/generic/features.png"
-import issueIcon from "../../../assets/images/icons/generic/issue.png"
-import takeOffIcon from "../../../assets/images/icons/generic/takeoff.png"
-import projectIcon from "../../../assets/images/icons/generic/folder.png"
+import {Business} from "interfaces/businesses/BusinessInterfaces";
+import featuresIcon from "assets/images/icons/generic/features.png"
+import issueIcon from "assets/images/icons/generic/issue.png"
+import takeOffIcon from "assets/images/icons/generic/takeoff.png"
+import projectIcon from "assets/images/icons/generic/folder.png"
 
 import {useNavigate, useParams} from "react-router-dom";
 import GoodContentCardPlain from "../../templates/cards/GoodContentCardPlain";
 import GoodImageIcon from "../../templates/icons/GoodImageIcon";
-import {Project} from "../../../interfaces/projects/ProjectsInterfaces";
-import {limitText} from "../../../utils/helpers";
+import {Project} from "interfaces/projects/ProjectsInterfaces";
+import {limitText} from "utils/helpers";
 import ProjectFeaturesListComponent from "./features/ProjectFeaturesListComponent";
-
 
 
 const ProjectDetailsComponent = () => {
