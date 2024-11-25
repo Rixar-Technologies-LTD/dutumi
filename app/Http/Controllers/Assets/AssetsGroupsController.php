@@ -14,12 +14,13 @@ class AssetsGroupsController extends BaseController
     public function getAssetGroups(Request $request)
     {
         $projects = AssetGroup::query()
-            ->with(['author'])
+            ->with(['author','project'])
+            ->withCount(['assets'])
             ->paginate(50);
         return $this->returnResponse("Asset Groups", $projects);
     }
 
-    public function addAssetGroups(Request $request)
+    public function addAssetGroup(Request $request)
     {
         $request->validate([
             'project_id' => 'required',

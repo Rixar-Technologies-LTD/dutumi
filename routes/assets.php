@@ -18,7 +18,8 @@ Route::prefix('v1/assets/groups')->middleware('auth:api')->group(function () {
 
 Route::prefix("/v1/assets")->middleware('auth:api')->group(function () {
     Route::get('/', [AssetsController::class, 'getAssets']);
-    Route::post('/add', [AssetsController::class, 'createUser']);
-    Route::post('/update', [AssetsController::class, 'updateUser']);
+    Route::post('/add', [AssetsController::class, 'addAsset']);
+    Route::post('/update', [AssetsController::class, 'updateAsset']);
+    Route::get('/details', [AssetsController::class, 'getAssetDetails']);
 });
 

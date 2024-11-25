@@ -13,6 +13,7 @@ import {Project} from "interfaces/projects/ProjectsInterfaces";
 interface Props {
     isVisible: boolean;
     title: string ;
+    groupId: string ;
     onSaved: () => void;
     onCancelled: () => void;
 }
@@ -45,9 +46,10 @@ const AssetForm = (formProps:Props) => {
 
     const addAssetGroup = (antdFormData: any) => {
 
-        const url:string = '/api/v1/assets/groups/add';
+        const url:string = '/api/v1/assets/add';
         setIsLoading(true);
         postRequest(url,{
+             "asset_group_id": formProps.groupId,
             ...antdFormData
         })
             .then((response) => {

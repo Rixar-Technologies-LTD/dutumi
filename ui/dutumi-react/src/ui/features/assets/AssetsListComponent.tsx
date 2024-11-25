@@ -8,8 +8,8 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import { EditOutlined, EyeOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import { UndoOutlined } from "@ant-design/icons";
+import {EditOutlined, EyeOutlined, PlusCircleOutlined} from "@ant-design/icons";
+import {UndoOutlined} from "@ant-design/icons";
 
 import {notifyHttpError} from "services/notification/notifications";
 import {getRequest} from "services/rest/RestService";
@@ -17,25 +17,25 @@ import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
 import sectionIcon from "assets/images/icons/generic/assets.png"
 
-import {useNavigate} from "react-router-dom";
-import AssetGroupForm from "ui/features/assets/forms/AssetGroupForm";
-import {AssetGroup} from "interfaces/assets/AssetsInterfaces";
+import {useNavigate, useParams} from "react-router-dom";
+import {Asset, AssetGroup} from "interfaces/assets/AssetsInterfaces";
+import AssetForm from "ui/features/assets/forms/AssetForm";
 
 const AssetsListComponent = () => {
 
-    const columns: ColumnsType<AssetGroup> = [
+    const columns: ColumnsType<Asset> = [
         {
             title: 'Reference',
             dataIndex: 'reference',
             key: 'reference',
             render: (_, record) => (
                 <>
-                    PRJ-{record.id}
+                    ASST-{record.id}
                 </>
             ),
         },
         {
-            title: 'Group',
+            title: 'Name',
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => (
@@ -45,12 +45,12 @@ const AssetsListComponent = () => {
             ),
         },
         {
-            title: 'Project',
+            title: 'Description',
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => (
                 <>
-                    <Tag color="processing">{record.project?.name}</Tag>
+                    {record.description}
                 </>
             ),
         },
@@ -61,8 +61,8 @@ const AssetsListComponent = () => {
             width: '194px',
             render: (_, record) => (
                 <>
-                    <Tag style={{color: '#5a5a5a',fontWeight:'bold',fontSize:'18px'}}>{record.assets_count}</Tag>
-                 </>
+                    <Tag style={{color: '#5a5a5a', fontWeight: 'bold', fontSize: '18px'}}>{record.assets_count}</Tag>
+                </>
             ),
         },
         {
@@ -73,7 +73,7 @@ const AssetsListComponent = () => {
             render: (_, record) => (
                 <>
                     <div>
-                        <span style={{ color:'#5a5a5a'}}>{record.created_at}</span>
+                        <span style={{color: '#5a5a5a'}}>{record.created_at}</span>
                     </div>
                 </>
             ),
@@ -83,7 +83,9 @@ const AssetsListComponent = () => {
             key: 'action',
             render: (_, record) => (
                 <>
-                    <Button icon={<EyeOutlined/>} style={{ marginBottom:'12px'}} type="primary" onClick={()=>{viewProject(record)}}>View</Button>
+                    <Button icon={<EyeOutlined/>} style={{marginBottom: '12px'}} type="primary" onClick={() => {
+                        showEditForm(record)
+                    }}>View</Button>
                 </>
             ),
         },
@@ -92,13 +94,15 @@ const AssetsListComponent = () => {
             key: 'action',
             render: (_, record) => (
                 <>
-                    <Button icon={<EditOutlined/>} type="default" onClick={()=>{showEditForm(record)}}>Edit</Button>
+                    <Button icon={<EditOutlined/>} type="default" onClick={() => {
+                        showEditForm(record)
+                    }}>Edit</Button>
                 </>
             ),
         }
     ];
 
-    const [assetGroupsList, updateRecordsList] = useState<AssetGroup[]>([]);
+    const [assetList, updateRecordsList] = useState<Asset[]>([]);
     const [currentPageNo, updateCurrentPageNo] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [pageSize, updatePageSize] = useState(50);
@@ -109,14 +113,15 @@ const AssetsListComponent = () => {
 
     const [isAssetGroupFormOpen, setAssetGroupFormOpen] = useState(false)
 
+    const {groupId} = useParams();
+
     //Fetch products
     useEffect(() => {
         fetchRecords();
-    }, [currentPageNo, pageSize, searchQuery,filter]);
-
+    }, [currentPageNo, pageSize, searchQuery, filter]);
 
     const fetchRecords = () => {
-        const url = `/api/v1/assets/groups`;
+        const url = `/api/v1/assets?groupId=${groupId}`;
         setIsLoading(true);
         getRequest(url)
             .then((response) => {
@@ -131,9 +136,6 @@ const AssetsListComponent = () => {
         })
     }
 
-    const viewProject = (project:AssetGroup) => {
-        navigate(`/projects/${project.id}`);
-    }
 
     const showEditForm = (project: AssetGroup) => {
         // projectForm.setFieldValue('id',project.id);
@@ -162,9 +164,12 @@ const AssetsListComponent = () => {
          *----------------*/}
         <Space style={{marginBottom: 24, marginTop: 8}} direction="horizontal">
             <Button icon={<PlusCircleOutlined/>}
-                    onClick={()=>{ setAssetGroupFormOpen(true) }}
+                    onClick={() => {
+                        setAssetGroupFormOpen(true)
+                    }}
                     type="primary">Add Asset</Button>
-            <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={fetchRecords} key="2" type="default">Refresh</Button>
+            <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={fetchRecords} key="2"
+                    type="default">Refresh</Button>
         </Space>
 
         {/**---------------------------*
@@ -172,7 +177,7 @@ const AssetsListComponent = () => {
          *-----------------------------*/}
         <Table
             columns={columns}
-            dataSource={assetGroupsList}
+            dataSource={assetList}
             pagination={false}
             loading={isLoading}
             rowKey="id"
@@ -193,20 +198,19 @@ const AssetsListComponent = () => {
         />
 
 
-
-
         {/***------------------------------
          /*  Project
          ***------------------------------*/}
-        <AssetGroupForm isVisible={isAssetGroupFormOpen}
-                        title="Add Asset Group"
-                        onSaved={()=>{
-                            setAssetGroupFormOpen(false)
-                            fetchRecords();
-                        }}
-                        onCancelled={()=>{
-                            setAssetGroupFormOpen(false)
-                        }}/>
+        <AssetForm isVisible={isAssetGroupFormOpen}
+                   title="Add Asset Group"
+                   groupId={groupId??''}
+                   onSaved={() => {
+                       setAssetGroupFormOpen(false)
+                       fetchRecords();
+                   }}
+                   onCancelled={() => {
+                       setAssetGroupFormOpen(false)
+                   }}/>
 
     </EyasiContentCard>;
 

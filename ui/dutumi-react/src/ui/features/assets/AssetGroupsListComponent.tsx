@@ -17,7 +17,6 @@ import {notifyHttpError, notifySuccess} from "services/notification/notification
 import {getRequest, postRequest} from "services/rest/RestService";
 import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
-import {RemindersStats} from "interfaces/businesses/BusinessInterfaces";
 import sectionIcon from "assets/images/icons/objects/folders.png"
 
 import {useNavigate} from "react-router-dom";
@@ -33,7 +32,7 @@ const AssetGroupsListComponent = () => {
             key: 'reference',
             render: (_, record) => (
                 <>
-                    PRJ-{record.id}
+                    GRP-{record.id}
                 </>
             ),
         },
