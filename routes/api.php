@@ -45,6 +45,9 @@ Route::prefix('v1/projects/features')->middleware('auth:api')->group(function ()
     Route::post('status/update', [FeaturesController::class, 'updateFeatureStatus']);
     Route::post('progress/update', [FeaturesController::class, 'updateProgress']);
 
+    Route::get('activities', [FeaturesController::class, 'getActivities']);
+    Route::post('activities/post', [FeaturesController::class, 'postActivity']);
+
 });
 
 

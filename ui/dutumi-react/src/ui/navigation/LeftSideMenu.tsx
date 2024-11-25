@@ -39,7 +39,8 @@ const LeftSideMenu = () => {
                 </Row>
                 <Row style={{marginTop: 10 }}  >
                     <Col>
-                        {!collapsed && <h3  style={{
+                        {!collapsed &&
+                            <h3  className="merienda-900" style={{
                                 paddingLeft: '12px',
                                 color: 'white',
                                 margin: "0px"}}>

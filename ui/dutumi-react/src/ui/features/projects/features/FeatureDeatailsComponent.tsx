@@ -13,7 +13,6 @@ import {
     CalendarOutlined,
     CheckCircleOutlined,
     EditOutlined,
-    FileDoneOutlined,
     PlusCircleOutlined,
     UserOutlined
 } from "@ant-design/icons";
@@ -24,7 +23,7 @@ import sectionIcon from "../../../../assets/images/icons/sections/feature2.png"
 import subFeatureIcon from "../../../../assets/images/icons/sections/sub-features.png"
 import progressIcon from "../../../../assets/images/icons/sections/progress.png"
 
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 import {Project, Task} from "../../../../interfaces/projects/ProjectsInterfaces";
 import {getRequest, postRequest} from "../../../../services/rest/RestService";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
@@ -35,6 +34,7 @@ import {limitText} from "../../../../utils/helpers";
 import FeatureProgressComponent from "./components/FeatureProgressComponent";
 import GoodImageIcon from "../../../templates/icons/GoodImageIcon";
 import GoodVisibility from "../../../templates/GoodVisibility";
+import ActivitiesListComponent from "./activities/ActivitiesListComponent";
 
 const featureStatuses = [
     {"label": 'In Design', "value": 'DESIGN'},
@@ -115,17 +115,15 @@ const FeatureDetailsComponent = () => {
     const [searchQuery, updateSearchQuery] = useState("");
 
     const [filter, setFilterGroup] = useState("all");
-    const navigate = useNavigate();
 
     const [selectedProjectId, setSelectedProjectId] = useState<string>();
     const [featureFormOpen, setFeatureFormOpen] = useState(false)
     const [featureFormEditMode, setFeatureFormEditMode] = useState(false)
-    const [assignmentFormOpen, setAssignmentFormOpen] = useState(false)
 
+    const [isActivityFormOpen, setIsActivityFormOpen] = useState(false);
 
     const [searchParams] = useSearchParams();
     const featureId = searchParams.get('featureId');
-    const parentFeatureId = searchParams.get('projectId');
 
     //Fetch products
     useEffect(() => {
@@ -144,7 +142,6 @@ const FeatureDetailsComponent = () => {
         setIsLoading(true);
         getRequest(url)
             .then((response) => {
-                console.log(response.data);
                 setCurrentFeature(response.data.respBody.feature);
                 setParentsList(response.data.respBody.parents);
             })
@@ -202,15 +199,6 @@ const FeatureDetailsComponent = () => {
 
     const onPageSizeChange = (current: number, size: number) => {
         updatePageSize(size)
-    }
-
-    const onProjectChanged = (value: any) => {
-        setSelectedProjectId(value);
-    }
-
-
-    const showAssignmentForm = () => {
-        setAssignmentFormOpen(true);
     }
 
     const showEditForm = () => {
@@ -342,18 +330,7 @@ const FeatureDetailsComponent = () => {
                 </List>
 
 
-                <Card className="dtm-elevated" style={{marginRight: '24px', marginTop: '32px'}}>
-                    <Space direction="horizontal" style={{marginBottom: 24}}>
-                        <h2 style={{color: '#758bfd', padding: 0, margin: 0, marginRight: '48px'}}>Updates</h2>
-                        <Button onClick={() => {
-                            setFeatureFormOpen(true)
-                        }}
-                                size="large"
-                                icon={<PlusCircleOutlined/>}
-                                key="1" type="primary">Add Update</Button>
-                    </Space>
-
-                </Card>
+                <ActivitiesListComponent  featureId={currentFeature?.id ?? ''}/>
             </Col>
 
             <Col span={16}>
@@ -440,6 +417,7 @@ const FeatureDetailsComponent = () => {
             projectId={currentFeature?.project_id ?? ''}
             parentFeatureId={currentFeature?.id}
         />
+
 
 
     </EyasiContentCard>;

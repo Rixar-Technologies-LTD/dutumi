@@ -212,7 +212,7 @@ const ProjectFeaturesListComponent = ({projectId}: Props) => {
 
 
     return <EyasiContentCard
-        title="Features"
+        title="Main Features"
         subTitle=""
         iconImage={sectionIcon}
         margin={0}

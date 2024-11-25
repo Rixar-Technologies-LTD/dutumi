@@ -1,62 +1,62 @@
 .App {
-  /*text-align: center;*/
+    /*text-align: center;*/
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 
 #components-layout-demo-top-side .logo {
-  float: left;
-  width: 120px;
-  height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+    float: left;
+    width: 120px;
+    height: 31px;
+    margin: 16px 24px 16px 0;
+    background: rgba(255, 255, 255, 0.3);
 }
 
 #components-layout-demo-top .logo {
-  float: left;
-  width: 120px;
-  height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+    float: left;
+    width: 120px;
+    height: 31px;
+    margin: 16px 24px 16px 0;
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .ant-row-rtl #components-layout-demo-top .logo {
-  float: right;
-  margin: 16px 0 16px 24px;
+    float: right;
+    margin: 16px 0 16px 24px;
 }
 
 
@@ -67,11 +67,11 @@
 }
 
 .bg-light {
-    background-color: #efe9ff !important;
+    background-color: #f1f3ff !important;
 }
 
 /*** Buttons **/
-.ant-btn-variant-outlined{
+.ant-btn-variant-outlined {
     border-color: #758bfd !important;
     color: #758bfd !important;
 }
@@ -92,15 +92,19 @@
     background: #fff; /* White background */
     border-radius: 12px; /* Rounded corners */
     padding: 20px; /* Inner padding */
-    box-shadow:
-        0px 4px 6px rgba(0, 0, 0, 0.1),  /* Soft outer shadow */
-        0px 1px 3px rgba(0, 0, 0, 0.06); /* Slightly sharper inner shadow */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), /* Soft outer shadow */ 0px 1px 3px rgba(0, 0, 0, 0.06); /* Slightly sharper inner shadow */
     transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
 }
 
 .dtm-elevated:hover {
-    box-shadow:
-        0px 6px 12px rgba(0, 0, 0, 0.15), /* Slightly stronger shadow on hover */
-        0px 2px 4px rgba(0, 0, 0, 0.1);  /* Accent shadow */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15), /* Slightly stronger shadow on hover */ 0px 2px 4px rgba(0, 0, 0, 0.1); /* Accent shadow */
     transform: translateY(-2px); /* Lift effect */
+}
+
+
+.merienda-900 {
+    font-family: "Merienda", serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
 }

@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('assets', function (Blueprint $table) {
+        Schema::create('asset_groups', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('project_id')->unsigned();
+            $table->bigInteger('parent_id')->unsigned()->nullable();
+            $table->bigInteger('author_id')->unsigned();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assets');
+        Schema::dropIfExists('asset_groups');
     }
 };

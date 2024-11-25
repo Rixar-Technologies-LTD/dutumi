@@ -66,3 +66,10 @@ export interface Member {
     "user": SystemUser,
     "author": SystemUser
 }
+
+export interface ActivityUpdate {
+    "id": string,
+    "message": string,
+    "created_at": string,
+    "author": SystemUser
+}

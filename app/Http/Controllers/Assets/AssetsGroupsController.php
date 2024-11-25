@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Projects;
+namespace App\Http\Controllers\Assets;
 
 use App\Dtos\Feature;
 use App\Enums\FeatureStatus;
@@ -9,23 +9,17 @@ use App\Http\Controllers\BaseController;
 use App\Models\Task;
 use App\Models\TaskActivity;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class FeaturesController extends BaseController
+class AssetsGroupsController extends BaseController
 {
 
-    /**
-     * Get top level features
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getFeatures(Request $request)
+    public function getAssetGroup(Request $request)
     {
 
-        $projects = Task::query()->where(['project_id' => $request->input('projectId')])
+        $projects = A::query()->where(['project_id' => $request->input('projectId')])
             ->whereNull('parent_id')
             ->with(['creator', 'champion', 'designer', 'implementor', 'tester', 'approver', 'deployer'])
             ->paginate(50);
@@ -33,6 +27,10 @@ class FeaturesController extends BaseController
 
         return $this->returnResponse("Top Level Features", $projects);
     }
+
+
+
+
 
     public function getDetails(Request $request)
     {
@@ -65,11 +63,6 @@ class FeaturesController extends BaseController
         return $this->returnResponse("Feature Details", $responseData);
     }
 
-    /**
-     * Get child features
-     * @param Request $request
-     * @return JsonResponse
-     */
     public function getSubFeatures(Request $request)
     {
         $projects = Task::query()->where(['parent_id' => $request->input('parentId')])

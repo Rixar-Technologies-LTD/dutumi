@@ -1,4 +1,4 @@
-import {Button, Card, Form, Input, Layout, Row, Image, Col, type MenuProps} from "antd";
+import {Button, Card, Form, Input, Layout, Row, Image, Col, type MenuProps, Flex} from "antd";
 import React, {useState} from "react";
 import {Content} from "antd/es/layout/layout";
 import {
@@ -67,23 +67,28 @@ const LoginPage = () => {
                         style={{width: 540, marginTop: 140, paddingLeft: 64, paddingRight: 64}}>
                         <Row>
                             <Col className="gutter-row" span={6} offset={8}>
-                                <Image preview={false} src={logo} style={{width: 100, marginTop: 10}}/>
                             </Col>
                         </Row>
 
-                        <div style={{ width:'100%', textAlign:'center'}}>
-                            <h1 style={{
+                        <Flex justify="center">
+                            <div style={{
+                                width: '240px',
                                 textAlign: 'center',
-                                color: '#5e548e',
-                                backgroundColor: '#ffd465',
-                                border: '2px solid #ffd465',
-                                marginLeft:'auto',
-                                padding:'0px 32px',
-                                borderRadius: '8px',
-                                marginRight:'auto',
-                                display: 'inline-block'
-                            }}>Dutumi</h1>
-                        </div>
+                                borderRadius: '16px'
+                            }}>
+                                <Flex justify="center">
+                                    <Image preview={false} src={logo} style={{width: 100, marginTop: 10}}/>
+                                </Flex>
+                                <h1 className="merienda-900" style={{
+                                    textAlign: 'center',
+                                    color: '#758bfd',
+                                    padding: '0px 8px',
+                                    margin: '0px',
+                                    borderRadius: '8px',
+                                    display: 'inline-block'
+                                }}>Dutumi</h1>
+                            </div>
+                        </Flex>
                         <Form
                             name="basic"
                             initialValues={{
@@ -127,17 +132,19 @@ const LoginPage = () => {
 
                             {/*Login Button */}
                             <Form.Item>
-                                <Button size="large" style={{ backgroundColor:'#5e548e' }}
+                                <Button size="large" style={{backgroundColor: '#5e548e'}}
                                         loading={isLoading} type="primary" htmlType="submit" block>
                                     Login
                                 </Button>
                             </Form.Item>
 
+                            <p  style={{fontSize: "12px", textAlign:'center',marginTop:'16px'}}>Powered By Rixar</p>
+
+
                         </Form>
                     </Card>
 
                     <div style={{position: "absolute", bottom: "32px"}}>
-                        {/*<p style={{ fontSize: "9px" }}>Powered By MobiAd Africa</p>*/}
                     </div>
                 </Row>
             </Content>
