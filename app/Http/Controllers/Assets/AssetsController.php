@@ -16,11 +16,11 @@ class AssetsController extends BaseController
     public function getAssets(Request $request)
     {
         $request->validate([
-            'groupId'=>'required|exists:asset_groups,id'
+            'groupId' => 'required|exists:asset_groups,id'
         ]);
 
         $projects = Asset::query()
-            ->where('asset_group_id',$request->input('groupId'))
+            ->where('asset_group_id', $request->input('groupId'))
             ->with(['author'])
             ->paginate(50);
         return $this->returnResponse("Asset Groups", $projects);
@@ -31,10 +31,9 @@ class AssetsController extends BaseController
         $request->validate([
             'asset_group_id' => 'required',
             'name' => 'required|string',
-            'description' => 'required',
+            'unit_price' => 'required|numeric',
 
             'usage_status' => 'required',
-            'subscription_months_count' => 'required',
             'next_payment_date' => 'required'
         ]);
 
@@ -48,13 +47,14 @@ class AssetsController extends BaseController
             'asset_group_id' => $assetGroup->id,
             'author_id' => Auth::id(),
             'name' => $request->input('name'),
+            'unit_price' => $request->input('unit_price'),
             'description' => $request->input('description'),
             'type' => $request->input('type'),
             'category' => $request->input('category'),
 
             'remarks' => $request->input('remarks'),
             'usage_status' => $request->input('usage_status'),
-            'subscription_months_count' => $request->input('subscription_months_count'),
+            'subscription_months_count' => $request->input('subscription_months_count',1),
             'next_payment_date' => Carbon::parse($request->input('next_payment_date'))
         ]);
 

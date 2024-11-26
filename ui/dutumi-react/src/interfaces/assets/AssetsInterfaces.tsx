@@ -13,6 +13,8 @@ export interface Asset {
     status: string
     created_at: string,
     assets_count: number,
+    unit_price: number,
+    next_payment_date: string,
     project: Project,
     author: SystemUser
 }

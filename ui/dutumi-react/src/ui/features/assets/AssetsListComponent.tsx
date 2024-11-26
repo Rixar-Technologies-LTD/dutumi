@@ -55,37 +55,26 @@ const AssetsListComponent = () => {
             ),
         },
         {
-            title: 'Assets',
-            dataIndex: 'assets',
-            key: 'assets',
+            title: 'Unit Price',
+            dataIndex: 'unit_price',
+            key: 'unit_price',
             width: '194px',
             render: (_, record) => (
                 <>
-                    <Tag style={{color: '#5a5a5a', fontWeight: 'bold', fontSize: '18px'}}>{record.assets_count}</Tag>
+                    {record.unit_price}
                 </>
             ),
         },
         {
-            title: 'Created At',
-            dataIndex: 'description',
-            key: 'created_at',
+            title: 'Next Payment',
+            dataIndex: 'next_payment_date',
+            key: 'next_payment_date',
             width: '208px',
             render: (_, record) => (
                 <>
                     <div>
-                        <span style={{color: '#5a5a5a'}}>{record.created_at}</span>
+                        <span style={{color: '#5a5a5a'}}>{record.next_payment_date}</span>
                     </div>
-                </>
-            ),
-        },
-        {
-            title: 'View',
-            key: 'action',
-            render: (_, record) => (
-                <>
-                    <Button icon={<EyeOutlined/>} style={{marginBottom: '12px'}} type="primary" onClick={() => {
-                        showEditForm(record)
-                    }}>View</Button>
                 </>
             ),
         },
@@ -94,9 +83,9 @@ const AssetsListComponent = () => {
             key: 'action',
             render: (_, record) => (
                 <>
-                    <Button icon={<EditOutlined/>} type="default" onClick={() => {
+                    <Button icon={<EyeOutlined/>} type="default" onClick={() => {
                         showEditForm(record)
-                    }}>Edit</Button>
+                    }}>Update</Button>
                 </>
             ),
         }
