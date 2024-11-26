@@ -26,6 +26,7 @@ class Asset extends Model
         'unit_price',
 
         'remarks',
+        'ownership',
         'usage_status',
         'subscription_months',
         'next_payment_date'

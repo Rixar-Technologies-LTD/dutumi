@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('remarks')->nullable();
 
             $table->double('unit_price')->default(0);
+            $table->string('ownership')->nullable();
 
             $table->string('usage_status')->default(AssetUsageStatus::IN_USE->name);
             $table->integer('subscription_months_count')->default(0);

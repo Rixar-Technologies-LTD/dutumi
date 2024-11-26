@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 class AssetsController extends BaseController
 {
 
+
     public function getAssets(Request $request)
     {
         $request->validate([
@@ -26,8 +27,10 @@ class AssetsController extends BaseController
         return $this->returnResponse("Asset Groups", $projects);
     }
 
+
     public function addAsset(Request $request)
     {
+        Log::info(json_encode($request->all()));
         $request->validate([
             'asset_group_id' => 'required',
             'name' => 'required|string',
@@ -53,6 +56,7 @@ class AssetsController extends BaseController
             'category' => $request->input('category'),
 
             'remarks' => $request->input('remarks'),
+            'ownership' => $request->input('ownership'),
             'usage_status' => $request->input('usage_status'),
             'subscription_months_count' => $request->input('subscription_months_count',1),
             'next_payment_date' => Carbon::parse($request->input('next_payment_date'))

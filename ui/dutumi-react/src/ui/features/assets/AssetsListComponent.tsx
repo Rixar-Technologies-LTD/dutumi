@@ -191,7 +191,7 @@ const AssetsListComponent = () => {
          /*  Project
          ***------------------------------*/}
         <AssetForm isVisible={isAssetGroupFormOpen}
-                   title="Add Asset Group"
+                   title="Asset Information"
                    groupId={groupId??''}
                    onSaved={() => {
                        setAssetGroupFormOpen(false)
