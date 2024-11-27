@@ -1,5 +1,5 @@
 import {
-    Button,
+    Button, Image,
     Pagination,
     Space,
     Spin,
@@ -20,6 +20,8 @@ import sectionIcon from "assets/images/icons/objects/servers.png"
 import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {Asset} from "interfaces/assets/AssetsInterfaces";
 import AssetForm from "ui/features/assets/forms/AssetForm";
+import {isNotEmpty} from "utils/helpers";
+import {FaMapMarker, FaMemory} from "react-icons/fa";
 
 const AssetsListComponent = () => {
 
@@ -30,7 +32,9 @@ const AssetsListComponent = () => {
             key: 'reference',
             render: (_, record) => (
                 <>
-                    ASST-{record.id}
+                    ASST-{record.id} <br/>
+                    {isNotEmpty(record.ip_address) && <Tag>{record.ip_address}</Tag>} <br/>
+                    {isNotEmpty(record.location) && <><FaMapMarker style={{marginTop:'6px'}} color="green"/>{record.location}</>}
                 </>
             ),
         },
@@ -54,6 +58,11 @@ const AssetsListComponent = () => {
                 <>
                     {record.description}
                     <Tag>{record.category}</Tag><br/>
+                    {isNotEmpty(record.memory_size) && <div  style={{marginTop:'4px'}}>
+                        <Image style={{marginRight:'6px'}} width={20} src={sectionIcon}/> RAM: {record.memory_size}GB</div> }
+                    {isNotEmpty(record.storage_size) && <div  style={{marginTop:'4px'}}>
+                        <Image style={{marginRight:'6px'}} width={20} src={sectionIcon}/> Storage: {record.storage_size}GB</div>}
+
                 </>
             ),
         },
@@ -64,7 +73,8 @@ const AssetsListComponent = () => {
             width: '194px',
             render: (_, record) => (
                 <>
-                    {record.unit_price}
+                    <span>{record.unit_price} {record.price_currency}</span><br/>
+                    <span>{(record.unit_price_in_default_currency??0).toLocaleString()} TZS</span>
                 </>
             ),
         },
