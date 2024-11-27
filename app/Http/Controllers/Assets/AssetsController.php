@@ -68,6 +68,9 @@ class AssetsController extends BaseController
             'mac_address' => $request->input('mac_address'),
             'host_name' => $request->input('host_name'),
 
+            'processor_cores_count' => $request->input('processor_cores_count'),
+            'processor_type' => $request->input('processor_type'),
+
             'storage_size' => $request->input('storage_size'),
             'storage_type' => $request->input('storage_type'),
             'memory_size' => $request->input('memory_size'),
@@ -79,7 +82,6 @@ class AssetsController extends BaseController
 
         ]);
 
-
         return $this->returnResponse("Asset Group Added", $group);
     }
 
@@ -89,7 +91,6 @@ class AssetsController extends BaseController
         $request->validate([
             'id' => 'required|exists:assets,id',
             'name' => 'required|string',
-            'description' => 'required',
             'usage_status' => 'required',
             'type' => 'required',
             'category' => 'required'
@@ -117,6 +118,8 @@ class AssetsController extends BaseController
                 'mac_address' => $request->input('mac_address'),
                 'host_name' => $request->input('host_name'),
 
+                'processor_cores_count' => $request->input('processor_cores_count'),
+                'processor_type' => $request->input('processor_type'),
                 'storage_size' => $request->input('storage_size'),
                 'storage_type' => $request->input('storage_type'),
                 'memory_size' => $request->input('memory_size'),

@@ -40,6 +40,9 @@ return new class extends Migration
             $table->string('ip_address')->nullable();
             $table->string('mac_address')->nullable();
 
+            $table->integer('processor_cores_count')->nullable();
+            $table->string('processor_type')->nullable();
+
             $table->integer('storage_size')->nullable();
             $table->string('storage_type')->nullable();
             $table->integer('memory_size')->nullable();
@@ -48,7 +51,7 @@ return new class extends Migration
             $table->string('operating_system')->nullable();
 
             $table->string('price_currency')->default(0);
-            $table->double('unit_price_in_default_currency')->default(0);
+            $table->double('unit_price_in_default_currency')->default(0)->nullable();
 
             $table->softDeletes();
             $table->timestamps();

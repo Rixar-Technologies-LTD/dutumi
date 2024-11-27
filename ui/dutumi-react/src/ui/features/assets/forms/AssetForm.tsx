@@ -144,8 +144,8 @@ const AssetForm = (formProps:Props) => {
                         <Select
                             style={{minWidth: '180px'}}
                             options={[
-                                {'value':'PHYSICAL','label':'Physical Asset'},
-                                {'value':'DIGITAL','label':'Digital Asset'}
+                                {'value':'DIGITAL','label':'Digital Asset'},
+                                {'value':'PHYSICAL','label':'Physical Asset'}
                             ]}
                         />
                     </Form.Item>
@@ -171,20 +171,51 @@ const AssetForm = (formProps:Props) => {
 
                 <Space.Compact  style={{ width:'100%'}}>
                     <Form.Item
-                        style={{ width: '50%' }}
+                        style={{ width: '100%' }}
                         label="Asset Name"
                         name="name"
                     >
                         <Input type="text"/>
                     </Form.Item>
+
+                </Space.Compact>
+
+
+                <Space.Compact style={{width:'100%'}}>
+
                     <Form.Item
                         style={{ width: '50%' }}
                         label="Rent Price/Purchase Cost"
                         name="unit_price"
                     >
-                        <Input type="text"/>
+                        <Input type="number"/>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ width: '50%'}}
+                        label="Payment Currency"
+                        name="price_currency"
+                    >
+                        <Select
+                            style={{minWidth: '180px'}}
+                            options={[
+                                {'value':'USD','label':'USD'},
+                                {'value':'EURO','label':'EURO'},
+                                {'value':'GBP','label':'GBP'},
+                                {'value':'TZS','label':'TZS'}
+                            ]}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ width: '50%'}}
+                        label="TZS Equivalent"
+                        name="unit_price_in_default_currency"
+                    >
+                        <Input type="number"/>
                     </Form.Item>
                 </Space.Compact>
+
 
                 <Space.Compact  style={{ width: '100%' }}>
                     <Form.Item
@@ -276,9 +307,9 @@ const AssetForm = (formProps:Props) => {
                     <Form.Item
                         style={{ width: '35%'}}
                         label="Processor Cores"
-                        name="processor_cores"
+                        name="processor_cores_count"
                     >
-                        <Input type="text"/>
+                        <Input type="number"/>
                     </Form.Item>
 
                     <Form.Item
@@ -292,15 +323,15 @@ const AssetForm = (formProps:Props) => {
                 </Space.Compact>
 
 
-
+                
                 <Space.Compact style={{width:'100%'}}>
 
                     <Form.Item
                         style={{ width: '25%'}}
-                        label="Memory Size"
+                        label="Memory Size (GBs)"
                         name="memory_size"
                     >
-                        <Input type="text"/>
+                        <Input type="number"/>
                     </Form.Item>
 
                     <Form.Item
@@ -308,15 +339,24 @@ const AssetForm = (formProps:Props) => {
                         label="Memory Type"
                         name="memory_type"
                     >
-                        <Input type="text"/>
+                        <Select
+                            style={{minWidth: '164px'}}
+                            options={[
+                                {'value':'DDR2','label':'DDR2'},
+                                {'value':'DDR3','label':'DDR3'},
+                                {'value':'DDR4','label':'DDR4'},
+                                {'value':'OTHER','label':'Other'}
+                            ]}
+                        />
                     </Form.Item>
+
 
                     <Form.Item
                         style={{ width: '25%'}}
                         label="Storage Size (GBs)"
-                        name="storage"
+                        name="storage_size"
                     >
-                        <Input type="text"/>
+                        <Input type="number"/>
                     </Form.Item>
 
                     <Form.Item
@@ -324,28 +364,20 @@ const AssetForm = (formProps:Props) => {
                         label="Storage Type"
                         name="storage_type"
                     >
-                        <Input type="text"/>
+                        <Select
+                            style={{minWidth: '164px'}}
+                            options={[
+                                {'value':'SSD','label':'SSD'},
+                                {'value':'NVM','label':'NVM'},
+                                {'value':'NVMe','label':'NVMe'},
+                                {'value':'HDD','label':'HDD'},
+                                {'value':'OTHER','label':'OTHER'},
+                            ]}
+                        />
                     </Form.Item>
                 </Space.Compact>
 
 
-                <Space.Compact style={{width:'100%'}}>
-                    <Form.Item
-                        style={{ width: '50%'}}
-                        label="Payment Currency"
-                        name="price_currency"
-                    >
-                        <Input type="text"/>
-                    </Form.Item>
-
-                    <Form.Item
-                        style={{ width: '50%'}}
-                        label="TZS Equivalent"
-                        name="unit_price_in_default_currency"
-                    >
-                        <Input type="text"/>
-                    </Form.Item>
-                </Space.Compact>
 
             </Form>
         </Modal>

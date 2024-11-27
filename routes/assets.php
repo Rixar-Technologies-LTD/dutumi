@@ -22,4 +22,3 @@ Route::prefix("/v1/assets")->middleware('auth:api')->group(function () {
     Route::post('/update', [AssetsController::class, 'updateAsset']);
     Route::get('/details', [AssetsController::class, 'getAssetDetails']);
 });
-
