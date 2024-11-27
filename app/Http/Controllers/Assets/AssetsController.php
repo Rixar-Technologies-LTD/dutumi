@@ -23,6 +23,7 @@ class AssetsController extends BaseController
         $projects = Asset::query()
             ->where('asset_group_id', $request->input('groupId'))
             ->with(['author'])
+            ->orderBy('name','ASC')
             ->paginate(50);
         return $this->returnResponse("Asset Groups", $projects);
     }

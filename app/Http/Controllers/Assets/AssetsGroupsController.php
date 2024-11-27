@@ -16,6 +16,7 @@ class AssetsGroupsController extends BaseController
         $projects = AssetGroup::query()
             ->with(['author','project'])
             ->withCount(['assets'])
+            ->orderBy('name','ASC')
             ->paginate(50);
         return $this->returnResponse("Asset Groups", $projects);
     }
