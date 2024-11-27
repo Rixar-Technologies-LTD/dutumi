@@ -212,15 +212,6 @@ const AssetForm = (formProps:Props) => {
                 </Space.Compact>
 
                 <Form.Item
-                    style={{ marginTop: '8px'}}
-                    label="Asset Description"
-                    name="description"
-                >
-                    <TextArea/>
-                </Form.Item>
-
-
-                <Form.Item
                     label="Service Provider/Vendor"
                     name="vendor"
                 >
@@ -232,6 +223,21 @@ const AssetForm = (formProps:Props) => {
                     name="url"
                 >
                     <Input type="text"/>
+                </Form.Item>
+
+                <Form.Item
+                    label="IP"
+                    name="ip"
+                >
+                    <Input type="text"/>
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginTop: '8px'}}
+                    label="Asset Description"
+                    name="description"
+                >
+                    <TextArea rows={6} />
                 </Form.Item>
 
 
