@@ -53,7 +53,7 @@ class UsersManagementController extends BaseController
 
         $user =  User::query()->find($request->input('id'));
         if(!$user){
-            return $this->returnError("User not found",[],400);
+            return $this->clientError("User not found",[],400);
         }
 
         $user->name = $request->input('name');
@@ -74,7 +74,7 @@ class UsersManagementController extends BaseController
 
         $user =  User::query()->find($request->input('id'));
         if(!$user){
-            return $this->returnError("User not found",[],400);
+            return $this->clientError("User not found",[],400);
         }
 
         $user->password = Hash::make($request->input('new_password'));
@@ -105,7 +105,7 @@ class UsersManagementController extends BaseController
 
         $user =  User::query()->find($request->input('userId'));
         if(!$user){
-            return $this->returnError("User not found",[],400);
+            return $this->clientError("User not found",[],400);
         }
 
         $user->syncPermissions($request->input('permissions_names'));

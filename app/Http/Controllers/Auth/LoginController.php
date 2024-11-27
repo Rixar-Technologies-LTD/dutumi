@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Passport\PersonalAccessTokenResult;
 
 
 class LoginController extends BaseController
@@ -27,11 +26,11 @@ class LoginController extends BaseController
 
         $user = User::query()->where(['email' => $request->input('identifier')])->first();
         if (!$user) {
-            return $this->returnError('User does not exist', ["User does not exist"], 400);
+            return $this->clientError('User does not exist', ["User does not exist"], 400);
         }
 
         if (!(Hash::check($request->input('password'), $user->password))) {
-            return $this->returnError('Invalid credentials', [], 403);
+            return $this->clientError('Invalid credentials', [], 403);
         }
 
         $personalAccessTokenResult = $user->createToken('api');
