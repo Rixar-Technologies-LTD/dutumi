@@ -116,11 +116,17 @@ const ProjectsListComponent = () => {
 
     const [projectTypes, updateProjectTypes] = useState<ProjectType[]>([
         {type:"Mobile App",code:"MOBILE_APP"},
+        {type:"Desktop App",code:"DESKTOP_APP"},
         {type:"Web App",code:"WEB_APP"},
+        {type:"Website",code:"WEBSITE"},
         {type:"Micro Service",code:"MICROSERVICE"},
         {type:"Dashboard",code:"DASHBOARD"},
-        {type:"Admin Portal",code:"PORTAL"}
+        {type:"Admin Portal",code:"PORTAL"},
+        {type:"System",code:"SYSTEM"},
+        {type:"Content Management System",code:"CMS"},
+        {type:"Other",code:"OTHER"},
     ]);
+
     const [selectedProjectType, setSelectedProjectType] = useState<ProjectType>();
 
     const [messageModalOpen, setProjectModal] = useState(false)

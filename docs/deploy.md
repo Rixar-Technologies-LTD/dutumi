@@ -16,15 +16,20 @@
 >> sudo chmod -R 775 storage
 >> sudo chmod -R 775 bootstrap/cache
 
+[migration]
+>> php artisan migrate
+
+[passport]
+>> php artisan passport:keys
+>> php artisan passport:client --personal
+
 [PermissionsOnMac]
 >> sudo chown -R $USER:_www storage
 >> sudo chown -R $USER:_www bootstrap/cache
 >> sudo chmod -R 775 storage
 >> sudo chmod -R 775 bootstrap/cache
  
-[migration]
->> php artisan migrate
->> php artisan passport:client --personal
+
 
 [Seeding]
 #>> php artisan permission:cache-reset
