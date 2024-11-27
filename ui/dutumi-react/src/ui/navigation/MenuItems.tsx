@@ -5,19 +5,11 @@ import {
     LogoutOutlined,
     UsergroupAddOutlined,
     MessageOutlined,
-    FileSyncOutlined,
     UserOutlined,
     ClockCircleOutlined,
-    MailOutlined,
-    AndroidFilled,
     AndroidOutlined,
-    PhoneOutlined,
-    GlobalOutlined,
-    MoneyCollectOutlined,
-    MoneyCollectFilled,
     FolderOutlined,
     DatabaseOutlined,
-    PoundCircleFilled,
     PoundCircleOutlined
 } from '@ant-design/icons';
 import type {MenuProps} from 'antd';
@@ -25,10 +17,9 @@ import {Menu} from 'antd';
 import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {CiBullhorn} from "react-icons/ci";
-import {BiFootball} from "react-icons/bi";
 import {FaBroadcastTower} from "react-icons/fa";
 import {getUserPermissions} from "../../state/auth/authStore";
-import {containsAny, isEmpty} from "../../utils/helpers";
+import {containsAny} from "../../utils/helpers";
 
 type MenuItem = Required<MenuProps>['items'][number];
 

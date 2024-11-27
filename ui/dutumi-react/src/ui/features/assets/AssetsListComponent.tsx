@@ -15,10 +15,10 @@ import {notifyHttpError} from "services/notification/notifications";
 import {getRequest} from "../../../services/http/RestClient";
 import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
-import sectionIcon from "assets/images/icons/generic/assets.png"
+import sectionIcon from "assets/images/icons/objects/servers.png"
 
 import {useNavigate, useParams} from "react-router-dom";
-import {Asset, AssetGroup} from "interfaces/assets/AssetsInterfaces";
+import {Asset} from "interfaces/assets/AssetsInterfaces";
 import AssetForm from "ui/features/assets/forms/AssetForm";
 
 const AssetsListComponent = () => {
