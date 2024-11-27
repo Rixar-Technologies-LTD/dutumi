@@ -27,14 +27,29 @@ return new class extends Migration
             $table->string('remarks')->nullable();
 
             $table->double('unit_price')->default(0);
-            $table->string('ownership')->nullable();
 
+            $table->string('ownership')->nullable();
             $table->string('vendor')->nullable();
             $table->string('url')->nullable();
 
             $table->string('usage_status')->default(AssetUsageStatus::IN_USE->name);
             $table->integer('subscription_months_count')->default(0);
             $table->dateTime('next_payment_date')->nullable();
+
+            $table->string('host_name')->nullable();
+            $table->string('ip_address')->nullable();
+            $table->string('mac_address')->nullable();
+
+            $table->integer('storage_size')->nullable();
+            $table->string('storage_type')->nullable();
+            $table->integer('memory_size')->nullable();
+            $table->string('memory_type')->nullable();
+
+            $table->string('operating_system')->nullable();
+
+            $table->string('price_currency')->default(0);
+            $table->double('unit_price_in_default_currency')->default(0);
+
             $table->softDeletes();
             $table->timestamps();
         });

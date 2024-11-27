@@ -40,3 +40,8 @@ php artisan storage:link
 
 #resetting permissions-cache
 php artisan permission:cache-reset
+
+
+### -------------
+### ssh rixar@38.242.245.228
+> cd /var/www/rixar/dutumi

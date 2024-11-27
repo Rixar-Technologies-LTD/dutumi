@@ -24,6 +24,8 @@ class Asset extends Model
         'category',
 
         'unit_price',
+        'price_currency',
+        'unit_price_in_default_currency',
 
         'remarks',
         'ownership',
@@ -31,7 +33,18 @@ class Asset extends Model
         'subscription_months',
         'next_payment_date',
         'vendor',
-        'url'
+        'url',
+
+        'host_name',
+        'ip_address',
+        'mac_address',
+
+        'storage',
+        'storage_type',
+        'memory',
+        'memory_type',
+        'operating_system',
+
     ];
 
     public function author()

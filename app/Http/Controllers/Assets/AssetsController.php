@@ -62,8 +62,23 @@ class AssetsController extends BaseController
             'ownership' => $request->input('ownership'),
             'usage_status' => $request->input('usage_status'),
             'subscription_months_count' => $request->input('subscription_months_count',1),
-            'next_payment_date' =>  $nextDate? Carbon::parse($nextDate) : null
+            'next_payment_date' =>  $nextDate? Carbon::parse($nextDate) : null,
+
+            'ip_address' => $request->input('ip_address'),
+            'mac_address' => $request->input('mac_address'),
+            'host_name' => $request->input('host_name'),
+
+            'storage_size' => $request->input('storage_size'),
+            'storage_type' => $request->input('storage_type'),
+            'memory_size' => $request->input('memory_size'),
+            'memory_type' => $request->input('memory_type'),
+
+            'operating_system' => $request->input('operating_system'),
+            'price_currency' => $request->input('price_currency'),
+            'unit_price_in_default_currency' => $request->input('unit_price_in_default_currency')
+
         ]);
+
 
         return $this->returnResponse("Asset Group Added", $group);
     }
@@ -96,7 +111,20 @@ class AssetsController extends BaseController
                 'ownership' => $request->input('ownership'),
                 'usage_status' => $request->input('usage_status'),
                 'subscription_months_count' => $request->input('subscription_months_count',1),
-                'next_payment_date' =>  $nextDate? Carbon::parse($nextDate) : null
+                'next_payment_date' =>  $nextDate? Carbon::parse($nextDate) : null,
+
+                'ip_address' => $request->input('ip_address'),
+                'mac_address' => $request->input('mac_address'),
+                'host_name' => $request->input('host_name'),
+
+                'storage_size' => $request->input('storage_size'),
+                'storage_type' => $request->input('storage_type'),
+                'memory_size' => $request->input('memory_size'),
+                'memory_type' => $request->input('memory_type'),
+
+                'operating_system' => $request->input('operating_system'),
+                'price_currency' => $request->input('price_currency'),
+                'unit_price_in_default_currency' => $request->input('unit_price_in_default_currency')
             ]);
 
         return $this->returnResponse("Asset Updated", $group);

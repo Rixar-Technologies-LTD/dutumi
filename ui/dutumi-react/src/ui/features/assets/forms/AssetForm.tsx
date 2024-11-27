@@ -97,7 +97,7 @@ const AssetForm = (formProps:Props) => {
          ***------------------------------*/}
         <Modal title={modalTitle}
                open={formProps.isVisible}
-               width="640px"
+               width="840px"
                onOk={() => {
                    antdForm.submit()
                }}
@@ -201,7 +201,6 @@ const AssetForm = (formProps:Props) => {
                         />
                     </Form.Item>
 
-
                     <Form.Item
                         style={{ width: '50%' }}
                         label="Next Payment (For Rentals)"
@@ -219,18 +218,12 @@ const AssetForm = (formProps:Props) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="URL"
+                    label="Control Panel URL"
                     name="url"
                 >
                     <Input type="text"/>
                 </Form.Item>
 
-                <Form.Item
-                    label="IP"
-                    name="ip"
-                >
-                    <Input type="text"/>
-                </Form.Item>
 
                 <Form.Item
                     style={{ marginTop: '8px'}}
@@ -241,6 +234,118 @@ const AssetForm = (formProps:Props) => {
                 </Form.Item>
 
 
+
+                <h2>Server Information</h2>
+
+                <Space.Compact style={{width:'100%'}}>
+                    <Form.Item
+                        style={{ width: '30%'}}
+                        label="IP Address"
+                        name="ip_address"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ width: '35%'}}
+                        label="Mac Address"
+                        name="mac_address"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ width: '35%'}}
+                        label="Host Name"
+                        name="host_name"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+                </Space.Compact>
+
+
+                <Space.Compact style={{width:'100%'}} >
+                    <Form.Item
+                        style={{ width: '30%'}}
+                        label="Operating System"
+                        name="operating_system"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ width: '35%'}}
+                        label="Processor Cores"
+                        name="processor_cores"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ width: '35%'}}
+                        label="Processor Type"
+                        name="processor_type"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+
+                </Space.Compact>
+
+
+
+                <Space.Compact style={{width:'100%'}}>
+
+                    <Form.Item
+                        style={{ width: '25%'}}
+                        label="Memory Size"
+                        name="memory_size"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ width: '25%'}}
+                        label="Memory Type"
+                        name="memory_type"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ width: '25%'}}
+                        label="Storage Size (GBs)"
+                        name="storage"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ width: '25%'}}
+                        label="Storage Type"
+                        name="storage_type"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+                </Space.Compact>
+
+
+                <Space.Compact style={{width:'100%'}}>
+                    <Form.Item
+                        style={{ width: '50%'}}
+                        label="Payment Currency"
+                        name="price_currency"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ width: '50%'}}
+                        label="TZS Equivalent"
+                        name="unit_price_in_default_currency"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+                </Space.Compact>
 
             </Form>
         </Modal>
