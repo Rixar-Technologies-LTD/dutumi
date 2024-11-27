@@ -13,15 +13,17 @@ import {
     UndoOutlined
 } from "@ant-design/icons";
 
-import {notifyHttpError, notifySuccess} from "services/notification/notifications";
-import {getRequest, postRequest} from "../../../services/http/RestClient";
+import {notifyHttpError} from "services/notification/notifications";
+import {getRequest} from "../../../services/http/RestClient";
 import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
 import sectionIcon from "assets/images/icons/objects/folders.png"
+import folder from "assets/images/icons/objects/folder.png"
 
 import {useNavigate} from "react-router-dom";
 import AssetGroupForm from "ui/features/assets/forms/AssetGroupForm";
 import {AssetGroup} from "interfaces/assets/AssetsInterfaces";
+import GoodImageIcon from "ui/templates/icons/GoodImageIcon";
 
 const AssetGroupsListComponent = () => {
 
@@ -32,7 +34,10 @@ const AssetGroupsListComponent = () => {
             key: 'reference',
             render: (_, record) => (
                 <>
-                    GRP-{record.id}
+                    <Space>
+                        <GoodImageIcon padding={4} iconSizeEm={32} iconPath={folder}/>
+                        <span>GRP{record.id}</span>
+                    </Space>
                 </>
             ),
         },

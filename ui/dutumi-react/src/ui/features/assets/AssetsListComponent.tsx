@@ -8,7 +8,7 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import { EyeOutlined, PlusCircleOutlined} from "@ant-design/icons";
+import {EyeOutlined, PlusCircleOutlined} from "@ant-design/icons";
 import {UndoOutlined} from "@ant-design/icons";
 
 import {notifyHttpError} from "services/notification/notifications";
@@ -21,20 +21,64 @@ import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {Asset} from "interfaces/assets/AssetsInterfaces";
 import AssetForm from "ui/features/assets/forms/AssetForm";
 import {isNotEmpty} from "utils/helpers";
-import {FaMapMarker, FaMemory} from "react-icons/fa";
+import {FaMapMarker} from "react-icons/fa";
+import GoodImageIcon from "ui/templates/icons/GoodImageIcon";
+import object from "assets/images/icons/objects/cube.png";
+import server from "assets/images/icons/servers/server.png";
+import databaseServer from "assets/images/icons/servers/database.png";
+
+
+const toAssetIcon = (type: string) => {
+    switch (type) {
+        case 'APPLICATION_SERVER':
+            return server;
+        case 'DATABASE_SERVER':
+            return databaseServer;
+        case 'FILE_SERVER':
+            return server;
+        case 'GENERIC_SERVER':
+            return server;
+        case 'IP':
+            return object;
+        case 'SMARTPHONE':
+            return object;
+        case 'LAPTOP':
+            return object;
+        case 'OTHER':
+            return object;
+        default :
+            return object;
+    }
+
+}
+
 
 const AssetsListComponent = () => {
 
     const columns: ColumnsType<Asset> = [
+        {
+            title: '',
+            dataIndex: 'reference',
+            key: 'reference',
+            width: '36px',
+            render: (_, record) => (
+                <>
+                    <Space>
+                        <GoodImageIcon padding={4} iconSizeEm={32} iconPath={toAssetIcon(record.category)}/>
+                    </Space>
+                </>
+            ),
+        },
         {
             title: 'Reference',
             dataIndex: 'reference',
             key: 'reference',
             render: (_, record) => (
                 <>
-                    ASST-{record.id} <br/>
+                    <span>ASST{record.id}</span> <br/>
                     {isNotEmpty(record.ip_address) && <Tag>{record.ip_address}</Tag>} <br/>
-                    {isNotEmpty(record.location) && <><FaMapMarker style={{marginTop:'6px'}} color="green"/>{record.location}</>}
+                    {isNotEmpty(record.location) && <><FaMapMarker style={{marginTop: '6px'}}
+                                                                   color="green"/>{record.location}</>}
                 </>
             ),
         },
@@ -58,10 +102,12 @@ const AssetsListComponent = () => {
                 <>
                     {record.description}
                     <Tag>{record.category}</Tag><br/>
-                    {isNotEmpty(record.memory_size) && <div  style={{marginTop:'4px'}}>
-                        <Image style={{marginRight:'6px'}} width={20} src={sectionIcon}/> RAM: {record.memory_size}GB</div> }
-                    {isNotEmpty(record.storage_size) && <div  style={{marginTop:'4px'}}>
-                        <Image style={{marginRight:'6px'}} width={20} src={sectionIcon}/> Storage: {record.storage_size}GB</div>}
+                    {isNotEmpty(record.memory_size) && <div style={{marginTop: '4px'}}>
+                        <Image style={{marginRight: '6px'}} width={20} src={sectionIcon}/> RAM: {record.memory_size}GB
+                    </div>}
+                    {isNotEmpty(record.storage_size) && <div style={{marginTop: '4px'}}>
+                        <Image style={{marginRight: '6px'}} width={20}
+                               src={sectionIcon}/> Storage: {record.storage_size}GB</div>}
 
                 </>
             ),
@@ -74,7 +120,7 @@ const AssetsListComponent = () => {
             render: (_, record) => (
                 <>
                     <span>{record.unit_price} {record.price_currency}</span><br/>
-                    <span>{(record.unit_price_in_default_currency??0).toLocaleString()} TZS</span>
+                    <span>{(record.unit_price_in_default_currency ?? 0).toLocaleString()} TZS</span>
                 </>
             ),
         },
@@ -166,7 +212,7 @@ const AssetsListComponent = () => {
         {/**---------------*
          /** Search
          *----------------*/}
-        <h2 style={{ color:'#818181'}}>{groupName}</h2>
+        <h2 style={{color: '#818181'}}>{groupName}</h2>
         <Space style={{marginBottom: 24, marginTop: 8}} direction="horizontal">
             <Button icon={<PlusCircleOutlined/>}
                     onClick={() => {
@@ -208,7 +254,7 @@ const AssetsListComponent = () => {
          ***------------------------------*/}
         <AssetForm isVisible={isAssetGroupFormOpen}
                    title="Asset Information"
-                   groupId={groupId??''}
+                   groupId={groupId ?? ''}
                    oldAsset={selectedAsset}
                    onSaved={() => {
                        setAssetGroupFormOpen(false)

@@ -158,8 +158,10 @@ const AssetForm = (formProps:Props) => {
                         <Select
                             style={{minWidth: '180px'}}
                             options={[
-                                {'value':'CLOUD_SERVER','label':'Cloud Server'},
-                                {'value':'PHYSICAL_SERVER','label':'Physical Server'},
+                                {'value':'APPLICATION_SERVER','label':'Application Server'},
+                                {'value':'DATABASE_SERVER','label':'Database Server'},
+                                {'value':'FILE_SERVER','label':'File Server'},
+                                {'value':'GENERIC_SERVER','label':'Generic Server'},
                                 {'value':'IP','label':'IP'},
                                 {'value':'SMARTPHONE','label':'Smartphone'},
                                 {'value':'LAPTOP','label':'Laptop'},
