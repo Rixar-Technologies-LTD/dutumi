@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import React, {useEffect, useState} from 'react';
 
-import {getRequest, postRequest} from "../../../../../services/http/RestService";
+import {getRequest, postRequest} from "../../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "../../../../../services/notification/notifications";
 
 import sectionIcon from "../../../../../assets/images/icons/users/owner.png"

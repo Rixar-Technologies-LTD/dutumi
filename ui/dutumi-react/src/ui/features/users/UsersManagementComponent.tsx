@@ -10,7 +10,7 @@ import {
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
 import sectionIcon from "../../../assets/images/icons/label.png"
-import {getRequest, postMultipart, postRequest} from "../../../services/http/RestService";
+import {getRequest, postMultipart, postRequest} from "../../../services/http/RestClient";
 import {notifyError, notifyHttpError, notifySuccess} from "../../../services/notification/notifications";
 import EyasiContentCard from "../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../templates/Loading";

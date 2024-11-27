@@ -7,7 +7,7 @@ import '../../../../css/business.css';
 import React, {useEffect, useState} from 'react';
 import {UndoOutlined} from "@ant-design/icons";
 import {notifyHttpError} from "../../../../services/notification/notifications";
-import {getRequest} from "../../../../services/http/RestService";
+import {getRequest} from "../../../../services/http/RestClient";
 import customerLoadingIcon from "../../../templates/Loading";
 import { useParams, useSearchParams} from "react-router-dom";
 import GoodContentCardPlain from "../../../templates/cards/GoodContentCardPlain";

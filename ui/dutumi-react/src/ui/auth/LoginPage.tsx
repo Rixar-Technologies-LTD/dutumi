@@ -9,7 +9,7 @@ import logo from "../../assets/images/logo.png"
 import loginBackground from "../../assets/images/auth/login_background.jpg"
 
 import {useSelector, useDispatch} from "react-redux";
-import {postRequest} from "../../services/http/RestService";
+import {postRequest} from "../../services/http/RestClient";
 import {setName, setPermissions, setToken} from "../../state/auth/authStore";
 import {useNavigate} from "react-router-dom";
 import {notifyHttpError} from "../../services/notification/notifications";

@@ -12,7 +12,7 @@ import { EyeOutlined, PlusCircleOutlined} from "@ant-design/icons";
 import {UndoOutlined} from "@ant-design/icons";
 
 import {notifyHttpError} from "services/notification/notifications";
-import {getRequest} from "../../../services/http/RestService";
+import {getRequest} from "../../../services/http/RestClient";
 import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
 import sectionIcon from "assets/images/icons/generic/assets.png"

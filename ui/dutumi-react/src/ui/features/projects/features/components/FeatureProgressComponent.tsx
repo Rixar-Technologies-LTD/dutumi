@@ -16,7 +16,7 @@ import approvalIcon from "../../../../../assets/images/icons/progress/approval.p
 import deploymentIcon from "../../../../../assets/images/icons/progress/deployment.png";
 import verificationIcon from "../../../../../assets/images/icons/progress/verification.png";
 
-import {getRequest, postRequest} from "../../../../../services/http/RestService";
+import {getRequest, postRequest} from "../../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "../../../../../services/notification/notifications";
 import {isEmpty} from "../../../../../utils/helpers";
 import type {ColumnsType} from "antd/es/table";

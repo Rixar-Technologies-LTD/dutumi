@@ -18,7 +18,7 @@ import {
 } from "@ant-design/icons";
 import {UndoOutlined} from "@ant-design/icons";
 import {notifyHttpError} from "../../../services/notification/notifications";
-import {getRequest} from "../../../services/http/RestService";
+import {getRequest} from "../../../services/http/RestClient";
 import customerLoadingIcon from "../../templates/Loading";
 import {Business} from "../../../interfaces/businesses/BusinessInterfaces";
 import sectionIcon from "../../../assets/images/icons/subscription.png"

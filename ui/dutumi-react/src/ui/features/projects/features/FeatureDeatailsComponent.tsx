@@ -25,7 +25,7 @@ import progressIcon from "../../../../assets/images/icons/sections/progress.png"
 
 import {useSearchParams} from "react-router-dom";
 import {Project, Task} from "../../../../interfaces/projects/ProjectsInterfaces";
-import {getRequest, postRequest} from "../../../../services/http/RestService";
+import {getRequest, postRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";

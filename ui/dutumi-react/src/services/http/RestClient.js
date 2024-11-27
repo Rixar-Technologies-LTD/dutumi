@@ -1,7 +1,7 @@
 import axiosClient from "./axios";
-import {codeStartsWith, isNotEmpty} from "../../utils/helpers";
-import {getStoredUserToken} from "../../state/auth/authStore";
-import {logWarning} from "../../utils/GoodLogger";
+import {codeStartsWith, isNotEmpty} from "utils/helpers";
+import {getStoredUserToken} from "state/auth/authStore";
+import {logWarning} from "utils/GoodLogger";
 
 
 const  removeLoggedUser = () => {

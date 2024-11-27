@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 
 import "../../../../css/components.css"
 import {Card, Pagination, Space, Table, Tag} from "antd";
-import {getRequest} from "../../../../services/http/RestService";
+import {getRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError} from "../../../../services/notification/notifications";
 import {useParams} from "react-router-dom";
 import {

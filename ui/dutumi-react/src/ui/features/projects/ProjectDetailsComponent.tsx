@@ -12,7 +12,7 @@ import React, {useEffect, useState} from 'react';
 
 import {CalendarOutlined, UndoOutlined} from "@ant-design/icons";
 import {notifyHttpError} from "services/notification/notifications";
-import {getRequest} from "../../../services/http/RestService";
+import {getRequest} from "../../../services/http/RestClient";
 import customerLoadingIcon from "../../templates/Loading";
 import {Business} from "interfaces/businesses/BusinessInterfaces";
 import featuresIcon from "assets/images/icons/generic/features.png"

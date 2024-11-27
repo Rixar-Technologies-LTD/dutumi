@@ -2,7 +2,7 @@ import {Button, Form, Input, Modal, Pagination, Space, Spin, Table} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
 import sectionIcon from "../../../../assets/images/icons/checked.png"
-import {getRequest, postRequest} from "../../../../services/http/RestService";
+import {getRequest, postRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";

@@ -2,7 +2,7 @@ import {Button, Image, List, Modal, Pagination, Space, Spin, Table, Tag} from 'a
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
 import sectionIcon from "../../../assets/images/icons/notifications/messages.png"
-import {getRequest} from "../../../services/http/RestService";
+import {getRequest} from "../../../services/http/RestClient";
 import {notifyHttpError} from "../../../services/notification/notifications";
 import EyasiContentCard from "../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../templates/Loading";

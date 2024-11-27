@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {ActivityUpdate} from "../../../../../interfaces/projects/ProjectsInterfaces";
 import ActivityFormComponent from "./ActivityFormComponent";
 import {PlusCircleOutlined} from "@ant-design/icons";
-import {getRequest} from "../../../../../services/http/RestService";
+import {getRequest} from "../../../../../services/http/RestClient";
 import {notifyHttpError} from "../../../../../services/notification/notifications";
 
 import sectionIcon from "../../../../../assets/images/icons/sections/feature2.png"

@@ -14,7 +14,7 @@ import {
 } from "@ant-design/icons";
 
 import {notifyHttpError, notifySuccess} from "services/notification/notifications";
-import {getRequest, postRequest} from "../../../services/http/RestService";
+import {getRequest, postRequest} from "../../../services/http/RestClient";
 import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
 import sectionIcon from "assets/images/icons/objects/folders.png"

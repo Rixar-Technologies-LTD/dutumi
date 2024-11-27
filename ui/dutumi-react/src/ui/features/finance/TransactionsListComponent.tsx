@@ -3,7 +3,7 @@ import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
 import EyasiContentCard from "../../templates/cards/EyasiContentCard";
 import ordersIcon from "../../../assets/images/icons/currency.png"
-import {getRequest} from "../../../services/http/RestService";
+import {getRequest} from "../../../services/http/RestClient";
 import {notifyHttpError} from "../../../services/notification/notifications";
 import {LinkOutlined, UndoOutlined} from "@ant-design/icons";
 import customerLoadingIcon from "../../templates/Loading";
