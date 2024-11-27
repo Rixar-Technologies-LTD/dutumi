@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 
 import "../../../../css/components.css"
 import {Card, Pagination, Space, Table, Tag} from "antd";
-import {getRequest} from "../../../../services/rest/RestService";
+import {getRequest} from "../../../../services/http/RestService";
 import {notifyHttpError} from "../../../../services/notification/notifications";
 import {useParams} from "react-router-dom";
 import {
@@ -111,7 +111,7 @@ const BranchesComponent = ({ business  } : BranchesProps) => {
             key: 'status',
             render: (_, business) => (
                 <>
-                    <Tag color="processing">{business.status ?? 'UNKNOWN'}</Tag><br/> 
+                    <Tag color="processing">{business.status ?? 'UNKNOWN'}</Tag><br/>
                 </>
             ),
         },

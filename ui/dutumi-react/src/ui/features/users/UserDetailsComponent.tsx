@@ -20,7 +20,7 @@ import {
     UndoOutlined
 } from "@ant-design/icons";
 import {notifyHttpError} from "../../../services/notification/notifications";
-import {getRequest, postRequest} from "../../../services/rest/RestService";
+import {getRequest, postRequest} from "../../../services/http/RestService";
 import customerLoadingIcon from "../../templates/Loading";
 import sectionIcon from "../../../assets/images/icons/subscription.png"
 import {useNavigate, useParams} from "react-router-dom";

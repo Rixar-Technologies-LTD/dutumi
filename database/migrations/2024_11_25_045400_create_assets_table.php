@@ -29,9 +29,12 @@ return new class extends Migration
             $table->double('unit_price')->default(0);
             $table->string('ownership')->nullable();
 
+            $table->string('vendor')->nullable();
+            $table->string('url')->nullable();
+
             $table->string('usage_status')->default(AssetUsageStatus::IN_USE->name);
             $table->integer('subscription_months_count')->default(0);
-            $table->dateTime('next_payment_date');
+            $table->dateTime('next_payment_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

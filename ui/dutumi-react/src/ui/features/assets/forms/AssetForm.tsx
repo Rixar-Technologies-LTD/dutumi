@@ -6,15 +6,19 @@ import {
 import React, {useEffect, useState} from 'react';
 
 import sectionIcon from "assets/images/icons/objects/objects.png"
-import {getRequest, postRequest} from "services/rest/RestService";
+import {getRequest, postRequest} from "../../../../services/http/RestService";
 import {notifyHttpError, notifySuccess} from "services/notification/notifications";
 import {Project} from "interfaces/projects/ProjectsInterfaces";
 import TextArea from "antd/es/input/TextArea";
+import {Asset} from "interfaces/assets/AssetsInterfaces";
+import dayjs from "dayjs";
+import {isNotEmpty} from "utils/helpers";
 
 interface Props {
     isVisible: boolean;
     title: string ;
     groupId: string ;
+    oldAsset?: Asset ;
     onSaved: () => void;
     onCancelled: () => void;
 }
@@ -30,6 +34,10 @@ const AssetForm = (formProps:Props) => {
     useEffect(() => {
         fetchProjects();
     }, []);
+
+    useEffect(() => {
+        setValues();
+    }, [formProps]);
 
     const fetchProjects = () => {
         setIsLoading(true);
@@ -47,7 +55,7 @@ const AssetForm = (formProps:Props) => {
 
     const saveAsset = (antdFormData: any) => {
 
-        const url:string = '/api/v1/assets/add';
+        const url:string = isNotEmpty(antdFormData.id) ? '/api/v1/assets/update':  '/api/v1/assets/add';
         setIsLoading(true);
         postRequest(url,{
              "asset_group_id": formProps.groupId,
@@ -64,6 +72,13 @@ const AssetForm = (formProps:Props) => {
             }).finally(() => {
                setIsLoading(false);
          })
+    }
+
+    const setValues = () => {
+        antdForm.setFieldsValue(formProps?.oldAsset??{});
+        if(isNotEmpty(formProps?.oldAsset?.next_payment_date??'')){
+            antdForm.setFieldValue('next_payment_date',dayjs(formProps?.oldAsset?.next_payment_date??'', 'DD-MM-YYYY'));
+        }
     }
 
     const modalTitle = (
@@ -93,7 +108,7 @@ const AssetForm = (formProps:Props) => {
                }}>
 
             <Form
-                style={{ backgroundColor:'#f5f5f5', padding:'12px 16px'}}
+                style={{ backgroundColor:'#f1f3ff', padding:'12px 24px', borderRadius:'12px'}}
                 form={antdForm}
                 layout="vertical"
                 onFinish={saveAsset}
@@ -108,7 +123,7 @@ const AssetForm = (formProps:Props) => {
                 <Space.Compact style={{ width:'100%'}}>
 
                     <Form.Item
-                        style={{ width: '30%' }}
+                        style={{ width: '33%' }}
                         label="Ownership"
                         name="ownership"
                     >
@@ -129,8 +144,8 @@ const AssetForm = (formProps:Props) => {
                         <Select
                             style={{minWidth: '180px'}}
                             options={[
-                                {'value':'REAL','label':'Physical Asset'},
-                                {'value':'VIRTUAL','label':'Digital Asset'}
+                                {'value':'PHYSICAL','label':'Physical Asset'},
+                                {'value':'DIGITAL','label':'Digital Asset'}
                             ]}
                         />
                     </Form.Item>
@@ -189,7 +204,7 @@ const AssetForm = (formProps:Props) => {
 
                     <Form.Item
                         style={{ width: '50%' }}
-                        label="Next Payment Date"
+                        label="Next Payment (For Rentals)"
                         name="next_payment_date"
                     >
                         <DatePicker style={{width: '100%'}} />
@@ -205,7 +220,19 @@ const AssetForm = (formProps:Props) => {
                 </Form.Item>
 
 
+                <Form.Item
+                    label="Service Provider/Vendor"
+                    name="vendor"
+                >
+                    <Input type="text"/>
+                </Form.Item>
 
+                <Form.Item
+                    label="URL"
+                    name="url"
+                >
+                    <Input type="text"/>
+                </Form.Item>
 
 
 

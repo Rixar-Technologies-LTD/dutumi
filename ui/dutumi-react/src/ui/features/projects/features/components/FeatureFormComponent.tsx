@@ -7,7 +7,7 @@ import React, {useEffect, useState} from 'react';
 
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
-import {getRequest, postRequest} from "../../../../../services/rest/RestService";
+import {getRequest, postRequest} from "../../../../../services/http/RestService";
 import {notifyHttpError, notifySuccess} from "../../../../../services/notification/notifications";
 import {isEmpty} from "../../../../../utils/helpers";
 

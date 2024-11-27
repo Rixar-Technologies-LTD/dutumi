@@ -35,9 +35,9 @@ class AssetsController extends BaseController
             'asset_group_id' => 'required',
             'name' => 'required|string',
             'unit_price' => 'required|numeric',
-
             'usage_status' => 'required',
-            'next_payment_date' => 'required'
+            'type' => 'required',
+            'category' => 'required'
         ]);
 
         $assetGroup = AssetGroup::query()->find($request->input('asset_group_id'));
@@ -45,6 +45,7 @@ class AssetsController extends BaseController
             return $this->clientError("Asset group not found");
         }
 
+        $nextDate = $request->input('next_payment_date',null);
         $group = Asset::query()->create([
             'project_id' => $assetGroup->project_id,
             'asset_group_id' => $assetGroup->id,
@@ -59,7 +60,7 @@ class AssetsController extends BaseController
             'ownership' => $request->input('ownership'),
             'usage_status' => $request->input('usage_status'),
             'subscription_months_count' => $request->input('subscription_months_count',1),
-            'next_payment_date' => Carbon::parse($request->input('next_payment_date'))
+            'next_payment_date' =>  $nextDate? Carbon::parse($nextDate) : null
         ]);
 
         return $this->returnResponse("Asset Group Added", $group);
@@ -73,23 +74,26 @@ class AssetsController extends BaseController
             'name' => 'required|string',
             'description' => 'required',
             'usage_status' => 'required',
-            'subscription_months_count' => 'required',
-            'next_payment_date' => 'required'
+            'type' => 'required',
+            'category' => 'required'
         ]);
 
+        $nextDate = $request->input('next_payment_date',null);
         $group = Asset::query()->where([
             'id' => $request->input('id'),
         ])
             ->update([
                 'name' => $request->input('name'),
+                'unit_price' => $request->input('unit_price'),
                 'description' => $request->input('description'),
                 'type' => $request->input('type'),
                 'category' => $request->input('category'),
 
                 'remarks' => $request->input('remarks'),
+                'ownership' => $request->input('ownership'),
                 'usage_status' => $request->input('usage_status'),
-                'subscription_months_count' => $request->input('subscription_months_count'),
-                'next_payment_date' => Carbon::parse($request->input('next_payment_date'))
+                'subscription_months_count' => $request->input('subscription_months_count',1),
+                'next_payment_date' =>  $nextDate? Carbon::parse($nextDate) : null
             ]);
 
         return $this->returnResponse("Asset Updated", $group);

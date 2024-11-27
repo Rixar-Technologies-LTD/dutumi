@@ -7,7 +7,7 @@ import '../../../../css/business.css';
 import React, {useEffect, useState} from 'react';
 import {UndoOutlined} from "@ant-design/icons";
 import {notifyHttpError} from "../../../../services/notification/notifications";
-import {getRequest} from "../../../../services/rest/RestService";
+import {getRequest} from "../../../../services/http/RestService";
 import customerLoadingIcon from "../../../templates/Loading";
 import { useParams, useSearchParams} from "react-router-dom";
 import GoodContentCardPlain from "../../../templates/cards/GoodContentCardPlain";
@@ -75,7 +75,7 @@ const BusinessProductsPage = () => {
     ];
 
     const [records, updateRecords] = useState<Product[]>([]);
- 
+
     const [currentPageNo, updateCurrentPageNo] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [pageSize, updatePageSize] = useState(50);
@@ -85,7 +85,7 @@ const BusinessProductsPage = () => {
     useEffect(() => {
         fetchRecords();
     }, [currentPageNo,pageSize]);
-    
+
     const fetchRecords = () => {
 
         if(businessId==null){

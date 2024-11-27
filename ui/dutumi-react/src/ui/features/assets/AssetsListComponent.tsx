@@ -8,11 +8,11 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import {EditOutlined, EyeOutlined, PlusCircleOutlined} from "@ant-design/icons";
+import { EyeOutlined, PlusCircleOutlined} from "@ant-design/icons";
 import {UndoOutlined} from "@ant-design/icons";
 
 import {notifyHttpError} from "services/notification/notifications";
-import {getRequest} from "services/rest/RestService";
+import {getRequest} from "../../../services/http/RestService";
 import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
 import sectionIcon from "assets/images/icons/generic/assets.png"
@@ -40,17 +40,20 @@ const AssetsListComponent = () => {
             key: 'name',
             render: (_, record) => (
                 <>
-                    <a href={`/assets/groups/${record.id}`}> {record.name}</a>
+                    <a href={`/assets/groups/${record.id}`}> {record.name}</a><br/>
+                    <Tag>{record.type}</Tag>
                 </>
             ),
         },
         {
             title: 'Description',
             dataIndex: 'name',
+            width: '228px',
             key: 'name',
             render: (_, record) => (
                 <>
                     {record.description}
+                    <Tag>{record.category}</Tag><br/>
                 </>
             ),
         },
@@ -85,7 +88,7 @@ const AssetsListComponent = () => {
                 <>
                     <Button icon={<EyeOutlined/>} type="default" onClick={() => {
                         showEditForm(record)
-                    }}>Update</Button>
+                    }}>View</Button>
                 </>
             ),
         }
@@ -101,6 +104,7 @@ const AssetsListComponent = () => {
     const navigate = useNavigate();
 
     const [isAssetGroupFormOpen, setAssetGroupFormOpen] = useState(false)
+    const [selectedAsset, setSelectedAsset] = useState<Asset>()
 
     const {groupId} = useParams();
 
@@ -125,11 +129,9 @@ const AssetsListComponent = () => {
         })
     }
 
-
-    const showEditForm = (project: AssetGroup) => {
-        // projectForm.setFieldValue('id',project.id);
-        // projectForm.setFieldValue('name',project.name);
-        setAssetGroupFormOpen(true)
+    const showEditForm = (asset: Asset) => {
+        setSelectedAsset(asset);
+        setAssetGroupFormOpen(true);
     }
 
     const onPageChange = (page: number, pageSize: number) => {
@@ -193,6 +195,7 @@ const AssetsListComponent = () => {
         <AssetForm isVisible={isAssetGroupFormOpen}
                    title="Asset Information"
                    groupId={groupId??''}
+                   oldAsset={selectedAsset}
                    onSaved={() => {
                        setAssetGroupFormOpen(false)
                        fetchRecords();

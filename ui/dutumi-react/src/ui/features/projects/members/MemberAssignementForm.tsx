@@ -6,7 +6,7 @@ import React, {useEffect, useState} from 'react';
 
 
 import sectionIcon from "../../../../assets/images/icons/users/owner.png"
-import {getRequest, postRequest} from "../../../../services/rest/RestService";
+import {getRequest, postRequest} from "../../../../services/http/RestService";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
 import {SystemUser} from "../../../../interfaces/system/AuthInterfaces";
 import {Member} from "../../../../interfaces/projects/ProjectsInterfaces";

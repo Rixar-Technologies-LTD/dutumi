@@ -3,7 +3,7 @@ import {Col, Row} from 'antd';
 import React, {useState, useEffect} from 'react';
 import DashboardStatistic from "./widgets/DashboardStatistic";
 import StatisticsGroup from "./widgets/StatisticsGroup";
-import {getRequest} from "../../services/rest/RestService";
+import {getRequest} from "../../services/http/RestService";
 import {notifyHttpError} from "../../services/notification/notifications";
 import {getUserPermissions} from "../../state/auth/authStore";
 import GoodMdiIcon from "../templates/icons/GoodMdiIcon";

@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 
 import "../../../../css/components.css"
 import {Button, Card, Pagination, Space, Table, Tag} from "antd";
-import {getRequest} from "../../../../services/rest/RestService";
+import {getRequest} from "../../../../services/http/RestService";
 import {notifyHttpError} from "../../../../services/notification/notifications";
 import {  Business,Staff,
 } from "../../../../interfaces/businesses/BusinessInterfaces";

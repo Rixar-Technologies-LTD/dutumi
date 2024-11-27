@@ -29,9 +29,10 @@ class Asset extends Model
         'ownership',
         'usage_status',
         'subscription_months',
-        'next_payment_date'
+        'next_payment_date',
+        'vendor',
+        'url'
     ];
-
 
     public function author()
     {

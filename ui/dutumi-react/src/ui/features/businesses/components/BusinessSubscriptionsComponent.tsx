@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import "../../../../css/components.css"
 
 import {Button, Card, Form, Input, Modal, Pagination, Radio, RadioChangeEvent, Select, Space, Table, Tag} from "antd";
-import {getRequest, postRequest} from "../../../../services/rest/RestService";
+import {getRequest, postRequest} from "../../../../services/http/RestService";
 import {notifyHttpError} from "../../../../services/notification/notifications";
 import {
     Business, LicenseSubscription, SubscriptionPlan

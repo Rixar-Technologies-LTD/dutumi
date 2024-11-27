@@ -23,7 +23,7 @@ import {
 } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
 import {notifyError, notifyHttpError, notifySuccess} from "../../../services/notification/notifications";
-import {getRequest, postMultipart, postRequest} from "../../../services/rest/RestService";
+import {getRequest, postMultipart, postRequest} from "../../../services/http/RestService";
 import EyasiContentCard from "../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../templates/Loading";
 import {

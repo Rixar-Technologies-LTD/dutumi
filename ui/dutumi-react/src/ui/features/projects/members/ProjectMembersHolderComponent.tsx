@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react';
 
 import {PlusCircleOutlined, UndoOutlined} from "@ant-design/icons";
 import {notifyHttpError} from "../../../../services/notification/notifications";
-import {getRequest} from "../../../../services/rest/RestService";
+import {getRequest} from "../../../../services/http/RestService";
 import customerLoadingIcon from "../../../templates/Loading";
 import {Business} from "../../../../interfaces/businesses/BusinessInterfaces";
 import projectIcon from "../../../../assets/images/icons/users/group.png"

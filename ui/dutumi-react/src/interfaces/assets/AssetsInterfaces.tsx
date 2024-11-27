@@ -9,12 +9,16 @@ export interface ProjectType {
 export interface Asset {
     id: string,
     name: string
+    type: string
+    category: string
     description: string
     status: string
     created_at: string,
     assets_count: number,
     unit_price: number,
     next_payment_date: string,
+    "ownership": string,
+    "usage_status": string,
     project: Project,
     author: SystemUser
 }

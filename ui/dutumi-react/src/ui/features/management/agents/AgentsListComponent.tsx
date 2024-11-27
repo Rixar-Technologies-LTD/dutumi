@@ -2,10 +2,10 @@ import {Button, Form, Input, Modal, Pagination, Space, Spin, Table, Tag} from 'a
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
 import sectionIcon from "../../../../assets/images/icons/agents.png"
-import {getRequest, postRequest} from "../../../../services/rest/RestService";
+import {getRequest, postRequest} from "../../../../services/http/RestService";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
-import customerLoadingIcon from "../../../templates/Loading"; 
+import customerLoadingIcon from "../../../templates/Loading";
 import {ReferralAgent} from "../../../../interfaces/referrals/ReferralsInterfaces";
 import Search from "antd/es/input/Search";
 import {CalendarOutlined, CheckCircleOutlined, GiftOutlined, ReloadOutlined} from "@ant-design/icons";
