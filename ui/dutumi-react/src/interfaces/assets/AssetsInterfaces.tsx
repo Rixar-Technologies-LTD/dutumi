@@ -15,10 +15,29 @@ export interface Asset {
     status: string
     created_at: string,
     assets_count: number,
+    
     unit_price: number,
+    "price_currency": string,
+    "unit_price_in_default_currency": string,
+
     next_payment_date: string,
     "ownership": string,
     "usage_status": string,
+
+    "host_name": string,
+    "ip_address": string,
+    "mac_address": string,
+
+    "processor_cores_count": string,
+    "processor_type": string,
+    "storage_size": string,
+    "storage_type": string,
+
+    "memory_size": string,
+    "memory_type": string,
+    "operating_system": string,
+
+
     project: Project,
     author: SystemUser
 }

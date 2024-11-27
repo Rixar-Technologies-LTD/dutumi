@@ -171,9 +171,16 @@ const AssetForm = (formProps:Props) => {
 
                 <Space.Compact  style={{ width:'100%'}}>
                     <Form.Item
-                        style={{ width: '100%' }}
+                        style={{ width: '50%' }}
                         label="Asset Name"
                         name="name"
+                    >
+                        <Input type="text"/>
+                    </Form.Item>
+                    <Form.Item
+                        style={{ width: '50%' }}
+                        label="Location"
+                        name="location"
                     >
                         <Input type="text"/>
                     </Form.Item>
@@ -263,8 +270,6 @@ const AssetForm = (formProps:Props) => {
                 >
                     <TextArea rows={6} />
                 </Form.Item>
-
-
 
                 <h2>Server Information</h2>
 

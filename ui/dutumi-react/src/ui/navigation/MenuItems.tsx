@@ -18,8 +18,8 @@ import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {CiBullhorn} from "react-icons/ci";
 import {FaBroadcastTower} from "react-icons/fa";
-import {getUserPermissions} from "../../state/auth/authStore";
-import {containsAny} from "../../utils/helpers";
+import {getUserPermissions} from "state/auth/authStore";
+import {containsAny} from "utils/helpers";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -100,7 +100,7 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
     const assetsMenus : MenuProps['items'] = [];
 
     if(permissions.includes("")){
-        assetsMenus.push(toMenuItem('Assets', '/assets/groups', <DatabaseOutlined/>))
+        assetsMenus.push(toMenuItem('Assets Groups', '/assets/groups', <DatabaseOutlined/>))
     }
 
     if(containsAny(permissions,["",'',''])){

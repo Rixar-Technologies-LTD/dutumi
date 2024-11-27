@@ -50,8 +50,13 @@ class AssetsController extends BaseController
             'asset_group_id' => $assetGroup->id,
             'author_id' => Auth::id(),
             'name' => $request->input('name'),
-            'unit_price' => $request->input('unit_price'),
             'description' => $request->input('description'),
+            'location' => $request->input('location'),
+
+            'unit_price' => $request->input('unit_price'),
+            'price_currency' => $request->input('price_currency'),
+            'unit_price_in_default_currency' => $request->input('unit_price_in_default_currency'),
+
             'type' => $request->input('type'),
             'category' => $request->input('category'),
 
@@ -77,8 +82,7 @@ class AssetsController extends BaseController
             'memory_type' => $request->input('memory_type'),
 
             'operating_system' => $request->input('operating_system'),
-            'price_currency' => $request->input('price_currency'),
-            'unit_price_in_default_currency' => $request->input('unit_price_in_default_currency')
+
 
         ]);
 
@@ -104,6 +108,8 @@ class AssetsController extends BaseController
                 'name' => $request->input('name'),
                 'unit_price' => $request->input('unit_price'),
                 'description' => $request->input('description'),
+                'location' => $request->input('location'),
+
                 'type' => $request->input('type'),
                 'category' => $request->input('category'),
                 'vendor' => $request->input('vendor'),
