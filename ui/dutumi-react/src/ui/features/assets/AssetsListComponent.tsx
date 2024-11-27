@@ -143,8 +143,8 @@ const AssetsListComponent = () => {
     }
 
 
-    return <EyasiContentCard title="Asset "
-                             subTitle="Groups"
+    return <EyasiContentCard title="Assets "
+                             subTitle="List"
                              iconImage={sectionIcon}
                              extraHeaderItems={[
                                  isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>

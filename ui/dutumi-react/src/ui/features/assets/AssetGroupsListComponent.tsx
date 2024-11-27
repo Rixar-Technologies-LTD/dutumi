@@ -90,7 +90,7 @@ const AssetGroupsListComponent = () => {
                         icon={<EyeOutlined/>}
                         style={{marginBottom: '12px'}}
                         type="primary">
-                        View
+                        Open
                     </Button>
                 </>
             )
@@ -139,10 +139,6 @@ const AssetGroupsListComponent = () => {
             }).finally(() => {
             setIsLoading(false);
         })
-    }
-
-    const viewProject = (project: AssetGroup) => {
-        navigate(`/projects/${project.id}`);
     }
 
     const showEditForm = (project: AssetGroup) => {

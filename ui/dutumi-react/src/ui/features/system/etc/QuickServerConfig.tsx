@@ -1,7 +1,7 @@
 import {Button, Form, Input, Modal, Select} from "antd";
 import {CloudServerOutlined, DatabaseOutlined, LockFilled, SettingOutlined, UserOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
-import {loadServerLocalStorage} from "../../../state/auth/serverConfigsStore";
+import {loadServerLocalStorage} from "state/auth/serverConfigsStore";
 
 
 const QuickServerConfig = () => {

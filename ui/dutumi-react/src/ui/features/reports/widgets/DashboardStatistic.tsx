@@ -1,4 +1,4 @@
-import {Card, Col, Divider, Row, Space, Spin, Table, Tag} from 'antd';
+import {Card} from 'antd';
 import React from 'react';
 import {LoadingOutlined} from "@ant-design/icons";
 

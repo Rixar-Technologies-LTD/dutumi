@@ -3,20 +3,11 @@ import {Col, Row} from 'antd';
 import React, {useState, useEffect} from 'react';
 import DashboardStatistic from "./widgets/DashboardStatistic";
 import StatisticsGroup from "./widgets/StatisticsGroup";
-import {getRequest} from "../../services/http/RestClient";
-import {notifyHttpError} from "../../services/notification/notifications";
-import {getUserPermissions} from "../../state/auth/authStore";
-import GoodMdiIcon from "../templates/icons/GoodMdiIcon";
-import {
-    mdiAccountGroupOutline,
-    mdiBankOutline,
-    mdiBarcodeScan, mdiCartOutline,
-    mdiCash, mdiEmailOutline,
-    mdiMapMarkerOutline, mdiMessageOutline, mdiMessageText,
-    mdiOfficeBuildingMarkerOutline,
-    mdiPackageUp
-} from "@mdi/js";
-import DashboardDoubleStatistic from "./widgets/DashboardDoubleStatistic";
+import {getRequest} from "services/http/RestClient";
+import {notifyHttpError} from "services/notification/notifications";
+import {getUserPermissions} from "state/auth/authStore";
+import GoodMdiIcon from "ui/templates/icons/GoodMdiIcon";
+import {  mdiBankOutline,  mdiCash, mdiOfficeBuildingMarkerOutline, } from "@mdi/js";
 
 interface BusinessStats {
     "businessesRegisteredToday": number,

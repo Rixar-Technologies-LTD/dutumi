@@ -1,15 +1,20 @@
 import axios from 'axios';
-import { getStoredUserToken } from "state/auth/authStore";
-import {isDevEnvironment} from "utils/helpers";
+import {getStoredUserToken} from "state/auth/authStore";
+import {isDevEnvironment, isEmpty} from "utils/helpers";
 
 const axiosClient = axios.create();
 
 
 axiosClient.defaults.baseURL = isDevEnvironment() ? process.env.REACT_APP_DEV_HOST : process.env.REACT_APP_PROD_HOST;
 
-console.log("Using api endpoint....",axiosClient.defaults.baseURL)
-console.log()
-console.log()
+if (isEmpty(axiosClient.defaults.baseURL)) {
+    console.error("Missing .env apis configs ....")
+    console.error("Missing REACT_APP_DEV_HOST")
+    console.error("Missing REACT_APP_PROD_HOST")
+    console.warn("Please specify REACT_APP_DEV_HOST & REACT_APP_PROD_HOST on .env file")
+} else {
+    console.log("Selected api endpoint from .env....", axiosClient.defaults.baseURL)
+}
 
 
 const userToken = getStoredUserToken();

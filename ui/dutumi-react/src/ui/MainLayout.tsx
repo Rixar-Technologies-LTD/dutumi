@@ -5,9 +5,9 @@ import React from "react";
 
 import '../css/custom.css';
 import LeftSideMenu from "./navigation/LeftSideMenu";
-import SystemUsersComponent from "./system/users/SystemUsersComponent";
-import RolesComponent from "./system/users/RolesComponent";
-import DashboardInsightsPage from "./reports/DashboardInsightsPage";
+import SystemUsersComponent from "ui/features/system/users/SystemUsersComponent";
+import RolesComponent from "ui/features/system/users/RolesComponent";
+import DashboardInsightsPage from "ui/features/reports/DashboardInsightsPage";
 
 import RequireAuth from "../services/auth/RequireAuth";
 import TransactionsListComponent from "./features/finance/TransactionsListComponent";

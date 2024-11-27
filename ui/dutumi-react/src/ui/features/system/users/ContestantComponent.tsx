@@ -1,12 +1,12 @@
 import {Avatar, Button, Form, Image, Input, Modal, Space, Spin, Table, Tag} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import EyasiContentCard from "../../templates/cards/EyasiContentCard";
-import sectionIcon from "../../../assets/images/icons/people.png"
-import {getRequest, postRequest} from "../../../services/http/RestClient";
-import {notifyHttpError, notifySuccess} from "../../../services/notification/notifications";
-import {Contenstant} from "../../../interfaces/system/AuthInterfaces";
-import customerLoadingIcon from "../../templates/Loading";
+import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
+import sectionIcon from "assets/images/icons/people.png"
+import {getRequest, postRequest} from "../../../../services/http/RestClient";
+import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
+import {Contenstant} from "interfaces/system/AuthInterfaces";
+import customerLoadingIcon from "../../../templates/Loading";
 
 const getStatusColor =(status:string)=>{
     if(status=="DELIVERED"){
