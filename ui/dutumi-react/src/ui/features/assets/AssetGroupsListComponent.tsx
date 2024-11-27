@@ -35,7 +35,7 @@ const AssetGroupsListComponent = () => {
             render: (_, record) => (
                 <>
                     <Space>
-                        <GoodImageIcon padding={4} iconSizeEm={32} iconPath={folder}/>
+                        <GoodImageIcon padding={6} iconSizeEm={48} iconPath={folder}/>
                         <span>GRP{record.id}</span>
                     </Space>
                 </>
