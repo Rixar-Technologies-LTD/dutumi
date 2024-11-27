@@ -40,9 +40,9 @@ class Asset extends Model
         'ip_address',
         'mac_address',
 
-        'storage',
+        'storage_size',
         'storage_type',
-        'memory',
+        'memory_size',
         'memory_type',
         'operating_system',
 
