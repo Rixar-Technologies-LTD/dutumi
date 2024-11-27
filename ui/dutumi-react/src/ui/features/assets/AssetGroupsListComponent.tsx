@@ -81,14 +81,13 @@ const AssetGroupsListComponent = () => {
             ),
         },
         {
-            title: 'View',
+            title: 'Open',
             key: 'action',
             render: (_, record) => (
                 <>
                     <Button
-                        href={`/assets/list/${record.id}`}
+                        href={`/assets/list/${record.id}?groupName=${record.name}`}
                         icon={<EyeOutlined/>}
-                        style={{marginBottom: '12px'}}
                         type="primary">
                         Open
                     </Button>
@@ -118,6 +117,7 @@ const AssetGroupsListComponent = () => {
     const navigate = useNavigate();
 
     const [isAssetGroupFormOpen, setAssetGroupFormOpen] = useState(false)
+    const [selectedAssetGroup, setSelectedAssetGroup] = useState<AssetGroup>()
 
     //Fetch products
     useEffect(() => {
@@ -141,9 +141,8 @@ const AssetGroupsListComponent = () => {
         })
     }
 
-    const showEditForm = (project: AssetGroup) => {
-        // projectForm.setFieldValue('id',project.id);
-        // projectForm.setFieldValue('name',project.name);
+    const showEditForm = (assetGroup: AssetGroup) => {
+        setSelectedAssetGroup(assetGroup)
         setAssetGroupFormOpen(true)
     }
 
@@ -207,6 +206,7 @@ const AssetGroupsListComponent = () => {
          ***------------------------------*/}
         <AssetGroupForm isVisible={isAssetGroupFormOpen}
                         title="Add Asset Group"
+                        oldGroup={selectedAssetGroup}
                         onSaved={() => {
                             setAssetGroupFormOpen(false)
                             fetchRecords();

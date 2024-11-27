@@ -11,11 +11,12 @@ export interface Asset {
     name: string
     type: string
     category: string
+    location: string
     description: string
     status: string
     created_at: string,
     assets_count: number,
-    
+
     unit_price: number,
     "price_currency": string,
     "unit_price_in_default_currency": string,

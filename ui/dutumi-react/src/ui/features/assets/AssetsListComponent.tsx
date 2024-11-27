@@ -17,7 +17,7 @@ import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
 import sectionIcon from "assets/images/icons/objects/servers.png"
 
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {Asset} from "interfaces/assets/AssetsInterfaces";
 import AssetForm from "ui/features/assets/forms/AssetForm";
 
@@ -107,6 +107,9 @@ const AssetsListComponent = () => {
     const [selectedAsset, setSelectedAsset] = useState<Asset>()
 
     const {groupId} = useParams();
+    const [searchParams] = useSearchParams();
+
+    const groupName = searchParams.get('groupName');
 
     //Fetch products
     useEffect(() => {
@@ -153,6 +156,7 @@ const AssetsListComponent = () => {
         {/**---------------*
          /** Search
          *----------------*/}
+        <h2 style={{ color:'#818181'}}>{groupName}</h2>
         <Space style={{marginBottom: 24, marginTop: 8}} direction="horizontal">
             <Button icon={<PlusCircleOutlined/>}
                     onClick={() => {

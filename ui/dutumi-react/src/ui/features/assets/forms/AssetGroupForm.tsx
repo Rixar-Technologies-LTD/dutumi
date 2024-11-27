@@ -9,10 +9,13 @@ import sectionIcon from "assets/images/icons/users/owner.png"
 import {getRequest, postRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "services/notification/notifications";
 import {Project} from "interfaces/projects/ProjectsInterfaces";
+import {AssetGroup} from "interfaces/assets/AssetsInterfaces";
+import {isNotEmpty} from "utils/helpers";
 
 interface Props {
     isVisible: boolean;
     title: string ;
+    oldGroup?: AssetGroup ;
     onSaved: () => void;
     onCancelled: () => void;
 }
@@ -28,6 +31,10 @@ const AssetGroupForm = (formProps:Props) => {
     useEffect(() => {
         fetchProjects();
     }, []);
+
+    useEffect(() => {
+        setValues();
+    }, [formProps]);
 
     const fetchProjects = () => {
         setIsLoading(true);
@@ -45,7 +52,7 @@ const AssetGroupForm = (formProps:Props) => {
 
     const addAssetGroup = (antdFormData: any) => {
 
-        const url:string = '/api/v1/assets/groups/add';
+        const url:string =  isNotEmpty(antdFormData.id)?  '/api/v1/assets/groups/update' : '/api/v1/assets/groups/add';
         setIsLoading(true);
         postRequest(url,{
             ...antdFormData
@@ -62,6 +69,11 @@ const AssetGroupForm = (formProps:Props) => {
                setIsLoading(false);
          })
     }
+
+    const setValues = ()=>{
+        antdForm.setFieldsValue(formProps?.oldGroup??{})
+    }
+
 
     const modalTitle = (
         <Space>
