@@ -27,7 +27,6 @@ class AssetsController extends BaseController
         return $this->returnResponse("Asset Groups", $projects);
     }
 
-
     public function addAsset(Request $request)
     {
         Log::info(json_encode($request->all()));
@@ -55,6 +54,9 @@ class AssetsController extends BaseController
             'description' => $request->input('description'),
             'type' => $request->input('type'),
             'category' => $request->input('category'),
+
+            'vendor' => $request->input('vendor'),
+            'url' => $request->input('url'),
 
             'remarks' => $request->input('remarks'),
             'ownership' => $request->input('ownership'),
@@ -88,7 +90,8 @@ class AssetsController extends BaseController
                 'description' => $request->input('description'),
                 'type' => $request->input('type'),
                 'category' => $request->input('category'),
-
+                'vendor' => $request->input('vendor'),
+                'url' => $request->input('url'),
                 'remarks' => $request->input('remarks'),
                 'ownership' => $request->input('ownership'),
                 'usage_status' => $request->input('usage_status'),
