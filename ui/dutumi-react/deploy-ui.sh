@@ -3,10 +3,10 @@
 yarn build
 
 # Remove the current dist directory
-rm -rf dist-prod
+rm -rf dist
 
 # Copy the build directory to dist
-cp -r build dist-prod
+cp -r build dist
 
 git add .
 git commit -m "Deployed UI"
