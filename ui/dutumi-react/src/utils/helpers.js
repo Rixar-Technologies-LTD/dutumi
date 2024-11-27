@@ -2,6 +2,13 @@
 
 
 
+export function isDevEnvironment(){
+    return (!process.env.NODE_ENV
+        || process.env.NODE_ENV === 'development'
+        || process.env.NODE_ENV === 'dev'
+        || process.env.NODE_ENV === 'local');
+}
+
 export function isEmpty(value){
 
     if(value===null){

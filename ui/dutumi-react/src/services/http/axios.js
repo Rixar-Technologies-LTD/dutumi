@@ -1,15 +1,19 @@
 import axios from 'axios';
-import { getStoredUserToken } from "../../state/auth/authStore";
+import { getStoredUserToken } from "state/auth/authStore";
+import {isDevEnvironment} from "utils/helpers";
 
 const axiosClient = axios.create();
 
 
-axiosClient.defaults.baseURL = (!process.env.NODE_ENV
-    || process.env.NODE_ENV === 'development'
-    || process.env.NODE_ENV === 'dev'
-    || process.env.NODE_ENV === 'local') ? 'http://dutumi.io' : 'https://dutumi.rixar.co.tz';
+axiosClient.defaults.baseURL = isDevEnvironment() ? process.env.REACT_APP_DEV_HOST : process.env.REACT_APP_PROD_HOST;
+
+console.log("Using api endpoint....",axiosClient.defaults.baseURL)
+console.log()
+console.log()
+
 
 const userToken = getStoredUserToken();
+
 
 axiosClient.defaults.headers = {
     'Content-Type': 'application/json',
@@ -18,7 +22,7 @@ axiosClient.defaults.headers = {
     'Access-Control-Allow-Origin': '*'
 };
 
-//All request will wait 10 seconds before timeout
+//All request will wait 15 seconds before timeout
 axiosClient.defaults.timeout = 15000;
 
 export default axiosClient;
