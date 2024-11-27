@@ -17,10 +17,12 @@ export interface Asset {
     created_at: string,
     assets_count: number,
 
+
     unit_price: number,
     "price_currency": string,
     "unit_price_in_default_currency": string,
 
+    vendor: string,
     next_payment_date: string,
     "ownership": string,
     "usage_status": string,
@@ -37,10 +39,8 @@ export interface Asset {
     "memory_size": string,
     "memory_type": string,
     "operating_system": string,
-
-
-    project: Project,
-    author: SystemUser
+    "project": Project,
+    "author": SystemUser
 }
 
 export interface AssetGroup {

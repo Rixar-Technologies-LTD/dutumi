@@ -1,5 +1,5 @@
 import {
-    DatePicker, Flex,
+    DatePicker,
     Form, Image, Input,
     Modal, Select, Space,
 } from 'antd';
@@ -22,7 +22,6 @@ interface Props {
     onSaved: () => void;
     onCancelled: () => void;
 }
-
 
 const AssetForm = (formProps:Props) => {
 

@@ -154,5 +154,15 @@ class AssetsController extends BaseController
         return $this->returnResponse("Asset Details", $responseData);
     }
 
+    public function getAssetsSchedule(Request $request)
+    {
+        $projects = Asset::query()
+            ->with(['author'])
+            ->orderBy('next_payment_date','ASC')
+            ->with(['project'])
+            ->paginate(50);
+        return $this->returnResponse("Asset Groups", $projects);
+    }
+
 
 }
