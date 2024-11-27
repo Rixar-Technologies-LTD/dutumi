@@ -120,6 +120,7 @@ class AssetsController extends BaseController
 
                 'processor_cores_count' => $request->input('processor_cores_count'),
                 'processor_type' => $request->input('processor_type'),
+
                 'storage_size' => $request->input('storage_size'),
                 'storage_type' => $request->input('storage_type'),
                 'memory_size' => $request->input('memory_size'),

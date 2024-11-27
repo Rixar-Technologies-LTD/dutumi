@@ -323,7 +323,7 @@ const AssetForm = (formProps:Props) => {
                 </Space.Compact>
 
 
-                
+
                 <Space.Compact style={{width:'100%'}}>
 
                     <Form.Item
