@@ -40,9 +40,9 @@ class Asset extends Model
         'ip_address',
         'mac_address',
 
-        'storage',
+        'storage_size',
         'storage_type',
-        'memory',
+        'memory_size',
         'memory_type',
         'operating_system',
 
@@ -51,6 +51,11 @@ class Asset extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
     }
 
 }

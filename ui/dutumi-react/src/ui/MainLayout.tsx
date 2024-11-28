@@ -9,7 +9,7 @@ import SystemUsersComponent from "ui/features/system/users/SystemUsersComponent"
 import RolesComponent from "ui/features/system/users/RolesComponent";
 import DashboardInsightsPage from "ui/features/reports/DashboardInsightsPage";
 
-import RequireAuth from "../services/auth/RequireAuth";
+import RequireAuth from "services/auth/RequireAuth";
 import TransactionsListComponent from "./features/finance/TransactionsListComponent";
 import UsersManagementComponent from "./features/users/UsersManagementComponent";
 import AgentsListComponent from "./features/management/agents/AgentsListComponent";
@@ -17,24 +17,21 @@ import NotificationTemplatesComponent from "./features/management/notications/No
 import SmsGatewayManagementComponent from "./features/management/sms_gateways/SmsGatewayManagementComponent";
 import CommissionsListComponent from "./features/commissions/CommissionsListComponent";
 import {Header} from "antd/es/layout/layout";
-import {getUserName} from "../state/auth/authStore";
+import {getUserName} from "state/auth/authStore";
 import {LogoutOutlined, UserOutlined} from "@ant-design/icons";
-import {forceLogout} from "../services/auth/SessionHandler";
+import {forceLogout} from "services/auth/SessionHandler";
 import BusinessesListComponent from "./features/businesses/BusinessesListComponent";
-import BusinessesDetailsComponent from "./features/businesses/BusinessesDetailsComponent";
 import UserDetailsComponent from "./features/users/UserDetailsComponent";
 import SmsHistoryComponent from "./features/operations/SmsHistoryComponent";
 import AppVersionsComponent from "./features/management/apps/AppVersionsComponent";
 import EmailHistoryComponent from "./features/operations/EmailHistoryComponent";
-import BusinessProductsPage from "./features/businesses/pages/BusinessProductsPage";
-import BusinessOrdersPage from "./features/businesses/pages/BusinessOrdersPage";
 import ProjectsListComponent from "./features/projects/ProjectsListComponent";
 import ProjectDetailsComponent from "./features/projects/ProjectDetailsComponent";
-import FeaturesListComponent from "./features/projects/features/ProjectFeaturesListComponent";
 import FeatureDetailsComponent from "./features/projects/features/FeatureDeatailsComponent";
 import ProjectMembersHolderComponent from "./features/projects/members/ProjectMembersHolderComponent";
 import AssetGroupsListComponent from "ui/features/assets/AssetGroupsListComponent";
 import AssetsListComponent from "ui/features/assets/AssetsListComponent";
+import FinanceBillingComponent from "ui/features/finance/FinanceBillingComponent";
 
 const {Content} = Layout;
 
@@ -78,9 +75,16 @@ function MainLayout() {
                         </Route>
 
 
+                        <Route path="finance">
+                            <Route path="assets/bills" element={<RequireAuth><FinanceBillingComponent/></RequireAuth>}/>
+                        </Route>
+
+
                         <Route path="transactions" >
                             <Route index element={<RequireAuth><TransactionsListComponent/></RequireAuth>} />
                         </Route>
+
+
 
                         <Route path="operations/sms" >
                             <Route index element={<RequireAuth><SmsHistoryComponent/></RequireAuth>} />

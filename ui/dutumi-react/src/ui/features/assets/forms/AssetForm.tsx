@@ -1,5 +1,5 @@
 import {
-    DatePicker, Flex,
+    DatePicker,
     Form, Image, Input,
     Modal, Select, Space,
 } from 'antd';
@@ -158,6 +158,7 @@ const AssetForm = (formProps:Props) => {
                             style={{minWidth: '180px'}}
                             options={[
                                 {'value':'APPLICATION_SERVER','label':'Application Server'},
+                                {'value':'WEBSITE_SERVER','label':'Website Server'},
                                 {'value':'DATABASE_SERVER','label':'Database Server'},
                                 {'value':'FILE_SERVER','label':'File Server'},
                                 {'value':'GENERIC_SERVER','label':'Generic Server'},

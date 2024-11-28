@@ -81,12 +81,18 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
     const financeMenus : MenuProps['items'] = [];
 
     if(permissions.includes("")){
-        financeMenus.push(toMenuItem('Online Bills', '/finance/transactions', <ContainerOutlined/>))
+        financeMenus.push(toMenuItem('Transactions', '/finance/transactions', <CiBullhorn/>));
+    }
+
+    if(permissions.includes("")){
+        financeMenus.push(toMenuItem('Bills', '/finance/assets/bills', <ContainerOutlined/>))
     }
 
     if(permissions.includes("")){
         financeMenus.push(toMenuItem('Payroll', '/finance/payroll', <CiBullhorn/>));
     }
+
+
 
     if(containsAny(permissions,["",'',''])){
         mainMenuItems.push(...[
