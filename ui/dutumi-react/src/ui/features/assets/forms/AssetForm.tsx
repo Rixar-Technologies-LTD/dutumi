@@ -23,7 +23,6 @@ interface Props {
     onCancelled: () => void;
 }
 
-
 const AssetForm = (formProps:Props) => {
 
     const [projectList, setProjectList] = useState<Project[]>([]);
