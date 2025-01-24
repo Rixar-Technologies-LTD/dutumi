@@ -8,9 +8,9 @@ import React, {useEffect, useState} from 'react';
 import sectionIcon from "assets/images/icons/objects/objects.png"
 import {getRequest, postRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "services/notification/notifications";
-import {Project} from "interfaces/projects/ProjectsInterfaces";
+import {Project} from "../../../../types/projects/ProjectsInterfaces";
 import TextArea from "antd/es/input/TextArea";
-import {Asset} from "interfaces/assets/AssetsInterfaces";
+import {Asset} from "../../../../types/assets/AssetsInterfaces";
 import dayjs from "dayjs";
 import {isNotEmpty} from "utils/helpers";
 

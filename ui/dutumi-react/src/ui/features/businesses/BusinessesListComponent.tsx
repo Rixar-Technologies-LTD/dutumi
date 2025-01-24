@@ -30,13 +30,13 @@ import {
     RemindersStats,
     Business,
     SubscriptionStats
-} from "../../../interfaces/businesses/BusinessInterfaces";
+} from "../../../types/businesses/BusinessInterfaces";
 import sectionIcon from "../../../assets/images/icons/subscription.png"
 import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
-import {AppVersion} from "../../../interfaces/MessagesInterfaces";
-import {ProjectType} from "../../../interfaces/projects/ProjectsInterfaces";
+import {AppVersion} from "../../../types/MessagesInterfaces";
+import {ProjectType} from "../../../types/projects/ProjectsInterfaces";
 
 
 const BusinessesListComponent = () => {

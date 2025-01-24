@@ -8,8 +8,8 @@ import React, {useEffect, useState} from 'react';
 import sectionIcon from "../../../../assets/images/icons/users/owner.png"
 import {getRequest, postRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
-import {SystemUser} from "../../../../interfaces/system/AuthInterfaces";
-import {Member} from "../../../../interfaces/projects/ProjectsInterfaces";
+import {SystemUser} from "../../../../types/system/AuthInterfaces";
+import {Member} from "../../../../types/projects/ProjectsInterfaces";
 
 
 interface Props {

@@ -14,7 +14,7 @@ import GoodContentCardPlain from "../../../templates/cards/GoodContentCardPlain"
 import type {ColumnsType} from "antd/es/table";
 import GoodMdiIcon from "../../../templates/icons/GoodMdiIcon";
 import {mdiCartOutline} from "@mdi/js";
-import {Order, Product} from "../../../../interfaces/businesses/OperationsInterfaces";
+import {Order, Product} from "../../../../types/businesses/OperationsInterfaces";
 
 const BusinessOrdersPage = () => {
 

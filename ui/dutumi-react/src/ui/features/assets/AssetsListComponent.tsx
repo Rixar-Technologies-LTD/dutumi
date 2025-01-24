@@ -1,6 +1,6 @@
 import {
-    Button, Image,
-    Pagination,
+    Button, Flex, Form, Image,
+    Pagination, Select,
     Space,
     Spin,
     Table,
@@ -8,17 +8,17 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import {EyeOutlined, PlusCircleOutlined} from "@ant-design/icons";
+import {CheckCircleOutlined, EyeOutlined, FolderOutlined, PlusCircleOutlined} from "@ant-design/icons";
 import {UndoOutlined} from "@ant-design/icons";
 
 import {notifyHttpError} from "services/notification/notifications";
-import {getRequest} from "../../../services/http/RestClient";
+import {getRequest} from "services/http/RestClient";
 import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
 import sectionIcon from "assets/images/icons/objects/servers.png"
 
 import {useNavigate, useParams, useSearchParams} from "react-router-dom";
-import {Asset} from "interfaces/assets/AssetsInterfaces";
+import {Asset, AssetGroup} from "types/assets/AssetsInterfaces";
 import AssetForm from "ui/features/assets/forms/AssetForm";
 import {isNotEmpty} from "utils/helpers";
 import {FaMapMarker} from "react-icons/fa";
@@ -26,6 +26,7 @@ import GoodImageIcon from "ui/templates/icons/GoodImageIcon";
 import object from "assets/images/icons/objects/cube.png";
 import server from "assets/images/icons/servers/server.png";
 import databaseServer from "assets/images/icons/servers/database.png";
+import Search from "antd/es/input/Search";
 
 
 const toAssetIcon = (type: string) => {
@@ -159,27 +160,52 @@ const AssetsListComponent = () => {
     const [filter, setFilterGroup] = useState("all");
     const navigate = useNavigate();
 
+    const [assetGroups, setAssetGroups] = useState<AssetGroup[]>([]);
+    const [selectedAssetGroupId, setSelectedAssetGroupId] = useState<string|null>()
+
     const [isAssetGroupFormOpen, setAssetGroupFormOpen] = useState(false)
     const [selectedAsset, setSelectedAsset] = useState<Asset>()
 
-    const {groupId} = useParams();
     const [searchParams] = useSearchParams();
-
     const groupName = searchParams.get('groupName');
 
     //Fetch products
     useEffect(() => {
         fetchRecords();
-    }, [currentPageNo, pageSize, searchQuery, filter]);
+    }, [currentPageNo, pageSize, searchQuery, filter, selectedAssetGroupId]);
+
+    useEffect(() => {
+        fetchAssetGroups();
+        onLoaded();
+    }, []);
+
+    const onLoaded = async () => {
+        setSelectedAssetGroupId(searchParams.get('groupId'))
+    }
 
     const fetchRecords = () => {
-        const url = `/api/v1/assets?groupId=${groupId}`;
+        const url = `/api/v1/assets?groupId=${selectedAssetGroupId}&searchQuery=${searchQuery}`;
         setIsLoading(true);
         getRequest(url)
             .then((response) => {
                 console.log(response.data);
                 updateRecordsList(response.data.respBody.data);
                 setTotalItems(response.data.respBody.total);
+            })
+            .catch((errorObj) => {
+                notifyHttpError('Operation Failed', errorObj)
+            }).finally(() => {
+            setIsLoading(false);
+        })
+    }
+
+    const fetchAssetGroups = () => {
+        const url = `/api/v1/assets/groups`;
+        setIsLoading(true);
+        getRequest(url)
+            .then((response) => {
+                console.log(response.data);
+                setAssetGroups(response.data.respBody.data);
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)
@@ -202,6 +228,10 @@ const AssetsListComponent = () => {
     }
 
 
+    const onSearch = (value: string) => {
+        updateSearchQuery(value)
+    }
+
     return <EyasiContentCard title="Assets "
                              subTitle="List"
                              iconImage={sectionIcon}
@@ -209,19 +239,55 @@ const AssetsListComponent = () => {
                                  isLoading && <Spin key={"spin"} indicator={customerLoadingIcon}></Spin>
                              ]}>
 
+
         {/**---------------*
          /** Search
          *----------------*/}
         <h2 style={{color: '#818181'}}>{groupName}</h2>
-        <Space style={{marginBottom: 24, marginTop: 8}} direction="horizontal">
-            <Button icon={<PlusCircleOutlined/>}
+        <Flex
+            justify="space-between"
+            style={{marginBottom: 24, marginTop: 8}}>
+
+            <Space direction="horizontal">
+                <Button
+                    size="large"
+                    icon={<PlusCircleOutlined/>}
                     onClick={() => {
                         setAssetGroupFormOpen(true)
                     }}
                     type="primary">Add Asset</Button>
-            <Button style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={fetchRecords} key="2"
+
+                <Select
+                    allowClear={true}
+                    menuItemSelectedIcon={<CheckCircleOutlined/>}
+                    suffixIcon={<FolderOutlined/>}
+                    placeholder="Asset Group"
+                    size="large"
+                    value={selectedAssetGroupId}
+                    onChange={(value)=>{
+                      setSelectedAssetGroupId(value)
+                    }}
+                    style={{width: '240px'}}
+                    options={assetGroups.map((assetGroup) => ({label: assetGroup.name, value: assetGroup.id}))}
+                />
+
+                <Search
+                    size="large"
+                    placeholder="Find assets"
+                    onSearch={onSearch}
+                    allowClear/>
+            </Space>
+
+            <Space direction="horizontal">
+
+                <Button
+                    size="large"
+                    style={{marginRight: 16}} icon={<UndoOutlined/>} onClick={fetchRecords} key="2"
                     type="default">Refresh</Button>
-        </Space>
+            </Space>
+
+        </Flex>
+
 
         {/**---------------------------*
          /** Orders Table
@@ -254,7 +320,7 @@ const AssetsListComponent = () => {
          ***------------------------------*/}
         <AssetForm isVisible={isAssetGroupFormOpen}
                    title="Asset Information"
-                   groupId={groupId ?? ''}
+                   groupId={selectedAssetGroupId ?? ''}
                    oldAsset={selectedAsset}
                    onSaved={() => {
                        setAssetGroupFormOpen(false)

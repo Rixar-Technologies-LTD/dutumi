@@ -7,12 +7,12 @@ import {PlusCircleOutlined, UndoOutlined} from "@ant-design/icons";
 import {notifyHttpError} from "../../../../services/notification/notifications";
 import {getRequest} from "../../../../services/http/RestClient";
 import customerLoadingIcon from "../../../templates/Loading";
-import {Business} from "../../../../interfaces/businesses/BusinessInterfaces";
+import {Business} from "../../../../types/businesses/BusinessInterfaces";
 import projectIcon from "../../../../assets/images/icons/users/group.png"
 
 import {useNavigate, useParams} from "react-router-dom";
 import GoodContentCardPlain from "../../../templates/cards/GoodContentCardPlain";
-import {Project, ProjectMember} from "../../../../interfaces/projects/ProjectsInterfaces";
+import {Project, ProjectMember} from "../../../../types/projects/ProjectsInterfaces";
 import GoodImageIcon from "../../../templates/icons/GoodImageIcon";
 import peopleIcon from "../../../../assets/images/icons/users/group.png";
 import MemberAssignementForm from "./MemberAssignementForm";

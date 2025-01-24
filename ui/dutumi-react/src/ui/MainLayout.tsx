@@ -69,11 +69,9 @@ function MainLayout() {
                         </Route>
 
                         <Route path="assets">
-                            <Route index element={<RequireAuth><BusinessesListComponent/></RequireAuth>}/>
+                            <Route index element={<RequireAuth><AssetsListComponent/></RequireAuth>}/>
                             <Route path="groups" element={<RequireAuth><AssetGroupsListComponent/></RequireAuth>}/>
-                            <Route path="list/:groupId" element={<RequireAuth><AssetsListComponent/></RequireAuth>}/>
                         </Route>
-
 
                         <Route path="finance">
                             <Route path="assets/bills" element={<RequireAuth><FinanceBillingComponent/></RequireAuth>}/>

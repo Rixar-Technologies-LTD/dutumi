@@ -12,8 +12,8 @@ import {
     Business,
     RemindersStats,
     SubscriptionStats
-} from "../../../../interfaces/businesses/BusinessInterfaces";
-import {User} from "../../../../interfaces/system/AuthInterfaces";
+} from "../../../../types/businesses/BusinessInterfaces";
+import {User} from "../../../../types/system/AuthInterfaces";
 import type {ColumnsType} from "antd/es/table";
 
 interface BranchesProps {

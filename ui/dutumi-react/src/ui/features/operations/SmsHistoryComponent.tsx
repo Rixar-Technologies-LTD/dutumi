@@ -9,11 +9,11 @@ import {ExportOutlined, LinkOutlined, ReloadOutlined, UndoOutlined, UserOutlined
 import customerLoadingIcon from "../../templates/Loading";
 import Search from "antd/es/input/Search";
 import moment from 'moment';
-import {PaymentTransaction} from "../../../interfaces/PaymentTransactions";
+import {PaymentTransaction} from "../../../types/PaymentTransactions";
 import {useNavigate} from "react-router-dom";
-import {SMSHistory} from "../../../interfaces/operations/OperationsInterfaces";
-import {Business} from "../../../interfaces/businesses/BusinessInterfaces";
-import {User} from "../../../interfaces/system/AuthInterfaces";
+import {SMSHistory} from "../../../types/operations/OperationsInterfaces";
+import {Business} from "../../../types/businesses/BusinessInterfaces";
+import {User} from "../../../types/system/AuthInterfaces";
 import GoodVisibility from "../../templates/GoodVisibility";
 import {isNotEmpty} from "../../../utils/helpers";
 import GoodMdiIcon from "../../templates/icons/GoodMdiIcon";

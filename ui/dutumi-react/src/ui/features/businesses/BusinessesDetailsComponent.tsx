@@ -20,7 +20,7 @@ import {UndoOutlined} from "@ant-design/icons";
 import {notifyHttpError} from "../../../services/notification/notifications";
 import {getRequest} from "../../../services/http/RestClient";
 import customerLoadingIcon from "../../templates/Loading";
-import {Business} from "../../../interfaces/businesses/BusinessInterfaces";
+import {Business} from "../../../types/businesses/BusinessInterfaces";
 import sectionIcon from "../../../assets/images/icons/subscription.png"
 import {useNavigate, useParams} from "react-router-dom";
 import GoodLabelValueWidget from "../../templates/GoodLabelValueWidget";

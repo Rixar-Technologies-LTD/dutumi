@@ -5,7 +5,7 @@ import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import sectionIcon from "assets/images/icons/admin.png"
 import {getRequest, postRequest} from "services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "services/notification/notifications";
-import {PermissionGroup, Staff, User} from "interfaces/system/AuthInterfaces";
+import {PermissionGroup, Staff, User} from "../../../../types/system/AuthInterfaces";
 import customerLoadingIcon from "ui/templates/Loading";
 
 const SystemUsersComponent = () => {

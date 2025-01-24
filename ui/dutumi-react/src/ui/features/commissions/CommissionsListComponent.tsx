@@ -22,10 +22,10 @@ import {getRequest, postRequest} from "../../../services/http/RestClient";
 import EyasiContentCard from "../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../templates/Loading";
 import sectionIcon from "../../../assets/images/icons/people.png"
-import {CommissionedReferralAgent} from "../../../interfaces/referrals/ReferralsInterfaces";
+import {CommissionedReferralAgent} from "../../../types/referrals/ReferralsInterfaces";
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
-import {Business} from "../../../interfaces/businesses/BusinessInterfaces";
+import {Business} from "../../../types/businesses/BusinessInterfaces";
 
 const CommissionsListComponent = () => {
 

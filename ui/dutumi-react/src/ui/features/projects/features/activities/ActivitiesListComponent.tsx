@@ -1,7 +1,7 @@
 import {Avatar, Button, Card, Flex, List, Space, Tag} from 'antd';
 import React, {useEffect, useState} from 'react';
 
-import {ActivityUpdate} from "../../../../../interfaces/projects/ProjectsInterfaces";
+import {ActivityUpdate} from "../../../../../types/projects/ProjectsInterfaces";
 import ActivityFormComponent from "./ActivityFormComponent";
 import {PlusCircleOutlined} from "@ant-design/icons";
 import {getRequest} from "../../../../../services/http/RestClient";

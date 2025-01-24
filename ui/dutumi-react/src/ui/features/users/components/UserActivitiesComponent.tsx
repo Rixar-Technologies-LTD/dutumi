@@ -8,8 +8,8 @@ import {getRequest, postRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError} from "../../../../services/notification/notifications";
 import type {ColumnsType} from "antd/es/table";
 import TextArea from "antd/es/input/TextArea";
-import {User} from "../../../../interfaces/system/AuthInterfaces";
-import {UserActivity} from "../../../../interfaces/system/EventsInterfaces";
+import {User} from "../../../../types/system/AuthInterfaces";
+import {UserActivity} from "../../../../types/system/EventsInterfaces";
 
 interface GoodProps {
     user?: User

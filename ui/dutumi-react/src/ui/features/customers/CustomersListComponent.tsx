@@ -5,7 +5,7 @@ import EyasiContentCard from "../../templates/cards/EyasiContentCard";
 import sectionIcon from "../../../assets/images/icons/admin.png"
 import {getRequest, postRequest} from "../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "../../../services/notification/notifications";
-import {Customer} from "../../../interfaces/CustomerInterfaces";
+import {Customer} from "../../../types/CustomerInterfaces";
 import Search from "antd/es/input/Search";
 
 

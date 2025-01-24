@@ -6,7 +6,7 @@ import {getRequest} from "../../../services/http/RestClient";
 import {notifyHttpError} from "../../../services/notification/notifications";
 import EyasiContentCard from "../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../templates/Loading";
-import {NotificationHistory} from "../../../interfaces/MessagesInterfaces";
+import {NotificationHistory} from "../../../types/MessagesInterfaces";
 import {limitText} from "../../../utils/helpers";
 import {MessageOutlined, UsergroupAddOutlined, WhatsAppOutlined} from "@ant-design/icons";
 

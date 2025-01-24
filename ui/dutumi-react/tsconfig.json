@@ -3,8 +3,10 @@
   "target": "es5",
   "baseUrl": "src",
   "paths": {
+      "pages/*": ["pages/*"],
       "assets/*": ["assets/*"],
       "utils/*": ["utils/*"],
+      "types/*": ["types/*"],
       "interfaces/*": ["interfaces/*"],
       "ui/*": ["ui/*"],
       "service/*": ["service/*"],

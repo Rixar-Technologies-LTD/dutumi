@@ -9,7 +9,7 @@ import {LinkOutlined, UndoOutlined} from "@ant-design/icons";
 import customerLoadingIcon from "../../templates/Loading";
 import Search from "antd/es/input/Search";
 import moment from 'moment';
-import {PaymentTransaction} from "../../../interfaces/PaymentTransactions";
+import {PaymentTransaction} from "../../../types/PaymentTransactions";
 import {useNavigate} from "react-router-dom";
 
 const TransactionsListComponent = () => {

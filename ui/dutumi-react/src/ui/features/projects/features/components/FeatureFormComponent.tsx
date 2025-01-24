@@ -12,7 +12,7 @@ import {notifyHttpError, notifySuccess} from "../../../../../services/notificati
 import {isEmpty} from "../../../../../utils/helpers";
 
 import sectionIcon from "../../../../../assets/images/pages/feature.png"
-import {Member, Task} from "../../../../../interfaces/projects/ProjectsInterfaces";
+import {Member, Task} from "../../../../../types/projects/ProjectsInterfaces";
 import dayjs from "dayjs";
 
 

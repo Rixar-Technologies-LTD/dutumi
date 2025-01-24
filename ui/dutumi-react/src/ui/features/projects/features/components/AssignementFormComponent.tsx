@@ -8,7 +8,7 @@ import {getRequest, postRequest} from "../../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "../../../../../services/notification/notifications";
 
 import sectionIcon from "../../../../../assets/images/icons/users/owner.png"
-import {Member, Task} from "../../../../../interfaces/projects/ProjectsInterfaces";
+import {Member, Task} from "../../../../../types/projects/ProjectsInterfaces";
 import {isEmpty} from "../../../../../utils/helpers";
 
 

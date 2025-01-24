@@ -106,6 +106,7 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
     const assetsMenus : MenuProps['items'] = [];
 
     if(permissions.includes("")){
+        assetsMenus.push(toMenuItem('Assets List', '/assets', <DatabaseOutlined/>))
         assetsMenus.push(toMenuItem('Assets Groups', '/assets/groups', <DatabaseOutlined/>))
     }
 

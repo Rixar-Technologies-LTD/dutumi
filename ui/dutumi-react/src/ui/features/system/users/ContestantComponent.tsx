@@ -5,7 +5,7 @@ import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import sectionIcon from "assets/images/icons/people.png"
 import {getRequest, postRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
-import {Contenstant} from "interfaces/system/AuthInterfaces";
+import {Contenstant} from "../../../../types/system/AuthInterfaces";
 import customerLoadingIcon from "../../../templates/Loading";
 
 const getStatusColor =(status:string)=>{

@@ -8,7 +8,7 @@ import {getRequest, postRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError} from "../../../../services/notification/notifications";
 import {
     Business, LicenseSubscription, SubscriptionPlan
-} from "../../../../interfaces/businesses/BusinessInterfaces";
+} from "../../../../types/businesses/BusinessInterfaces";
 import type {ColumnsType} from "antd/es/table";
 import TextArea from "antd/es/input/TextArea";
 import GoodVisibility from "../../../templates/GoodVisibility";

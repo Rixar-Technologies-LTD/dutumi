@@ -16,7 +16,7 @@ import {
 import Search from "antd/es/input/Search";
 import sectionIcon from "../../../../assets/images/pages/features.png"
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {Project, Task} from "../../../../interfaces/projects/ProjectsInterfaces";
+import {Project, Task} from "../../../../types/projects/ProjectsInterfaces";
 import {getRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError} from "../../../../services/notification/notifications";
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";

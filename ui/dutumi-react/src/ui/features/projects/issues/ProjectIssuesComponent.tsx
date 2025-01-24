@@ -8,13 +8,13 @@ import {getRequest, postRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError} from "../../../../services/notification/notifications";
 import {
     Business, LicenseSubscription, SubscriptionPlan
-} from "../../../../interfaces/businesses/BusinessInterfaces";
+} from "../../../../types/businesses/BusinessInterfaces";
 import type {ColumnsType} from "antd/es/table";
 import TextArea from "antd/es/input/TextArea";
 import GoodVisibility from "../../../templates/GoodVisibility";
 import Compact from "antd/es/space/Compact";
 import {MoneyCollectOutlined, PauseCircleOutlined, PlusCircleFilled, PlusCircleOutlined} from "@ant-design/icons";
-import {Project} from "../../../../interfaces/projects/ProjectsInterfaces";
+import {Project} from "../../../../types/projects/ProjectsInterfaces";
 
 interface BranchesProps {
     project?: Project

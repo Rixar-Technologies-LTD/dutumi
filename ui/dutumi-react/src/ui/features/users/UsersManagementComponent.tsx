@@ -14,7 +14,7 @@ import {getRequest, postMultipart, postRequest} from "../../../services/http/Res
 import {notifyError, notifyHttpError, notifySuccess} from "../../../services/notification/notifications";
 import EyasiContentCard from "../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../templates/Loading";
-import {AppVersion, BroadcastMessage} from "../../../interfaces/MessagesInterfaces";
+import {AppVersion, BroadcastMessage} from "../../../types/MessagesInterfaces";
 import TextArea from "antd/es/input/TextArea";
 import {
     DatabaseOutlined,
@@ -28,10 +28,10 @@ import {
 import {areEmpty, isEmpty, isNotEmpty} from "../../../utils/helpers";
 import Compact from "antd/es/space/Compact";
 import moment from "moment";
-import {User} from "../../../interfaces/system/AuthInterfaces";
+import {User} from "../../../types/system/AuthInterfaces";
 import Search from "antd/es/input/Search";
 import {useNavigate} from "react-router-dom";
-import {Business} from "../../../interfaces/businesses/BusinessInterfaces";
+import {Business} from "../../../types/businesses/BusinessInterfaces";
 import GoodVisibility from "../../templates/GoodVisibility";
 
 // @ts-ignore

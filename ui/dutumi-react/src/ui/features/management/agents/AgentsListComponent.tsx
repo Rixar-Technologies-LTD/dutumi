@@ -6,7 +6,7 @@ import {getRequest, postRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "../../../../services/notification/notifications";
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";
-import {ReferralAgent} from "../../../../interfaces/referrals/ReferralsInterfaces";
+import {ReferralAgent} from "../../../../types/referrals/ReferralsInterfaces";
 import Search from "antd/es/input/Search";
 import {CalendarOutlined, CheckCircleOutlined, GiftOutlined, ReloadOutlined} from "@ant-design/icons";
 

@@ -7,7 +7,7 @@ import {notifyHttpError, notifySuccess} from "../../../../services/notification/
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";
 import {EditOutlined} from "@ant-design/icons";
-import {AppVersion} from "../../../../interfaces/MessagesInterfaces";
+import {AppVersion} from "../../../../types/MessagesInterfaces";
 import {is} from "cheerio/lib/api/traversing";
 
 

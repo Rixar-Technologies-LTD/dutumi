@@ -18,7 +18,7 @@ import customerLoadingIcon from "ui/templates/Loading";
 import sectionIcon from "assets/images/icons/objects/servers.png"
 
 import {useNavigate, useParams, useSearchParams} from "react-router-dom";
-import {Asset} from "interfaces/assets/AssetsInterfaces";
+import {Asset} from "../../../types/assets/AssetsInterfaces";
 import AssetForm from "ui/features/assets/forms/AssetForm";
 import {countRemainingDay, isNotEmpty} from "utils/helpers";
 import object from "assets/images/icons/objects/cube.png";

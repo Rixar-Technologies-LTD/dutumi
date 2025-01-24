@@ -20,8 +20,8 @@ import {getRequest, postRequest} from "../../../../../services/http/RestClient";
 import {notifyHttpError, notifySuccess} from "../../../../../services/notification/notifications";
 import {isEmpty} from "../../../../../utils/helpers";
 import type {ColumnsType} from "antd/es/table";
-import {SystemUser} from "../../../../../interfaces/system/AuthInterfaces";
-import {Member, Task} from "../../../../../interfaces/projects/ProjectsInterfaces";
+import {SystemUser} from "../../../../../types/system/AuthInterfaces";
+import {Member, Task} from "../../../../../types/projects/ProjectsInterfaces";
 import {EyeOutlined} from "@ant-design/icons";
 
 interface Props {

@@ -22,7 +22,7 @@ import folder from "assets/images/icons/objects/folder.png"
 
 import {useNavigate} from "react-router-dom";
 import AssetGroupForm from "ui/features/assets/forms/AssetGroupForm";
-import {AssetGroup} from "interfaces/assets/AssetsInterfaces";
+import {AssetGroup} from "../../../types/assets/AssetsInterfaces";
 import GoodImageIcon from "ui/templates/icons/GoodImageIcon";
 
 const AssetGroupsListComponent = () => {

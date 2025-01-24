@@ -7,7 +7,7 @@ import {notifyHttpError, notifySuccess} from "../../../../services/notification/
 import EyasiContentCard from "../../../templates/cards/EyasiContentCard";
 import customerLoadingIcon from "../../../templates/Loading";
 import {EditOutlined} from "@ant-design/icons";
-import {SmsGateway} from "../../../../interfaces/MessagesInterfaces";
+import {SmsGateway} from "../../../../types/MessagesInterfaces";
 
 
 const SmsGatewayManagementComponent = () => {

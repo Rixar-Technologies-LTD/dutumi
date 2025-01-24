@@ -7,7 +7,7 @@ import {Button, Card, Pagination, Space, Table, Tag} from "antd";
 import {getRequest} from "../../../../services/http/RestClient";
 import {notifyHttpError} from "../../../../services/notification/notifications";
 import {  Business,Staff,
-} from "../../../../interfaces/businesses/BusinessInterfaces";
+} from "../../../../types/businesses/BusinessInterfaces";
 import type {ColumnsType} from "antd/es/table";
 
 interface BranchesProps {

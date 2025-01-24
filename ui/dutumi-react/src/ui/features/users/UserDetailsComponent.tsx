@@ -27,7 +27,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import GoodLabelValueWidget from "../../templates/GoodLabelValueWidget";
 import {BsBuilding} from "react-icons/bs";
 import GoodContentCardPlain from "../../templates/cards/GoodContentCardPlain";
-import {User} from "../../../interfaces/system/AuthInterfaces";
+import {User} from "../../../types/system/AuthInterfaces";
 import TextArea from "antd/es/input/TextArea";
 import UserActivitiesComponent from "./components/UserActivitiesComponent";
 

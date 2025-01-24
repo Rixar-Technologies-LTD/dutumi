@@ -1,5 +1,5 @@
 import {SystemUser, User} from '../system/AuthInterfaces';
-import {Project} from "interfaces/projects/ProjectsInterfaces";
+import {Project} from "../projects/ProjectsInterfaces";
 
 export interface ProjectType {
     type: string,
