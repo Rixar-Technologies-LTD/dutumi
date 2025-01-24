@@ -17,7 +17,7 @@ import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
 import sectionIcon from "assets/images/icons/objects/servers.png"
 
-import {useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {Asset, AssetGroup} from "types/assets/AssetsInterfaces";
 import AssetForm from "ui/features/assets/forms/AssetForm";
 import {isNotEmpty} from "utils/helpers";
@@ -76,7 +76,6 @@ const AssetsListComponent = () => {
             key: 'reference',
             render: (_, record) => (
                 <>
-                    <span>ASST{record.id}</span> <br/>
                     {isNotEmpty(record.ip_address) && <Tag>{record.ip_address}</Tag>} <br/>
                     {isNotEmpty(record.location) && <><FaMapMarker style={{marginTop: '6px'}}
                                                                    color="green"/>{record.location}</>}
@@ -176,10 +175,9 @@ const AssetsListComponent = () => {
 
     useEffect(() => {
         fetchAssetGroups();
-        onLoaded();
     }, []);
 
-    const onLoaded = async () => {
+    const setPassedSelectedAssetGroup =  () => {
         setSelectedAssetGroupId(searchParams.get('groupId'))
     }
 
@@ -206,6 +204,7 @@ const AssetsListComponent = () => {
             .then((response) => {
                 console.log(response.data);
                 setAssetGroups(response.data.respBody.data);
+                setPassedSelectedAssetGroup();
             })
             .catch((errorObj) => {
                 notifyHttpError('Operation Failed', errorObj)

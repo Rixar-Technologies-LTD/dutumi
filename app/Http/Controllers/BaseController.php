@@ -18,7 +18,7 @@ class BaseController extends Controller
     	$response = [
              'respCode' => 2000,
              'message' => $message,
-             'respBody'    => $data ];
+             'respBody' => $data ];
         return response()->json($response, 200);
     }
 

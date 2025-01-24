@@ -16,16 +16,27 @@ class AssetsController extends BaseController
 
     public function getAssets(Request $request)
     {
-        $request->validate([
-            'groupId' => 'required|exists:asset_groups,id'
-        ]);
 
-        $projects = Asset::query()
-            ->where('asset_group_id', $request->input('groupId'))
-            ->with(['author'])
-            ->orderBy('name','ASC')
+        $assetsQueryBuilder = Asset::query();
+        $query = $request->input('searchQuery');
+
+        if (is_numeric($request->input('groupId'))) {
+            $assetsQueryBuilder = $assetsQueryBuilder->where('asset_group_id', $request->input('groupId'));
+        }
+
+        if (filled($request->input('searchQuery'))) {
+            $assetsQueryBuilder = $assetsQueryBuilder->where('name', 'like', '%' . $query . '%')
+                ->orWhere('description', 'like', '%' . $query . '%')
+                ->orWhere('location', 'like', '%' . $query . '%')
+                ->orWhere('category', 'like', '%' . $query . '%')
+                ->orWhere('type', 'like', '%' . $query . '%');
+        }
+
+        $assets = $assetsQueryBuilder->with(['author'])
+            ->orderBy('name', 'ASC')
             ->paginate(50);
-        return $this->returnResponse("Asset Groups", $projects);
+
+        return $this->returnResponse("Asset Groups", $assets);
     }
 
     public function addAsset(Request $request)
@@ -45,7 +56,7 @@ class AssetsController extends BaseController
             return $this->clientError("Asset group not found");
         }
 
-        $nextDate = $request->input('next_payment_date',null);
+        $nextDate = $request->input('next_payment_date', null);
         $group = Asset::query()->create([
             'project_id' => $assetGroup->project_id,
             'asset_group_id' => $assetGroup->id,
@@ -67,8 +78,8 @@ class AssetsController extends BaseController
             'remarks' => $request->input('remarks'),
             'ownership' => $request->input('ownership'),
             'usage_status' => $request->input('usage_status'),
-            'subscription_months_count' => $request->input('subscription_months_count',1),
-            'next_payment_date' =>  $nextDate? Carbon::parse($nextDate) : null,
+            'subscription_months_count' => $request->input('subscription_months_count', 1),
+            'next_payment_date' => $nextDate ? Carbon::parse($nextDate) : null,
 
             'ip_address' => $request->input('ip_address'),
             'mac_address' => $request->input('mac_address'),
@@ -101,7 +112,7 @@ class AssetsController extends BaseController
             'category' => 'required'
         ]);
 
-        $nextDate = $request->input('next_payment_date',null);
+        $nextDate = $request->input('next_payment_date', null);
         $group = Asset::query()->where([
             'id' => $request->input('id'),
         ])
@@ -118,8 +129,8 @@ class AssetsController extends BaseController
                 'remarks' => $request->input('remarks'),
                 'ownership' => $request->input('ownership'),
                 'usage_status' => $request->input('usage_status'),
-                'subscription_months_count' => $request->input('subscription_months_count',1),
-                'next_payment_date' =>  $nextDate? Carbon::parse($nextDate) : null,
+                'subscription_months_count' => $request->input('subscription_months_count', 1),
+                'next_payment_date' => $nextDate ? Carbon::parse($nextDate) : null,
 
                 'ip_address' => $request->input('ip_address'),
                 'mac_address' => $request->input('mac_address'),
@@ -158,7 +169,7 @@ class AssetsController extends BaseController
     {
         $projects = Asset::query()
             ->with(['author'])
-            ->orderBy('next_payment_date','ASC')
+            ->orderBy('next_payment_date', 'ASC')
             ->with(['project'])
             ->paginate(50);
         return $this->returnResponse("Asset Groups", $projects);

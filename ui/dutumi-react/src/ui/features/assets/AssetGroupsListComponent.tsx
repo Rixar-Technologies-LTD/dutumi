@@ -14,7 +14,7 @@ import {
 } from "@ant-design/icons";
 
 import {notifyHttpError} from "services/notification/notifications";
-import {getRequest} from "../../../services/http/RestClient";
+import {getRequest} from "services/http/RestClient";
 import EyasiContentCard from "ui/templates/cards/EyasiContentCard";
 import customerLoadingIcon from "ui/templates/Loading";
 import sectionIcon from "assets/images/icons/objects/folders.png"
@@ -22,32 +22,22 @@ import folder from "assets/images/icons/objects/folder.png"
 
 import {useNavigate} from "react-router-dom";
 import AssetGroupForm from "ui/features/assets/forms/AssetGroupForm";
-import {AssetGroup} from "../../../types/assets/AssetsInterfaces";
+import {AssetGroup} from "types/assets/AssetsInterfaces";
 import GoodImageIcon from "ui/templates/icons/GoodImageIcon";
 
 const AssetGroupsListComponent = () => {
 
     const columns: ColumnsType<AssetGroup> = [
         {
-            title: 'Reference',
+            title: 'Group',
             dataIndex: 'reference',
             key: 'reference',
             render: (_, record) => (
                 <>
                     <Space>
                         <GoodImageIcon padding={6} iconSizeEm={48} iconPath={folder}/>
-                        <span>GRP{record.id}</span>
+                        <a href={`/assets?groupId=${record.id}`}> {record.name}</a>
                     </Space>
-                </>
-            ),
-        },
-        {
-            title: 'Group',
-            dataIndex: 'name',
-            key: 'name',
-            render: (_, record) => (
-                <>
-                    <a href={`/assets/groups/${record.id}`}> {record.name}</a>
                 </>
             ),
         },
@@ -57,8 +47,11 @@ const AssetGroupsListComponent = () => {
             key: 'name',
             render: (_, record) => (
                 <>
-                    <Tag color="processing">{record.project?.name}</Tag>
+                    <a href={`/projects/${record.project?.id}`}>
+                        <Tag color="processing">{record.project?.name}</Tag>
+                    </a>
                 </>
+
             ),
         },
         {
@@ -91,7 +84,7 @@ const AssetGroupsListComponent = () => {
             render: (_, record) => (
                 <>
                     <Button
-                        href={`/assets/list/${record.id}?groupName=${record.name}`}
+                        href={`/assets?groupId=${record.id}?groupName=${record.name}`}
                         icon={<EyeOutlined/>}
                         type="primary">
                         Open
