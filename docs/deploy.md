@@ -1,4 +1,8 @@
 
+### --------------------------
+### ssh rixar@38.242.245.228
+> cd /var/www/rixar/dutumi
+
 [PHP]
 >> sudo apt-get update
 >> sudo apt install -y php7.4 php7.4-cli php7.4-common php7.4-fpm

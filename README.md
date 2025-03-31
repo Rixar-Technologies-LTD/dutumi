@@ -2,8 +2,8 @@
 
 Software feature planning software
 
-
-
+### Generic Server
+ssh rixar@38.242.245.228
 
 ## Building UI
 > UI project is under ui/dutumi-react. it can be used as a normal react project

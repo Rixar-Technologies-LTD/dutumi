@@ -1,18 +1,19 @@
-import {Button, Card, Form, Input, Layout, Row, Image, Col, type MenuProps, Flex} from "antd";
+import {Button, Card, Form, Input, Layout, Row, Image, Col, type MenuProps, Flex, Tag} from "antd";
 import React, {useState} from "react";
 import {Content} from "antd/es/layout/layout";
 import {
     LockFilled,
     UserOutlined
 } from "@ant-design/icons";
-import logo from "../../assets/images/logo.png"
-import loginBackground from "../../assets/images/auth/login_background.jpg"
+import logo from "assets/images/logo.png"
+import loginBackground from "assets/images/auth/login_background.jpg"
 
 import {useSelector, useDispatch} from "react-redux";
-import {postRequest} from "../../services/http/RestClient";
-import {setName, setPermissions, setToken} from "../../state/auth/authStore";
+import {postRequest} from "services/http/RestClient";
+import {setName, setPermissions, setToken} from "state/auth/authStore";
 import {useNavigate} from "react-router-dom";
-import {notifyHttpError} from "../../services/notification/notifications";
+import {notifyHttpError} from "services/notification/notifications";
+
 
 const LoginPage = () => {
     const dispatch = useDispatch();
@@ -61,14 +62,16 @@ const LoginPage = () => {
         }}>
 
             <Content>
-                <Row justify="center" align="middle">
+                <Row justify="end" align="middle">
                     <Card
                         size="small"
-                        style={{width: 540, marginTop: 140, paddingLeft: 64, paddingRight: 64}}>
-                        <Row>
-                            <Col className="gutter-row" span={6} offset={8}>
-                            </Col>
-                        </Row>
+                        style={{
+                            width: 540,
+                            marginTop: 140,
+                            marginRight: 48,
+                            paddingLeft: 64,
+                            paddingRight: 64}}>
+
 
                         <Flex justify="center">
                             <div style={{
@@ -77,7 +80,7 @@ const LoginPage = () => {
                                 borderRadius: '16px'
                             }}>
                                 <Flex justify="center">
-                                    <Image preview={false} src={logo} style={{width: 100, marginTop: 10}}/>
+                                    <Image preview={false} src={logo} style={{width: 64, marginTop: 10}}/>
                                 </Flex>
                                 <h1 className="merienda-900" style={{
                                     textAlign: 'center',
@@ -138,7 +141,7 @@ const LoginPage = () => {
                                 </Button>
                             </Form.Item>
 
-                            <p  style={{fontSize: "12px", textAlign:'center',marginTop:'16px'}}>Powered By Rixar</p>
+                            <p  style={{fontSize: "12px", textAlign:'center',marginTop:'16px'}}>Powered By <Tag>Rixar Technology</Tag></p>
 
 
                         </Form>
