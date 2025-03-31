@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('task_activities', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger("workspace_id")->nullable();
             $table->bigInteger('author_id')->unsigned();
             $table->bigInteger('task_id')->unsigned();
             $table->string('message',524);

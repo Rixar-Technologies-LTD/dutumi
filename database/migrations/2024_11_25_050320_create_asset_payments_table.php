@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('asset_payments', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger("workspace_id")->nullable();
             $table->bigInteger('project_id')->unsigned();
             $table->bigInteger('asset_group_id')->unsigned();
             $table->bigInteger('asset_id')->unsigned();

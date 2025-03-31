@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('project_members', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger("workspace_id")->unsigned();
             $table->bigInteger('project_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('author_id')->unsigned();

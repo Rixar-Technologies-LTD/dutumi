@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger("workspace_id")->unsigned();
             $table->bigInteger("owner_user_id")->unsigned();
             $table->string("name");
             $table->string("description");

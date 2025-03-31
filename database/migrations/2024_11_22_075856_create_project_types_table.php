@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('project_types', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger("workspace_id")->nullable();
             $table->bigInteger('name')->unsigned();
             $table->string('code');
             $table->timestamps();

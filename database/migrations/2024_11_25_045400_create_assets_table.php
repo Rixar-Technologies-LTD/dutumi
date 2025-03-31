@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger("workspace_id")->nullable();
             $table->bigInteger('project_id')->unsigned();
             $table->bigInteger('asset_group_id')->unsigned();
             $table->bigInteger('author_id')->unsigned();
@@ -52,6 +53,7 @@ return new class extends Migration
 
             $table->string('price_currency')->default(0);
             $table->double('unit_price_in_default_currency')->default(0)->nullable();
+            $table->string('location')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
