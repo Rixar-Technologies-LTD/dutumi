@@ -3,7 +3,7 @@ import Sider from "antd/es/layout/Sider";
 import MenuItems from "./MenuItems";
 import {Button, Col, Image, Row} from "antd";
 import {CompressOutlined} from "@ant-design/icons";
-import logo from "../../assets/images/coins_yellow.png"
+import logo from "assets/images/logo-yellow.png"
 
 const LeftSideMenu = () => {
 
@@ -37,22 +37,18 @@ const LeftSideMenu = () => {
                         <Image preview={false} src={logo} style={{ width: 80, marginTop: 4 }} />
                     </Col>
                 </Row>
-                <Row style={{marginTop: 10 }}  >
+                <Row style={{ }}  >
                     <Col>
                         {!collapsed &&
-                            <h3  className="merienda-900" style={{
+                            <h2  className="merienda-900" style={{
                                 paddingLeft: '12px',
                                 color: 'white',
-                                margin: "0px"}}>
-                                Dutumi
-                            </h3>}
+                                margin: "0px" }}>
+                                Konvex
+                            </h2>}
                     </Col>
 
-                    <Col span={6} offset={6}>
-                        <Button icon={<CompressOutlined />} size="small" type="text" onClick={toggleCollapsed}
-                                style={{ marginRight: 16, marginLeft: 16, color: "white" }}>
-                        </Button>
-                    </Col>
+                    <Col span={6} offset={6}></Col>
                 </Row>
             </div>
 

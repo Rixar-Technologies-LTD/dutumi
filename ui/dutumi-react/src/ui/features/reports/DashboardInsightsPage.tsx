@@ -165,230 +165,172 @@ const DashboardInsightsPage = () => {
     return <div style={{
         paddingLeft: '24px',
         paddingRight: '24px',
-        marginTop: "24px",
+        marginTop: "0px",
         marginBottom: "64px",
     }}>
 
 
-        {/**
-         -----------------------
-         | Projects Stats
-         -------------------------
-         */}
-        <Row>
-            <Col className="gutter-row" span={24}>
+       <Row>
+           <Col xs={16}>
+               {/**
+                -----------------------
+                | Projects Stats
+                -------------------------
+                */}
+               <Row>
+                   <Col className="gutter-row" span={24}>
 
-                {isAllowed && <StatisticsGroup
-                    title="Projects"
-                    textColor="#5a5a5a">
-                    <Row gutter={16}>
+                       {isAllowed && <StatisticsGroup
+                           title="Projects"
+                           textColor="#5a5a5a">
+                           <Row gutter={16}>
 
-                        {/*Day Subscribers*/}
-                        <Col className="gutter-row" style={{marginTop:'8px'}} span={6} md={6} sm={24}>
-                            <DashboardStatistic
-                                textColor="#4895ef"
-                                titleColor="#4895ef"
-                                isLoading={isLoading}
-                                icon={<GoodMdiIcon iconPath={mdiOfficeBuildingMarkerOutline}/>}
-                                title="Subscribed Today"
-                                statValue={`${new Intl.NumberFormat('en-US').format(businessStats?.businessesRegisteredToday ?? 0)}`}
-                            ></DashboardStatistic>
-                        </Col>
+                               {/*Day Subscribers*/}
+                               <Col className="gutter-row" style={{marginTop:'8px'}} md={8}>
+                                   <DashboardStatistic
+                                       textColor="#4895ef"
+                                       titleColor="#4895ef"
+                                       isLoading={isLoading}
+                                       icon={<GoodMdiIcon iconPath={mdiOfficeBuildingMarkerOutline}/>}
+                                       title="Subscribed Today"
+                                       statValue={`${new Intl.NumberFormat('en-US').format(businessStats?.businessesRegisteredToday ?? 0)}`}
+                                   ></DashboardStatistic>
+                               </Col>
 
-                        {/*Month Subscribers*/}
-                        <Col className="gutter-row" style={{marginTop:'8px'}} span={6} md={6} sm={24}>
-                            <DashboardStatistic
-                                textColor="#5a5a5a"
-                                isLoading={isLoading}
-                                icon={<GoodMdiIcon iconPath={mdiOfficeBuildingMarkerOutline}/>}
-                                title="This Week"
-                                statValue={`${new Intl.NumberFormat('en-US').format(businessStats?.businessesRegisteredThisMonth ?? 0)}`}
-                            ></DashboardStatistic>
-                        </Col>
+                               {/*Month Subscribers*/}
+                               <Col className="gutter-row" style={{marginTop:'8px'}} md={8}>
+                                   <DashboardStatistic
+                                       textColor="#5a5a5a"
+                                       isLoading={isLoading}
+                                       icon={<GoodMdiIcon iconPath={mdiOfficeBuildingMarkerOutline}/>}
+                                       title="This Week"
+                                       statValue={`${new Intl.NumberFormat('en-US').format(businessStats?.businessesRegisteredThisMonth ?? 0)}`}
+                                   ></DashboardStatistic>
+                               </Col>
 
-                        {/*Month Subscribers*/}
-                        <Col className="gutter-row" style={{marginTop:'8px'}} span={6} md={6} sm={24}>
-                            <DashboardStatistic
-                                textColor="#5a5a5a"
-                                isLoading={isLoading}
-                                icon={<GoodMdiIcon iconPath={mdiOfficeBuildingMarkerOutline}/>}
-                                title="This Month"
-                                statValue={`${new Intl.NumberFormat('en-US').format(businessStats?.businessesRegisteredThisMonth ?? 0)}`}
-                            ></DashboardStatistic>
-                        </Col>
+                               {/*Month Subscribers*/}
+                               <Col className="gutter-row" style={{marginTop:'8px'}} sm={8}>
+                                   <DashboardStatistic
+                                       textColor="#5a5a5a"
+                                       isLoading={isLoading}
+                                       icon={<GoodMdiIcon iconPath={mdiOfficeBuildingMarkerOutline}/>}
+                                       title="This Month"
+                                       statValue={`${new Intl.NumberFormat('en-US').format(businessStats?.businessesRegisteredThisMonth ?? 0)}`}
+                                   ></DashboardStatistic>
+                               </Col>
 
-
-                        {/*All Time Subscribers*/}
-                        <Col className="gutter-row" style={{marginTop:'8px'}} span={6} md={6} sm={24}>
-                            <DashboardStatistic
-                                textColor="#5a5a5a"
-                                isLoading={isLoading}
-                                icon={<GoodMdiIcon iconPath={mdiOfficeBuildingMarkerOutline}/>}
-                                title="All Time"
-                                statValue={`${new Intl.NumberFormat('en-US').format(businessStats?.businessesAllCount ?? 0)}`}
-                            ></DashboardStatistic>
-                        </Col>
-
-                        {/*Active Subscribers*/}
-                        <Col className="gutter-row" style={{marginTop:'8px'}} span={6} md={6} sm={24}>
-                            <DashboardStatistic
-                                textColor="#57cc99"
-                                titleColor="#57cc99"
-                                isLoading={isLoading}
-                                icon={<GoodMdiIcon iconPath={mdiOfficeBuildingMarkerOutline}/>}
-                                title="Active Businesses"
-                                statValue={`${new Intl.NumberFormat('en-US').format(businessStats?.businessesActiveCount ?? 0)}`}
-                            ></DashboardStatistic>
-                        </Col>
-
-                        {/*Active Subscribers*/}
-                        <Col className="gutter-row" style={{marginTop:'8px'}} span={6} md={6} sm={24}>
-                            <DashboardStatistic
-                                textColor="#fb8500"
-                                titleColor="#fb8500"
-                                isLoading={isLoading}
-                                icon={<GoodMdiIcon iconPath={mdiOfficeBuildingMarkerOutline}/>}
-                                title="InActive Businesses"
-                                statValue={`${new Intl.NumberFormat('en-US').format(businessStats?.businessesInactiveCount ?? 0)}`}
-                            ></DashboardStatistic>
-                        </Col>
-
-                    </Row>
-                </StatisticsGroup>}
-            </Col>
-        </Row>
+                           </Row>
+                       </StatisticsGroup>}
+                   </Col>
+               </Row>
 
 
+               {/**
+                ------------------------
+                | Online Transactions Stats
+                -----------------------------
+                */}
+               <StatisticsGroup
+                   title="Issues"
+                   textColor="#5a5a5a">
 
-        {/**
-         ------------------------
-         | Online Transactions Stats
-         -----------------------------
-         */}
-        <StatisticsGroup
-            title="Issues"
-            textColor="#5a5a5a">
+                   <Row gutter={16}>
 
-            <Row gutter={16}>
+                       {/*Week Transactions amount*/}
+                       <Col className="gutter-row" span={8}>
+                           <DashboardStatistic
+                               isLoading={isLoading}
+                               textColor="#4895ef"
+                               icon={<GoodMdiIcon iconPath={mdiBankOutline}/>}
+                               title="Today"
+                               statValue={`${new Intl.NumberFormat('en-US').format(paymentsInsightsStats?.createTodayCount ?? 0)}`}
+                               statLabel="Transactions"
+                               description={`${(paymentsInsightsStats?.createdTodaySum ?? 0).toLocaleString()} TZS`}
+                           ></DashboardStatistic>
+                       </Col>
 
-                {/*Week Transactions amount*/}
-                <Col className="gutter-row" span={6}>
-                    <DashboardStatistic
-                        isLoading={isLoading}
-                        textColor="#4895ef"
-                        icon={<GoodMdiIcon iconPath={mdiBankOutline}/>}
-                        title="Today"
-                        statValue={`${new Intl.NumberFormat('en-US').format(paymentsInsightsStats?.createTodayCount ?? 0)}`}
-                        statLabel="Transactions"
-                        description={`${(paymentsInsightsStats?.createdTodaySum ?? 0).toLocaleString()} TZS`}
-                    ></DashboardStatistic>
-                </Col>
+                       {/*Week Transactions amount*/}
+                       <Col className="gutter-row" span={8}>
+                           <DashboardStatistic
+                               isLoading={isLoading}
+                               textColor="#5a5a5a"
+                               icon={<GoodMdiIcon iconPath={mdiBankOutline}/>}
+                               title="This Week"
+                               statValue={`${new Intl.NumberFormat('en-US').format(paymentsInsightsStats?.createdThisWeekCount ?? 0)}`}
+                               statLabel="Transactions"
+                               description={`${(paymentsInsightsStats?.createdThisWeekSum ?? 0).toLocaleString()} TZS`}
+                           ></DashboardStatistic>
+                       </Col>
 
-                {/*Week Transactions amount*/}
-                <Col className="gutter-row" span={6}>
-                    <DashboardStatistic
-                        isLoading={isLoading}
-                        textColor="#5a5a5a"
-                        icon={<GoodMdiIcon iconPath={mdiBankOutline}/>}
-                        title="This Week"
-                        statValue={`${new Intl.NumberFormat('en-US').format(paymentsInsightsStats?.createdThisWeekCount ?? 0)}`}
-                        statLabel="Transactions"
-                        description={`${(paymentsInsightsStats?.createdThisWeekSum ?? 0).toLocaleString()} TZS`}
-                    ></DashboardStatistic>
-                </Col>
+                       {/*Month transactions amount*/}
+                       <Col className="gutter-row" span={8}>
+                           <DashboardStatistic
+                               textColor="#5a5a5a"
+                               isLoading={isLoading}
+                               icon={<GoodMdiIcon iconPath={mdiBankOutline}/>}
+                               title="This Month"
+                               statValue={`${new Intl.NumberFormat('en-US').format(paymentsInsightsStats?.createdThisMonthCount ?? 0)}`}
+                               statLabel="Transactions"
+                               description={`${(paymentsInsightsStats?.createdThisMonthSum ?? 0).toLocaleString()} TZS`}
+                           ></DashboardStatistic>
+                       </Col>
 
-                {/*Month transactions amount*/}
-                <Col className="gutter-row" span={6}>
-                    <DashboardStatistic
-                        textColor="#5a5a5a"
-                        isLoading={isLoading}
-                        icon={<GoodMdiIcon iconPath={mdiBankOutline}/>}
-                        title="This Month"
-                        statValue={`${new Intl.NumberFormat('en-US').format(paymentsInsightsStats?.createdThisMonthCount ?? 0)}`}
-                        statLabel="Transactions"
-                        description={`${(paymentsInsightsStats?.createdThisMonthSum ?? 0).toLocaleString()} TZS`}
-                    ></DashboardStatistic>
-                </Col>
-
-                {/*All Transactions Count*/}
-                <Col className="gutter-row" span={6}>
-                    <DashboardStatistic
-                        textColor="#5a5a5a"
-                        isLoading={isLoading}
-                        icon={<GoodMdiIcon iconPath={mdiBankOutline}/>}
-                        title="Refunded"
-                        statValue={`${new Intl.NumberFormat('en-US').format(paymentsInsightsStats?.refundedCount ?? 0)}`}
-                        statLabel="Transactions"
-                        description={`${(paymentsInsightsStats?.refundedSum ?? 0).toLocaleString()} TZS`}
-                    ></DashboardStatistic>
-                </Col>
-
-            </Row>
-        </StatisticsGroup>
+                   </Row>
+               </StatisticsGroup>
 
 
-        {/**
-         ------------------------
-         | Manual Transactions Stats
-         -----------------------------
-         */}
-        <StatisticsGroup
-            title="Payments"
-            textColor="#5a5a5a">
+               {/**
+                ------------------------
+                | Manual Transactions Stats
+                -----------------------------
+                */}
+               <StatisticsGroup
+                   title="Bills & Payments"
+                   textColor="#5a5a5a">
 
-            <Row gutter={16}>
+                   <Row gutter={16}>
 
-                {/*Week Transactions amount*/}
-                <Col className="gutter-row" span={6}>
-                    <DashboardStatistic
-                        isLoading={isLoading}
-                        textColor="#5a5a5a"
-                        icon={<GoodMdiIcon iconPath={mdiCash}/>}
-                        title="Today"
-                        statValue={`${new Intl.NumberFormat('en-US').format(manualInsightsStats?.createTodayCount ?? 0)}`}
-                    ></DashboardStatistic>
-                </Col>
+                       {/*Week Transactions amount*/}
+                       <Col className="gutter-row" span={8}>
+                           <DashboardStatistic
+                               isLoading={isLoading}
+                               textColor="#5a5a5a"
+                               icon={<GoodMdiIcon iconPath={mdiCash}/>}
+                               title="Today"
+                               statValue={`${new Intl.NumberFormat('en-US').format(manualInsightsStats?.createTodayCount ?? 0)}`}
+                           ></DashboardStatistic>
+                       </Col>
 
-                {/*Week Transactions amount*/}
-                <Col className="gutter-row" span={6}>
-                    <DashboardStatistic
-                        isLoading={isLoading}
-                        textColor="#1e96fc"
-                        icon={<GoodMdiIcon iconPath={mdiCash}/>}
-                        title="This Week"
-                        statValue={`${new Intl.NumberFormat('en-US').format(manualInsightsStats?.createdThisWeekCount ?? 0)}`}
-                    ></DashboardStatistic>
-                </Col>
+                       {/*Week Transactions amount*/}
+                       <Col className="gutter-row" span={8}>
+                           <DashboardStatistic
+                               isLoading={isLoading}
+                               textColor="#1e96fc"
+                               icon={<GoodMdiIcon iconPath={mdiCash}/>}
+                               title="This Week"
+                               statValue={`${new Intl.NumberFormat('en-US').format(manualInsightsStats?.createdThisWeekCount ?? 0)}`}
+                           ></DashboardStatistic>
+                       </Col>
 
-                {/*Month transactions amount*/}
-                <Col className="gutter-row" span={6}>
-                    <DashboardStatistic
-                        textColor="#1e96fc"
-                        isLoading={isLoading}
-                        icon={<GoodMdiIcon iconPath={mdiCash}/>}
-                        title="This Month"
-                        statValue={`${new Intl.NumberFormat('en-US').format(manualInsightsStats?.createdThisMonthCount ?? 0)}`}
-                    ></DashboardStatistic>
-                </Col>
+                       {/*Month transactions amount*/}
+                       <Col className="gutter-row" span={8}>
+                           <DashboardStatistic
+                               textColor="#1e96fc"
+                               isLoading={isLoading}
+                               icon={<GoodMdiIcon iconPath={mdiCash}/>}
+                               title="This Month"
+                               statValue={`${new Intl.NumberFormat('en-US').format(manualInsightsStats?.createdThisMonthCount ?? 0)}`}
+                           ></DashboardStatistic>
+                       </Col>
 
-                {/*All Transactions Count*/}
-                <Col className="gutter-row" span={6}>
-                    <DashboardStatistic
-                        textColor="#1e96fc"
-                        isLoading={isLoading}
-                        icon={<GoodMdiIcon iconPath={mdiCash}/>}
-                        title="Pending"
-                        statValue={`${new Intl.NumberFormat('en-US').format(manualInsightsStats?.pendingCount ?? 0)}`}
-                    ></DashboardStatistic>
-                </Col>
+                   </Row>
+               </StatisticsGroup>
+           </Col>
 
-            </Row>
-        </StatisticsGroup>
+           <Col xs={8}>
 
-        {!isAllowed && <div>
-            <h3> Hesabu Admin</h3>
-            <p> Use left menu for navigation</p>
-        </div>}
+           </Col>
+       </Row>
 
 
     </div>;

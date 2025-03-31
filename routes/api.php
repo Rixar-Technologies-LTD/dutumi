@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\Projects\FeaturesController;
 use App\Http\Controllers\Projects\ProjectMembersController;
 use App\Http\Controllers\Projects\ProjectsController;
@@ -15,6 +16,7 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('v1/auth')->group(function () {
     Route::post('login', [LoginController::class, 'login']);
+    Route::post('register', [RegistrationController::class, 'register']);
 });
 
 

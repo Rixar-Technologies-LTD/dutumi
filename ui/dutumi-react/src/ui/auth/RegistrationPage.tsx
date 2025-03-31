@@ -1,12 +1,12 @@
-import {Button, Card, Form, Input, Layout, Row, Image, Col, type MenuProps, Flex, Tag, Space} from "antd";
+import {Button, Card, Form, Input, Layout, Row, Image, Col, type MenuProps, Flex, Tag} from "antd";
 import React, {useState} from "react";
 import {Content} from "antd/es/layout/layout";
 import {
-    ExportOutlined,
-    LockFilled,
+    AppstoreOutlined,
+    LockFilled, MailOutlined,
     UserOutlined
 } from "@ant-design/icons";
-import logo from "assets/images/logo-yellow.png"
+import logo from "assets/images/icons/objects/binoculars.png"
 import loginBackground from "assets/images/auth/login_background.jpg"
 
 import {useSelector, useDispatch} from "react-redux";
@@ -16,25 +16,23 @@ import {useNavigate} from "react-router-dom";
 import {notifyHttpError} from "services/notification/notifications";
 
 
-const LoginPage = () => {
+const RegistrationPage = () => {
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     useSelector((state: any) => state.serverConfig);
     const [isLoading, setIsLoading] = useState(false);
 
-    const attemptLogin = async (credentials: any) => {
+    const attemptLogin = async (formData: any) => {
         setIsLoading(true);
-        postRequest("/api/v1/auth/login", credentials)
+        postRequest("/api/v1/auth/register", formData)
             .then((response) => {
                 console.log(JSON.stringify(response.data))
-                onLoginSuccessful(
-                    response.data.respBody.accessToken,
-                    response.data.respBody.permissions ?? [],
-                    response.data.respBody.user?.email);
+                onLoginSuccessful(response.data.respBody);
             })
             .catch((errorObj) => {
                 console.error(JSON.stringify(errorObj));
-                notifyHttpError("Login Failed", errorObj);
+                notifyHttpError("Registration Failed", errorObj);
                 setIsLoading(false);
             })
             .finally(() => {
@@ -42,10 +40,10 @@ const LoginPage = () => {
             });
     };
 
-    const onLoginSuccessful = (authToken: any, permissions: string[], name: string) => {
-        dispatch(setToken(authToken));
-        dispatch(setPermissions(["", "REPORTS_DASHBOARD"]));
-        dispatch(setName(name));
+    const onLoginSuccessful = (response: any) => {
+        dispatch(setToken(response.accessToken));
+        dispatch(setPermissions(response.permissions??[]));
+        dispatch(setName(response.user?.email));
         navigate("/");
     };
 
@@ -63,17 +61,16 @@ const LoginPage = () => {
         }}>
 
             <Content>
-                <Row justify="end" align="middle">
+                <Row justify="start" align="middle">
                     <Card
                         size="small"
                         style={{
                             width: 540,
-                            marginTop: 140,
-                            marginRight: 48,
+                            marginTop: 64,
+                            marginLeft: '3em',
                             paddingLeft: 64,
                             paddingRight: 64
                         }}>
-
 
                         <Flex justify="center">
                             <div style={{
@@ -81,18 +78,21 @@ const LoginPage = () => {
                                 textAlign: 'center',
                                 borderRadius: '16px'
                             }}>
-                                <Space align="center">
-                                    <Image preview={false} src={logo} style={{width: 64}}/>
-                                    <h1 className="merienda-900" style={{
-                                        textAlign: 'center',
-                                        color: '#5e548e',
-                                        padding: '0px 0px',
-                                        display: 'inline-block'
-                                    }}>Konvex</h1>
-                                </Space>
+                                <Flex justify="center">
+                                    <Image preview={false} src={logo} style={{width: 64, marginTop: 10}}/>
+                                </Flex>
 
                             </div>
                         </Flex>
+
+
+                        <h2 style={{
+                            color: '#758bfd',
+                            padding: '0px',
+                            margin: '0px',
+                        }}>Create Workspace</h2>
+
+
                         <Form
                             name="basic"
                             initialValues={{
@@ -103,26 +103,57 @@ const LoginPage = () => {
                             onFinishFailed={onValidationFailed}
                             requiredMark={false}
                             colon={false}
-                            autoComplete="off"
-                        >
-                            {/*User Name*/}
+                            autoComplete="off">
+
+                            {/*Full Name*/}
                             <Form.Item
-                                label="Username"
-                                name="identifier"
-                                style={{marginTop: 32}}
+                                label="Your Full Name"
+                                name="fullName"
+                                style={{marginTop: 8}}
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please input your username!",
-                                    },
-                                ]}
-                            >
+                                        message: "Please input your name",
+                                    }
+                                ]}>
                                 <Input prefix={<UserOutlined/>}/>
                             </Form.Item>
 
+                            {/*Workspace*/}
+                            <Form.Item
+                                label="Workspace Name"
+                                name="workspaceName"
+                                style={{marginTop: 8}}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input workspace name",
+                                    }
+                                ]}>
+                                <Input prefix={<AppstoreOutlined/>}/>
+                            </Form.Item>
+
+
+                            {/*Email*/}
+                            <Form.Item
+                                label="Email"
+                                name="email"
+                                style={{marginTop: 8}}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input your email",
+                                    }
+                                ]}
+                            >
+                                <Input prefix={<MailOutlined/>}/>
+                            </Form.Item>
+
+
+
                             {/*Password */}
                             <Form.Item
-                                label="Password"
+                                label="Create Password"
                                 name="password"
                                 rules={[
                                     {
@@ -142,18 +173,8 @@ const LoginPage = () => {
                                 </Button>
                             </Form.Item>
 
-                            <Button
-                                block={true}
-                                href="/register"
-                                type="default"
-                                style={{fontSize: "12px", textAlign: 'center', marginTop: '16px'}}
-                                icon={<ExportOutlined/>}>
-                                Create Workplace
-                            </Button>
-
-
-                            <p style={{fontSize: "12px", textAlign: 'center', marginTop: '48px'}}>
-                                Powered By <Tag>Rixar Technology</Tag></p>
+                            <p style={{fontSize: "12px", textAlign: 'center', marginTop: '16px'}}>Powered By <Tag>Rixar
+                                Technology</Tag></p>
 
 
                         </Form>
@@ -167,4 +188,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default RegistrationPage;

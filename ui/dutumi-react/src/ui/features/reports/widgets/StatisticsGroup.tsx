@@ -30,7 +30,7 @@ const StatisticsGroup  = ({children,icon,title,subTitle,textColor}: StatsDetails
         borderRadius: "8px",
         display: "inline-block",
         padding: "4px 8px",
-        marginTop: 0,
+        margin: 0,
         color: textColor
     };
 

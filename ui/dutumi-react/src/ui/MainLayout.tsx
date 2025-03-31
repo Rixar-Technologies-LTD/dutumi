@@ -1,9 +1,9 @@
-import {Button, Layout, Space} from 'antd';
+import {Button, Flex, Layout, Space} from 'antd';
 import {Route, Routes} from "react-router-dom";
 
 import React from "react";
 
-import '../css/custom.css';
+import 'css/custom.css';
 import LeftSideMenu from "./navigation/LeftSideMenu";
 import SystemUsersComponent from "ui/features/system/users/SystemUsersComponent";
 import RolesComponent from "ui/features/system/users/RolesComponent";
@@ -17,7 +17,7 @@ import NotificationTemplatesComponent from "./features/management/notications/No
 import SmsGatewayManagementComponent from "./features/management/sms_gateways/SmsGatewayManagementComponent";
 import CommissionsListComponent from "./features/commissions/CommissionsListComponent";
 import {Header} from "antd/es/layout/layout";
-import {getUserName} from "state/auth/authStore";
+import {getUser, getUserName} from "state/auth/authStore";
 import {LogoutOutlined, UserOutlined} from "@ant-design/icons";
 import {forceLogout} from "services/auth/SessionHandler";
 import BusinessesListComponent from "./features/businesses/BusinessesListComponent";
@@ -38,7 +38,7 @@ const {Content} = Layout;
 function MainLayout() {
 
 
-    const username = getUserName();
+    const user: any = getUser();
 
     return (
         <Layout style={{minHeight: '100vh'}}>
@@ -47,11 +47,15 @@ function MainLayout() {
 
             <Layout className="site-layout" style={{marginLeft: 280}}>
                 <Header style={{  background: '#f1f1f1', borderBottom:'1px solid #a3d1ee',display:'flex' , justifyContent: 'flex-end' }} >
-                         <Space align="end" >
-                             <UserOutlined/>
-                              <span>{username}</span>
-                             <Button onClick={forceLogout} icon={<LogoutOutlined/>} type="default">Logout</Button>
-                         </Space>
+                         <Flex>
+                             <span>{user.workspaceName}</span>
+
+                             <Space align="end" >
+                                 <UserOutlined/>
+                                 <span>{user.name}</span>
+                                 <Button onClick={forceLogout} icon={<LogoutOutlined/>} type="default">Logout</Button>
+                             </Space>
+                         </Flex>
                 </Header>
 
                 <Content style={{minHeight: '100vh', padding: '0 0'}}>
@@ -121,6 +125,7 @@ function MainLayout() {
                         <Route path="/users" element={<RequireAuth><SystemUsersComponent /></RequireAuth>}/>
                         <Route path="/roles" element={<RequireAuth><RolesComponent /></RequireAuth>}/>
                         <Route path="*" element={<RequireAuth><DashboardInsightsPage/></RequireAuth>}/>
+
                     </Routes>
 
                 </Content>

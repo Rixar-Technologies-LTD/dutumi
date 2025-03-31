@@ -35,6 +35,7 @@ class LoginController extends BaseController
 
         $personalAccessTokenResult = $user->createToken('api');
 
+
         $responseData['accessToken'] = $personalAccessTokenResult->accessToken;
         $responseData['user'] = $user;
         return $this->returnResponse('Logged In Successfully', $responseData);

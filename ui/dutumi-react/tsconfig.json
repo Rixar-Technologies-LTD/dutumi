@@ -3,7 +3,9 @@
   "target": "es5",
   "baseUrl": "src",
   "paths": {
+      "css/*": ["css/*"],
       "pages/*": ["pages/*"],
+      "navigation/*": ["navigation/*"],
       "assets/*": ["assets/*"],
       "utils/*": ["utils/*"],
       "types/*": ["types/*"],
