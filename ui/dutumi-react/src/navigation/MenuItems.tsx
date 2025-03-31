@@ -170,15 +170,6 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
 
 
 
-
-
-
-    mainMenuItems.push(toMenuItem('Logout', '/logout', <LogoutOutlined/>))
-
-
-
-
-
     return (
             <Menu
                 onClick={onMenuItemClick}

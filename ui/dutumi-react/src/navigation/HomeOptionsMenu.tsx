@@ -2,8 +2,8 @@ import {AppstoreAddOutlined, AppstoreOutlined} from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown, Space, Divider, Button } from 'antd';
 import React from 'react';
-import '../../css/home-menu.css'
-import {clearSession} from "../../state/auth/authStore";
+import 'css/home-menu.css'
+import {clearSession} from "state/auth/authStore";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 

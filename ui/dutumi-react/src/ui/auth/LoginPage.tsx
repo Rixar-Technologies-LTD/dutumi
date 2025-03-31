@@ -11,7 +11,7 @@ import loginBackground from "assets/images/auth/login_background.jpg"
 
 import {useSelector, useDispatch} from "react-redux";
 import {postRequest} from "services/http/RestClient";
-import {setName, setPermissions, setToken} from "state/auth/authStore";
+import {setName, setPermissions, setToken, setWorkspaceName} from "state/auth/authStore";
 import {useNavigate} from "react-router-dom";
 import {notifyHttpError} from "services/notification/notifications";
 
@@ -27,10 +27,7 @@ const LoginPage = () => {
         postRequest("/api/v1/auth/login", credentials)
             .then((response) => {
                 console.log(JSON.stringify(response.data))
-                onLoginSuccessful(
-                    response.data.respBody.accessToken,
-                    response.data.respBody.permissions ?? [],
-                    response.data.respBody.user?.email);
+                onLoginSuccessful(response.data.respBody );
             })
             .catch((errorObj) => {
                 console.error(JSON.stringify(errorObj));
@@ -42,10 +39,11 @@ const LoginPage = () => {
             });
     };
 
-    const onLoginSuccessful = (authToken: any, permissions: string[], name: string) => {
-        dispatch(setToken(authToken));
-        dispatch(setPermissions(["", "REPORTS_DASHBOARD"]));
-        dispatch(setName(name));
+    const onLoginSuccessful = (response: any) => {
+        dispatch(setToken(response.accessToken));
+        dispatch(setPermissions(response.permissions??[]));
+        dispatch(setName(response.user?.email));
+        dispatch(setWorkspaceName(response.workspace?.name));
         navigate("/");
     };
 

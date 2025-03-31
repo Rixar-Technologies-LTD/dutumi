@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import AppRouter from './ui/navigation/AppRouter';
+import AppRouter from 'navigation/AppRouter';
 import reportWebVitals from './reportWebVitals';
 import {configureStore} from "@reduxjs/toolkit";
 import  authReducer  from "./state/auth/authStore";

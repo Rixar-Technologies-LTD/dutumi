@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Sider from "antd/es/layout/Sider";
-import MenuItems from "./MenuItems";
+import MenuItems from "navigation/MenuItems";
 import {Button, Col, Image, Row} from "antd";
 import {CompressOutlined} from "@ant-design/icons";
 import logo from "assets/images/logo-yellow.png"

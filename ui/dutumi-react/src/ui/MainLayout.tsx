@@ -4,7 +4,7 @@ import {Route, Routes} from "react-router-dom";
 import React from "react";
 
 import 'css/custom.css';
-import LeftSideMenu from "./navigation/LeftSideMenu";
+import LeftSideMenu from "navigation/LeftSideMenu";
 import SystemUsersComponent from "ui/features/system/users/SystemUsersComponent";
 import RolesComponent from "ui/features/system/users/RolesComponent";
 import DashboardInsightsPage from "ui/features/reports/DashboardInsightsPage";
@@ -18,7 +18,7 @@ import SmsGatewayManagementComponent from "./features/management/sms_gateways/Sm
 import CommissionsListComponent from "./features/commissions/CommissionsListComponent";
 import {Header} from "antd/es/layout/layout";
 import {getUser, getUserName} from "state/auth/authStore";
-import {LogoutOutlined, UserOutlined} from "@ant-design/icons";
+import {AppstoreOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons";
 import {forceLogout} from "services/auth/SessionHandler";
 import BusinessesListComponent from "./features/businesses/BusinessesListComponent";
 import UserDetailsComponent from "./features/users/UserDetailsComponent";
@@ -33,6 +33,8 @@ import AssetGroupsListComponent from "ui/features/assets/AssetGroupsListComponen
 import AssetsListComponent from "ui/features/assets/AssetsListComponent";
 import FinanceBillingComponent from "ui/features/finance/FinanceBillingComponent";
 
+import workspaceIcon from "assets/images/icons/objects/workspace.png";
+
 const {Content} = Layout;
 
 function MainLayout() {
@@ -46,16 +48,23 @@ function MainLayout() {
             <LeftSideMenu></LeftSideMenu>
 
             <Layout className="site-layout" style={{marginLeft: 280}}>
-                <Header style={{  background: '#f1f1f1', borderBottom:'1px solid #a3d1ee',display:'flex' , justifyContent: 'flex-end' }} >
-                         <Flex>
-                             <span>{user.workspaceName}</span>
+                <Header style={{
+                    background: '#f1f1f1',
+                    borderBottom: '1px solid #a3d1ee',
+                    display: 'flex',
+                    justifyContent: 'space-between'
+                }}>
 
-                             <Space align="end" >
-                                 <UserOutlined/>
-                                 <span>{user.name}</span>
-                                 <Button onClick={forceLogout} icon={<LogoutOutlined/>} type="default">Logout</Button>
-                             </Space>
-                         </Flex>
+                    <Space align="center">
+                        <AppstoreOutlined/>
+                        <span>{user.workspaceName}</span>
+                    </Space>
+
+                    <Space align="end">
+                        <UserOutlined/>
+                        <span>{user.name}</span>
+                        <Button onClick={forceLogout} icon={<LogoutOutlined/>} type="default">Logout</Button>
+                    </Space>
                 </Header>
 
                 <Content style={{minHeight: '100vh', padding: '0 0'}}>

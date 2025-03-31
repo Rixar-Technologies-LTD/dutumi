@@ -26,7 +26,6 @@ export const getStoredUserToken = () => {
 
     const user = loadUserFromStorage();
     if (isNotEmpty(user)) {
-        // console.info("local user",JSON.stringify(user))
         return user.token;
     } else {
         console.warn("User not found on locally")
@@ -56,7 +55,7 @@ export const getUserName = () => {
 }
 
 export const getUser = () => {
-    return  loadUserFromStorage();
+    return loadUserFromStorage();
 }
 
 export const authSlice = createSlice({

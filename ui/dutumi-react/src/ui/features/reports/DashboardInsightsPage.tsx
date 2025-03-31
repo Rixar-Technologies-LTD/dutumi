@@ -179,8 +179,7 @@ const DashboardInsightsPage = () => {
                 */}
                <Row>
                    <Col className="gutter-row" span={24}>
-
-                       {isAllowed && <StatisticsGroup
+                       <StatisticsGroup
                            title="Projects"
                            textColor="#5a5a5a">
                            <Row gutter={16}>
@@ -220,7 +219,7 @@ const DashboardInsightsPage = () => {
                                </Col>
 
                            </Row>
-                       </StatisticsGroup>}
+                       </StatisticsGroup>
                    </Col>
                </Row>
 
@@ -330,6 +329,7 @@ const DashboardInsightsPage = () => {
            <Col xs={8}>
 
            </Col>
+
        </Row>
 
 

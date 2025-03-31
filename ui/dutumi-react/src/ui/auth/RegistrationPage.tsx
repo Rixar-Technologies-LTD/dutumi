@@ -2,7 +2,7 @@ import {Button, Card, Form, Input, Layout, Row, Image, Col, type MenuProps, Flex
 import React, {useState} from "react";
 import {Content} from "antd/es/layout/layout";
 import {
-    AppstoreOutlined,
+    AppstoreOutlined, ExportOutlined,
     LockFilled, MailOutlined,
     UserOutlined
 } from "@ant-design/icons";
@@ -11,7 +11,7 @@ import loginBackground from "assets/images/auth/login_background.jpg"
 
 import {useSelector, useDispatch} from "react-redux";
 import {postRequest} from "services/http/RestClient";
-import {setName, setPermissions, setToken} from "state/auth/authStore";
+import {setName, setPermissions, setToken, setWorkspaceName} from "state/auth/authStore";
 import {useNavigate} from "react-router-dom";
 import {notifyHttpError} from "services/notification/notifications";
 
@@ -41,9 +41,11 @@ const RegistrationPage = () => {
     };
 
     const onLoginSuccessful = (response: any) => {
+        console.log('on-login successful');
         dispatch(setToken(response.accessToken));
         dispatch(setPermissions(response.permissions??[]));
         dispatch(setName(response.user?.email));
+        dispatch(setWorkspaceName(response.workspace?.name));
         navigate("/");
     };
 
@@ -169,13 +171,19 @@ const RegistrationPage = () => {
                             <Form.Item>
                                 <Button size="large" style={{backgroundColor: '#5e548e'}}
                                         loading={isLoading} type="primary" htmlType="submit" block>
-                                    Login
+                                    Register
                                 </Button>
                             </Form.Item>
 
-                            <p style={{fontSize: "12px", textAlign: 'center', marginTop: '16px'}}>Powered By <Tag>Rixar
-                                Technology</Tag></p>
 
+                            <Button
+                                block={true}
+                                href="/login"
+                                type="default"
+                                style={{fontSize: "12px", textAlign: 'center', marginTop: '16px', marginBottom: '48px'}}
+                                icon={<ExportOutlined/>}>
+                                Login
+                            </Button>
 
                         </Form>
                     </Card>
