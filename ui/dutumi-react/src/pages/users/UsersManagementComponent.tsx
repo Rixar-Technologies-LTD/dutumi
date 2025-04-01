@@ -9,7 +9,8 @@ import {
 } from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
-import sectionIcon from "assets/images/icons/label.png"
+import sectionIcon from "assets/images/icons/people/people.png"
+
 import {getRequest, postMultipart, postRequest} from "../../services/http/RestClient";
 import {notifyError, notifyHttpError, notifySuccess} from "../../services/notification/notifications";
 import EyasiContentCard from "components/cards/EyasiContentCard";
@@ -17,10 +18,8 @@ import customerLoadingIcon from "components/Loading";
 import {AppVersion, BroadcastMessage} from "types/MessagesInterfaces";
 import TextArea from "antd/es/input/TextArea";
 import {
-    DatabaseOutlined,
-    ExportOutlined,
     EyeOutlined, FileImageOutlined,
-    MessageOutlined,
+    MessageOutlined, PlusCircleOutlined,
     UploadOutlined,
     UsergroupAddOutlined
 } from "@ant-design/icons";
@@ -32,7 +31,6 @@ import {User} from "types/system/AuthInterfaces";
 import Search from "antd/es/input/Search";
 import {useNavigate} from "react-router-dom";
 import {Business} from "types/businesses/BusinessInterfaces";
-import GoodVisibility from "components/GoodVisibility";
 
 // @ts-ignore
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
@@ -42,71 +40,36 @@ const UsersManagementComponent = () => {
     const columns: ColumnsType<User> = [
         {
             title: 'S/N',
-            dataIndex: 'id',
             render: (_, record) => (<> {record.id}</>),
         },
         {
-            title: 'Identifier',
-            dataIndex: 'topic',
-            render: (_, record) => (<>
-                {record?.firstName ?? ''} {record?.middleName ?? ''} {record?.lastName ?? ''} <br/>
-                {record?.email ?? ''} <br/>
-                {record?.phoneNumber ?? ''} <br/>
-            </>),
+            title: 'Name',
+            render: (_, record) => (<> {record?.name ?? ''} </>),
         },
         {
-            title: 'Business',
-            dataIndex: 'business',
-            render: (_, record) => (<>
-                <p style={{ textAlign:'left'}}>
-                    <GoodVisibility visible={record.business != null}>
-                        <Button style={{margin: '0px 0px', border: '1px solid #4e92ff'}} icon={<ExportOutlined/>}
-                                onClick={() => {
-                                    viewBusiness(record.business)
-                                }} type="link">
-                            {record?.business?.name ?? ''}
-                        </Button> <br/>
-                        <DatabaseOutlined></DatabaseOutlined> {record?.business?.schemaName ?? ''}
-                    </GoodVisibility>
-
-                    <GoodVisibility visible={record.business == null}>
-                        <span style={{ color:'red'}}>NO BUSINESS</span>
-                    </GoodVisibility>
-                </p>
-            </>),
-        },
-        {
-            title: 'Verifications',
-            dataIndex: 'content',
-            render: (_, record) => (<>
-                Email: {record?.emailVerifiedAt ?? ''} <br/>
-                Phone: {record?.phoneVerifiedAt ?? ''} <br/>
-                User: {record?.userVerifiedAt ?? ''} <br/>
-            </>),
+            title: 'Email',
+            render: (_, record) => (<> {record?.email ?? ''} </>),
         },
         {
             title: 'Status',
-            dataIndex: 'status',
             render: (_, record) => (<>
-                <Tag color={record.status=='ACTIVE'? 'green' :'red'} > {record.status ?? 'UNKNOWN'}</Tag> <br/>
+                <Tag color={record.status=='ACTIVE'? 'green' :'grey'} > {record.status ?? 'UNKNOWN'}</Tag> <br/>
                 <>{record.statusRemark}</>
             </>),
         },
         {
             title: 'Last Login',
-            dataIndex: 'createdDate',
             render: (_, record) => (<>
-                {record?.lastLoginDate ?? ''}   <br/>
-                 Sessions: {record?.loginSessions ?? ''}
+                {record?.last_login_at ?? ''}   <br/>
+                <span style={{ fontWeight:'lighter'}}>{record?.logins_count ?? ''} Logins </span>
             </>),
         },
         {
             title: 'Created',
             dataIndex: 'created',
             render: (_, record) => (<>
-                 {record.createdDate ?? ''}<br/>
-                 {record.createdBy ?? ''}
-            </>),
+                 {record.created_at ?? ''}
+             </>),
         },
         {
             title: 'Action',
@@ -159,7 +122,7 @@ const UsersManagementComponent = () => {
     const fetchUsers = () => {
         console.log("Fetching users...")
         setIsLoading(true)
-        getRequest(`/api/v1/admin/users?query=${searchQuery}&pageSize=${pageSize}`)
+        getRequest(`/api/v1/admin/users?query=${searchQuery}&pageNo=${pageSize}`)
             .then((response) => {
             setIsLoading(false);
             updateMessageList(response.data.items);
@@ -335,25 +298,27 @@ const UsersManagementComponent = () => {
                              iconImage={sectionIcon}
                              subTitle="Management"
                              extraHeaderItems={[
-                                 isLoading && <Spin key="1" indicator={customerLoadingIcon}></Spin>,
-                                 <Button style={{marginRight: '8px'}} key="2" type="primary" onClick={() => {
-                                     showMessageForm(null)
-                                 }}>
-                                     <MessageOutlined/>
-                                     Create User</Button>,
-                                 <Button style={{marginRight: '8px'}} key="3" type="primary" onClick={fetchUsers}
-                                         ghost>Refresh</Button>
+                                 isLoading && <Spin key="1" indicator={customerLoadingIcon}></Spin>
                              ]}>
 
 
         {/**---------------*
          /** Search
          *----------------*/}
-        <Space style={{marginBottom: 24, marginTop: 48}} direction="horizontal">
+        <Space style={{marginBottom: 24}} direction="horizontal">
             <Search size="large"
                     placeholder="Find Users"
                     onSearch={onSearch}
                     allowClear/>
+
+            <Button
+                style={{marginRight: '8px'}}
+                size="large"
+                type="primary" onClick={() => {
+                showMessageForm(null)
+            }}>
+                <PlusCircleOutlined/>
+                Create User</Button>
         </Space>
 
         {/**---------------------------*

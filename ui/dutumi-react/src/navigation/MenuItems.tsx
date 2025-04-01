@@ -115,7 +115,6 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
     }
 
 
-
     //---------------
     // Admin Menus
     const configurationsSubMenus : MenuProps['items'] = [];

@@ -16,8 +16,8 @@ const EyasiContentCard = ({
             <Image width={36}
                    style={{marginRight: 12, backgroundColor: '#00000000'}}
                    src={iconImage}></Image></div>
-        <h3>
-            {title}
+        <h3 style={{ lineHeight: '1em'}}>
+            {title} <br/>
             <span style={{fontWeight: "lighter", fontSize: "0.9em"}}>{subTitle}</span>
         </h3>
     </Space>

@@ -9,10 +9,19 @@ export interface SystemUser {
 }
 
 export interface User {
+
     "id": number,
     "username": string,
     "fullName": string,
     "status": string,
+    "created_at": string,
+    "name": string,
+    "last_login_at": string,
+    "logins_count": number,
+    "workspace": Workspace,
+
+
+
     "createdBy": string,
     "lastModifiedBy": string,
     "createdDate": string,
@@ -97,3 +106,14 @@ export interface Permission {
     "code": string,
     "description": string
 }
+
+export interface Workspace {
+    "id": string,
+    "user_id": string,
+    "name": string,
+    "status": string,
+    "created_at": string,
+    "updated_at": string
+}
+
+
