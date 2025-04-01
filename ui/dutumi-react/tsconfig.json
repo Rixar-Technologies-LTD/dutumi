@@ -6,6 +6,7 @@
       "css/*": ["css/*"],
       "pages/*": ["pages/*"],
       "navigation/*": ["navigation/*"],
+      "components/*": ["components/*"],
       "assets/*": ["assets/*"],
       "utils/*": ["utils/*"],
       "types/*": ["types/*"],

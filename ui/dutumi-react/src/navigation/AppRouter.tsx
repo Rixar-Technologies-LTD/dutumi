@@ -1,11 +1,11 @@
 import "css/App.css";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import LoginPage from "ui/auth/LoginPage";
-import MainLayout from "ui/MainLayout";
+import LoginPage from "pages/auth/LoginPage";
+import MainLayout from "pages/MainLayout";
 import RequireAuth from "../services/auth/RequireAuth";
 import React from "react";
 import Logout from "../services/auth/Logout";
-import RegistrationPage from "ui/auth/RegistrationPage";
+import RegistrationPage from "pages/auth/RegistrationPage";
 
 function AppRouter() {
     return (
