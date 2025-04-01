@@ -159,7 +159,7 @@ const UsersManagementComponent = () => {
     const fetchUsers = () => {
         console.log("Fetching users...")
         setIsLoading(true)
-        getRequest(`/api/v1/manage/users?query=${searchQuery}&pageSize=${pageSize}`)
+        getRequest(`/api/v1/admin/users?query=${searchQuery}&pageSize=${pageSize}`)
             .then((response) => {
             setIsLoading(false);
             updateMessageList(response.data.items);

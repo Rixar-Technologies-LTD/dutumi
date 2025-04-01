@@ -24,6 +24,7 @@ class UsersManagementController extends BaseController
         return $this->returnResponse('System Users', $responseData);
     }
 
+
     public function createUser(Request $request): JsonResponse
     {
         $request->validate([

@@ -92,8 +92,6 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
         financeMenus.push(toMenuItem('Payroll', '/finance/payroll', <CiBullhorn/>));
     }
 
-
-
     if(containsAny(permissions,["",'',''])){
         mainMenuItems.push(...[
             toMenuItem('Finance', 'finance/index', <PoundCircleOutlined/>, financeMenus),
@@ -118,51 +116,13 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
 
 
 
-
-
-
-    // -------------------
-    // Users
-    // -------------------
-    const messagesMenus : MenuProps['items'] = [];
-    if(permissions.includes("")){
-        messagesMenus.push(toMenuItem('Users', '/users', <UserOutlined/>))
-    }
-
-    if(permissions.includes("")){
-        messagesMenus.push(toMenuItem('Activities', '/activities', <ClockCircleOutlined/>))
-    }
-
-
-
-    if(permissions.includes("")){
-        mainMenuItems.push(...[
-            toMenuItem('Audit Trail', 'users/index', <UserOutlined/>, messagesMenus),
-        ]);
-    }
-
-    // -----------------------
-    // [End] Messages Menus
-
-
     //---------------
     // Admin Menus
     const configurationsSubMenus : MenuProps['items'] = [];
     if(permissions.includes("")){
-        configurationsSubMenus.push(toMenuItem('System Users', '/rixar/users', <UsergroupAddOutlined/>));
+        configurationsSubMenus.push(toMenuItem('System Users', '/configs/users', <UsergroupAddOutlined/>));
     }
 
-    if(permissions.includes("CONFIG_NOTIFICATIONS_VIEW")){
-        configurationsSubMenus.push(toMenuItem('Notifications', '/notifications', <MessageOutlined/>));
-    }
-
-    if(permissions.includes("CONFIG_SMS_GATEWAYS_VIEW")){
-        configurationsSubMenus.push( toMenuItem('SMS Gateways', '/sms/gateways', <FaBroadcastTower/>));
-    }
-
-    if(permissions.includes("")){
-        configurationsSubMenus.push( toMenuItem('App Versions', '/apps/versions', <AndroidOutlined/>));
-    }
 
     mainMenuItems.push(...[
         toMenuItem('Configurations', 'setting/index', <SettingOutlined/>, configurationsSubMenus),

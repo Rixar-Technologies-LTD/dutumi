@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth\Auth;
 
 use App\Http\Controllers\BaseController;
 use App\Models\User;
+use App\Models\WorkSpace;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,6 +25,7 @@ class LoginController extends BaseController
             'password' => ['required'],
         ]);
 
+        /** @var $user User */
         $user = User::query()->where(['email' => $request->input('identifier')])->first();
         if (!$user) {
             return $this->clientError('User does not exist', ["User does not exist"], 400);
@@ -34,10 +36,11 @@ class LoginController extends BaseController
         }
 
         $personalAccessTokenResult = $user->createToken('api');
-
+        $workspace = WorkSpace::query()->find($user->default_workspace_id);
 
         $responseData['accessToken'] = $personalAccessTokenResult->accessToken;
         $responseData['user'] = $user;
+        $responseData['workspace'] = $workspace;
         return $this->returnResponse('Logged In Successfully', $responseData);
 
     }

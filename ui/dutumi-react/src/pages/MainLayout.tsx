@@ -105,31 +105,11 @@ function MainLayout() {
                         </Route>
 
 
-                        <Route path="users">
-                            <Route index element={<RequireAuth><UsersManagementComponent/></RequireAuth>}/>
-                            <Route path=":userId" element={<RequireAuth><UserDetailsComponent/></RequireAuth>}/>
+                        <Route path="configs">
+                            <Route path="users" element={<RequireAuth><UsersManagementComponent/></RequireAuth>}/>
+                            <Route path="users/:userId" element={<RequireAuth><UserDetailsComponent/></RequireAuth>}/>
                         </Route>
 
-
-                        <Route path="agents">
-                            <Route index element={<RequireAuth><AgentsListComponent/></RequireAuth>}/>
-                        </Route>
-
-                        <Route path="commissions">
-                            <Route index element={<RequireAuth><CommissionsListComponent/></RequireAuth>}/>
-                        </Route>
-
-                        <Route path="apps/versions">
-                            <Route index element={<RequireAuth><AppVersionsComponent/></RequireAuth>}/>
-                        </Route>
-
-                        <Route path="notifications">
-                            <Route index element={<RequireAuth><NotificationTemplatesComponent/></RequireAuth>}/>
-                        </Route>
-
-                        <Route path="sms/gateways">
-                            <Route index element={<RequireAuth><SmsGatewayManagementComponent/></RequireAuth>}/>
-                        </Route>
 
                         <Route path="/users" element={<RequireAuth><SystemUsersComponent /></RequireAuth>}/>
                         <Route path="/roles" element={<RequireAuth><RolesComponent /></RequireAuth>}/>

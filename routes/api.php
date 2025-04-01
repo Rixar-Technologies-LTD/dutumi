@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\Auth\Auth\LoginController;
+use App\Http\Controllers\Auth\Auth\RegistrationController;
 use App\Http\Controllers\Projects\FeaturesController;
 use App\Http\Controllers\Projects\ProjectMembersController;
 use App\Http\Controllers\Projects\ProjectsController;

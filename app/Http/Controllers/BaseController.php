@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 
 class BaseController extends Controller
 {
+
+
     /**
      * success response method.
      * @param $message
@@ -14,6 +16,21 @@ class BaseController extends Controller
      * @return JsonResponse
      */
     public function returnResponse($message,$data): JsonResponse
+    {
+    	$response = [
+             'respCode' => 2000,
+             'message' => $message,
+             'respBody' => $data ];
+        return response()->json($response, 200);
+    }
+
+    /**
+     * success response method.
+     * @param $message
+     * @param $data
+     * @return JsonResponse
+     */
+    public function returnListResponse($message,$data): JsonResponse
     {
     	$response = [
              'respCode' => 2000,

@@ -11,6 +11,7 @@ use Laravel\Passport\HasApiTokens;
  * @property $name
  * @property $email
  * @property $password
+ * @property $default_workspace_id
  */
 class User extends Authenticatable
 {
