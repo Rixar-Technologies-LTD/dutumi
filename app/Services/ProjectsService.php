@@ -13,6 +13,7 @@ class ProjectsService
     public static function addProjectMember($projectId, $userId): ProjectMember
     {
         return ProjectMember::query()->create([
+            'workspace_id' => Auth::user()?->default_workspace_id ?? '',
             'project_id' => $projectId,
             'user_id' => $userId,
             'author_id' => Auth::id(),

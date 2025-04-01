@@ -19,6 +19,7 @@ class ProjectMember extends Model
 
     protected $fillable = [
         'project_id',
+        'workspace_id',
         'user_id',
         'author_id',
         'status',

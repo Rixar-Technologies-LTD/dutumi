@@ -12,16 +12,17 @@ import {
 import type {ColumnsType} from 'antd/es/table';
 import React, {useEffect, useState} from 'react';
 import {EditOutlined, EyeOutlined, PlusCircleOutlined} from "@ant-design/icons";
-import {
-    UndoOutlined
-} from "@ant-design/icons";
+import {UndoOutlined } from "@ant-design/icons";
 
-import {notifyError, notifyHttpError, notifySuccess} from "../../services/notification/notifications";
-import {getRequest, postRequest} from "../../services/http/RestClient";
+import {notifyHttpError, notifySuccess} from "services/notification/notifications";
+import {getRequest, postRequest} from "services/http/RestClient";
 import EyasiContentCard from "components/cards/EyasiContentCard";
 import customerLoadingIcon from "components/Loading";
 import { RemindersStats } from "types/businesses/BusinessInterfaces";
+
 import sectionIcon from "assets/images/icons/projects.png"
+import folderIcon from "assets/images/icons/objects/folder.png"
+
 import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import Compact from "antd/es/space/Compact";
@@ -29,28 +30,20 @@ import {Project, ProjectType} from "types/projects/ProjectsInterfaces";
 import {limitText} from "utils/helpers";
 import dayjs from "dayjs";
 
+
 const ProjectsListComponent = () => {
 
     const columns: ColumnsType<Project> = [
-        {
-            title: 'ID',
-            dataIndex: 'reference',
-            key: 'reference',
-            render: (_, record) => (
-                <>
-                    PRJ-{record.id}
-                </>
-            ),
-        },
         {
             title: 'Project Name',
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => (
                 <>
-                    <div>
+                    <Space>
+                        <img src={folderIcon} width={32} alt=""/>
                         <span style={{ color:'#5555ff'}}>{record.name}</span>
-                    </div>
+                    </Space>
                 </>
             ),
         },

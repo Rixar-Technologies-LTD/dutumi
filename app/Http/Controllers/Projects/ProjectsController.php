@@ -14,17 +14,20 @@ class ProjectsController extends BaseController
 
     public function getProjects(Request $request)
     {
-        $projects = Project::query()->paginate(50);
+        $projects = Project::query()
+            ->where('workspace_id', Auth::user()?->default_workspace_id ?? '')
+            ->paginate(50);
         return $this->returnResponse("Projects", $projects);
     }
 
     public function getProjectDetails(Request $request)
     {
         $request->validate([
-            'id'=>'required|numeric'
+            'id' => 'required|numeric'
         ]);
         $projects = Project::query()
-            ->where('id',$request->input('id'))
+            ->where('workspace_id', Auth::user()?->default_workspace_id ?? '')
+            ->where('id', $request->input('id'))
             ->first();
         return $this->returnResponse("Projects", $projects);
     }
@@ -41,6 +44,7 @@ class ProjectsController extends BaseController
 
         $project = Project::query()->create([
             'owner_user_id' => Auth::id(),
+            'workspace_id' => Auth::user()?->default_workspace_id ?? '',
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'type' => $request->input('type'),
@@ -56,6 +60,7 @@ class ProjectsController extends BaseController
 
     public function updateProject(Request $request)
     {
+
         $request->validate([
             'id' => 'required|exists:projects,id',
             'name' => 'required',

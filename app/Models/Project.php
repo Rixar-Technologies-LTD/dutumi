@@ -8,7 +8,6 @@ class Project extends Model
 {
 
     public static $STATUS_ACTIVE = 'ACTIVE';
-
     public static $STATUS_NOT_ACTIVE = 'NOT_ACTIVE';
 
     protected $casts = [
@@ -19,6 +18,7 @@ class Project extends Model
 
     protected $fillable = [
         'owner_user_id',
+        'workspace_id',
         'name',
         'description',
         'type',

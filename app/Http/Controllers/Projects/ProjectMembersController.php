@@ -31,6 +31,7 @@ class ProjectMembersController extends BaseController
         return $this->returnResponse("Member Added", $newProjectMember);
     }
 
+
     public function fetchProjectMembers(Request $request)
     {
         $request->validate([
@@ -43,6 +44,7 @@ class ProjectMembersController extends BaseController
 
         return $this->returnResponse("Project Members", $projectMembers);
     }
+
 
     public function fetchAssignableUsers(Request $request)
     {

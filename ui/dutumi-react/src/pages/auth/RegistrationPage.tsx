@@ -1,4 +1,4 @@
-import {Button, Card, Form, Input, Layout, Row, Image, Col, type MenuProps, Flex, Tag} from "antd";
+import {Button, Card, Form, Input, Layout, Row, Image, Flex} from "antd";
 import React, {useState} from "react";
 import {Content} from "antd/es/layout/layout";
 import {
@@ -6,14 +6,15 @@ import {
     LockFilled, MailOutlined,
     UserOutlined
 } from "@ant-design/icons";
-import logo from "assets/images/icons/objects/binoculars.png"
+
+import logo from "assets/images/logo-yellow.png"
 import loginBackground from "assets/images/auth/login_background.jpg"
 
 import {useSelector, useDispatch} from "react-redux";
-import {postRequest} from "../../services/http/RestClient";
+import {postRequest} from "services/http/RestClient";
 import {setName, setPermissions, setToken, setWorkspaceName} from "state/auth/authStore";
 import {useNavigate} from "react-router-dom";
-import {notifyHttpError} from "../../services/notification/notifications";
+import {notifyHttpError} from "services/notification/notifications";
 
 
 const RegistrationPage = () => {
@@ -70,8 +71,8 @@ const RegistrationPage = () => {
                             width: 540,
                             marginTop: 64,
                             marginLeft: '3em',
-                            paddingLeft: 64,
-                            paddingRight: 64
+                            paddingLeft: 16,
+                            paddingRight: 16
                         }}>
 
                         <Flex justify="center">
@@ -81,7 +82,17 @@ const RegistrationPage = () => {
                                 borderRadius: '16px'
                             }}>
                                 <Flex justify="center">
-                                    <Image preview={false} src={logo} style={{width: 64, marginTop: 10}}/>
+
+                                    <Image preview={false}
+                                           src={logo}
+                                           style={{ marginRight:'8px', width: 64, marginTop: 10 }}/>
+
+                                    <h1 className="merienda-900" style={{
+                                        textAlign: 'center',
+                                        color: '#5e548e',
+                                        padding: '0px 0px',
+                                        display: 'inline-block'
+                                    }}>Konvex</h1>
                                 </Flex>
 
                             </div>
@@ -121,6 +132,35 @@ const RegistrationPage = () => {
                                 <Input prefix={<UserOutlined/>}/>
                             </Form.Item>
 
+
+                            {/*Email*/}
+                            <Form.Item
+                                label="Email"
+                                name="email"
+                                style={{marginTop: 8}}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input your email",
+                                    }
+                                ]}>
+                                <Input prefix={<MailOutlined/>}/>
+                            </Form.Item>
+
+
+                            {/*Password */}
+                            <Form.Item
+                                label="Create Password"
+                                name="password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please input your password!",
+                                    },
+                                ]}>
+                                <Input.Password prefix={<LockFilled/>}/>
+                            </Form.Item>
+
                             {/*Workspace*/}
                             <Form.Item
                                 label="Workspace Name"
@@ -136,37 +176,6 @@ const RegistrationPage = () => {
                             </Form.Item>
 
 
-                            {/*Email*/}
-                            <Form.Item
-                                label="Email"
-                                name="email"
-                                style={{marginTop: 8}}
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Please input your email",
-                                    }
-                                ]}
-                            >
-                                <Input prefix={<MailOutlined/>}/>
-                            </Form.Item>
-
-
-
-                            {/*Password */}
-                            <Form.Item
-                                label="Create Password"
-                                name="password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Please input your password!",
-                                    },
-                                ]}
-                            >
-                                <Input.Password prefix={<LockFilled/>}/>
-                            </Form.Item>
-
                             {/*Login Button */}
                             <Form.Item>
                                 <Button size="large" style={{backgroundColor: '#5e548e'}}
@@ -174,7 +183,6 @@ const RegistrationPage = () => {
                                     Register
                                 </Button>
                             </Form.Item>
-
 
                             <Button
                                 block={true}
