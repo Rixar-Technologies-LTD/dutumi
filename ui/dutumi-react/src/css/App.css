@@ -61,8 +61,8 @@
 
 
 .ant-btn-color-primary {
-    background-color: #7678ed !important;
-    border-color: #7678ed !important;
+    background-color: #7678ed ;
+    border-color: #7678ed;
     color: white !important;
 }
 
@@ -72,8 +72,8 @@
 
 /*** Buttons **/
 .ant-btn-variant-outlined {
-    border-color: #758bfd !important;
-    color: #758bfd !important;
+    border-color: #758bfd;
+    color: #758bfd ;
 }
 
 .ant-btn-variant-link {

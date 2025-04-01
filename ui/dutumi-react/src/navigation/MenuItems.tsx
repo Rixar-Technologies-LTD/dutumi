@@ -119,7 +119,7 @@ const MenuItems: React.FC<Props> = ({isInlineCollapsed}) => {
     // Admin Menus
     const configurationsSubMenus : MenuProps['items'] = [];
     if(permissions.includes("")){
-        configurationsSubMenus.push(toMenuItem('System Users', '/configs/users', <UsergroupAddOutlined/>));
+        configurationsSubMenus.push(toMenuItem('Manage Users', '/configs/users', <UsergroupAddOutlined/>));
     }
 
 

@@ -15,10 +15,13 @@ export interface User {
     "fullName": string,
     "status": string,
     "created_at": string,
+    "creator_name": string,
+    "creator_id": string,
     "name": string,
     "last_login_at": string,
     "logins_count": number,
     "workspace": Workspace,
+    "creator": User,
 
 
 
