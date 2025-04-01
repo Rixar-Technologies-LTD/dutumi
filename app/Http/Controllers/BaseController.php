@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class BaseController extends Controller
@@ -30,12 +31,16 @@ class BaseController extends Controller
      * @param $data
      * @return JsonResponse
      */
-    public function returnListResponse($message,$data): JsonResponse
+    public function returnListResponse($message,LengthAwarePaginator $page): JsonResponse
     {
     	$response = [
              'respCode' => 2000,
              'message' => $message,
-             'respBody' => $data ];
+             'currentPageNo' => $page->currentPage(),
+             'totalElements' => $page->total(),
+             'pageSize' => $page->perPage(),
+             'items' => $page->items() ];
+
         return response()->json($response, 200);
     }
 

@@ -12,11 +12,22 @@ use Laravel\Passport\HasApiTokens;
  * @property $email
  * @property $password
  * @property $default_workspace_id
+ * @property $last_login_at
+ * @property $logins_count
  */
 class User extends Authenticatable
 {
+
+    const STATUS_ACTIVE = 'ACTIVE';
+    const STATUS_DISABLED = 'DISABLED';
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens,HasFactory, Notifiable;
+
+    protected $casts = [
+        'created_at' => 'datetime:d-M-Y H:i',
+        'updated_at' => 'datetime:d-m-Y H:i'
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -27,7 +38,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'default_workspace_id'
+        'default_workspace_id',
+
+        'last_login_at',
+        'logins_count',
+
+        'creator_id',
+        'creator_name'
     ];
 
     /**
@@ -56,6 +73,16 @@ class User extends Authenticatable
     public function members()
     {
         return $this->hasMany(ProjectMember::class, 'user_id', 'id');
+    }
+
+    public function workspace()
+    {
+        return $this->belongsTo(WorkSpace::class, 'default_workspace_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'default_workspace_id');
     }
 
 

@@ -28,7 +28,6 @@ import {
 import {User} from "types/system/AuthInterfaces";
 import Search from "antd/es/input/Search";
 import {useNavigate} from "react-router-dom";
-import {Business} from "types/businesses/BusinessInterfaces";
 import UserForm from "pages/users/forms/UserForm";
 import PasswordResetForm from "pages/users/forms/PasswordResetForm";
 

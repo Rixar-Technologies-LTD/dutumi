@@ -6,6 +6,8 @@ use App\Http\Controllers\BaseController;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -19,11 +21,15 @@ class UsersManagementController extends BaseController
 
     public function fetchUsers(): JsonResponse
     {
-        $users =  User::query()->latest()->paginate(20);
-        $responseData['users'] = $users;
-        return $this->returnResponse('System Users', $responseData);
-    }
 
+        /** @var LengthAwarePaginator $users */
+        $users = User::query()->latest()
+            ->where('default_workspace_id', Auth::user()?->default_workspace_id??'')
+            ->with('workspace')
+            ->paginate(25);
+
+        return $this->returnListResponse('System Users', $users);
+    }
 
     public function createUser(Request $request): JsonResponse
     {
@@ -33,15 +39,19 @@ class UsersManagementController extends BaseController
             'password' => 'required|min:6',
         ]);
 
-        $user =  User::query()->create([
+        $user = User::query()->create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'status' => $request->input('status',User::STATUS_ACTIVE),
+            'default_workspace_id' => Auth::user()?->default_workspace_id??'',
             'password' => Hash::make($request->input('password')),
+            'creator_id' => Auth::user()?->id??'',
+            'creator_name' =>Auth::user()?->name??'',
             'is_active' => true
         ]);
 
         $responseData['users'] = $user;
-        return $this->returnResponse('System Users', $responseData);
+        return $this->returnResponse('User Added', $responseData);
     }
 
     public function updateUser(Request $request): JsonResponse
@@ -49,16 +59,16 @@ class UsersManagementController extends BaseController
         $request->validate([
             'id' => 'required|numeric',
             'name' => 'required',
-            'is_active' => 'required|boolean'
+            'status' => 'required'
         ]);
 
-        $user =  User::query()->find($request->input('id'));
-        if(!$user){
-            return $this->clientError("User not found",[],400);
+        $user = User::query()->find($request->input('id'));
+        if (!$user) {
+            return $this->clientError("User not found", [], 400);
         }
 
         $user->name = $request->input('name');
-        $user->is_active = $request->input('is_active');
+        $user->status = $request->input('status');
         $user->save();
 
         $responseData['user'] = $user;
@@ -70,15 +80,15 @@ class UsersManagementController extends BaseController
     {
         $request->validate([
             'id' => 'required|numeric',
-            'new_password' => 'required|min:6'
+            'newPassword' => 'required|min:6'
         ]);
 
-        $user =  User::query()->find($request->input('id'));
-        if(!$user){
-            return $this->clientError("User not found",[],400);
+        $user = User::query()->find($request->input('id'));
+        if (!$user) {
+            return $this->clientError("User not found", [], 400);
         }
 
-        $user->password = Hash::make($request->input('new_password'));
+        $user->password = Hash::make($request->input('newPassword'));
         $user->save();
 
         $responseData['user'] = $user;
@@ -89,24 +99,22 @@ class UsersManagementController extends BaseController
     public function fetchSystemPermissions(Request $request): JsonResponse
     {
 
-        $permissions =  Permission::all();
+        $permissions = Permission::all();
         $responseData['permissions'] = User::formatPermissions($permissions);
         return $this->returnResponse('System Permissions', $responseData);
     }
 
-
-
     public function assignPermissionsToUser(Request $request): JsonResponse
     {
-        Log::info("updating permissions: ".json_encode($request->input()));
+        Log::info("updating permissions: " . json_encode($request->input()));
         $request->validate([
             'userId' => 'required|numeric',
             'permissions_names' => 'required|array'
         ]);
 
-        $user =  User::query()->find($request->input('userId'));
-        if(!$user){
-            return $this->clientError("User not found",[],400);
+        $user = User::query()->find($request->input('userId'));
+        if (!$user) {
+            return $this->clientError("User not found", [], 400);
         }
 
         $user->syncPermissions($request->input('permissions_names'));
@@ -115,7 +123,6 @@ class UsersManagementController extends BaseController
         $responseData['assignedPermissions'] = $user->getPermissionNames();
         return $this->returnResponse('System Permissions', $responseData);
     }
-
 
 
 }
